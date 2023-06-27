@@ -1,15 +1,17 @@
 import requests
 
-def search_restaurants(location):
+
+def search_cafes(location):
     url = 'https://api.yelp.com/v3/businesses/search'
     headers = {
-        'Authorization': 'Bearer IQuA3KpE_M1B77QUHXQZ_OenMn_QL7szzkV_pdngYOnkXoBrVrMTRGmL2Qicq8yJC-m2vEHM6EUSLrUcoE1L7Rgl9mMETsxS1F1WWB49Y2n9PZJo13n-ziM4bLWRZHYx',
+        'Authorization': 'Bearer TRtXaSCAEFNFdy0ku-9lmcLqu3Vt5zg35kr5aXt1Z8lbIwtWb66_2IlwSXb6FgGHuo-TzW3AloRihfCHYwK9x3z46frCQotstsWvsVfYBLtSx8hiPiii8qqYTgqbZHYx',
     }
     params = {
         'location': location,
-        'categories': 'cafe',
-        'price': 4,
+        'categories': 'cafes',
         'limit': 10,
     }
     response = requests.get(url, headers=headers, params=params)
-    return response.json()
+    data = response.json()
+    return data
+
