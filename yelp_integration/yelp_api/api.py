@@ -9,7 +9,7 @@ def search_cafes(location):
     params = {
         'location': location,
         'categories': 'cafes',
-        'limit': 10,
+        'limit': 20,
     }
     response = requests.get(url, headers=headers, params=params)
     data = response.json()

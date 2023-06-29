@@ -78,8 +78,13 @@ WSGI_APPLICATION = "yelp_integration.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "cafes_manhattan",
+        "USER": "postgres",
+        "PASSWORD": "q767Mannheim$",
+        "HOST": "localhost",
+        "PORT": "5432",
+
     }
 }
 
