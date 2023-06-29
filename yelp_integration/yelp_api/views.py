@@ -20,6 +20,10 @@ from .serializers import CafeSerializer
 
 @api_view(['GET'])
 def cafes_api(request, location):
+
+    
+    #cafes = Cafe.objects.filter(location=location)  # Query the stored cafes in the database
+
     data = search_cafes(location)
     cafes = []
     for cafe_data in data.get('businesses', []):
