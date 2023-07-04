@@ -8,5 +8,8 @@ class Cafe(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
 
-    def __str__(self):
+class Meta:
+        db_table = 'cafe'
+
+def __str__(self):
         return self.name

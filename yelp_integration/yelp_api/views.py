@@ -26,43 +26,50 @@ def cafes_api(request, location):
     
     # Check if the data is already cached
     data = cache.get(cache_key)
-    print(data)
+    print("cached data,", data)
     if data is not None:
         return Response(data)
     
-    limit = 20
+
     cafes = Cafe.objects.all()
     print (cafes.count())
 
-    #limit = 20
-    #offset = 0
-    #total_cafes = 0
-    #cafes = []
+    limit = 50
+    offset = 0
+    total_cafes = 0
+    cafes = []
 
 
     #filter(location=location)  # Query the stored cafes in the database
 
-    if not cafes or cafes.count() != limit: # If cafes for the location are not stored in the databse
+    #if not cafes or cafes.count() != limit: # If cafes for the location are not stored in the databse
 
-        data = search_cafes(location)
-        cafes = []
-        for cafe_data in data.get('businesses', []):
-            cafe = Cafe(
-                name=cafe_data['name'],
-                address=cafe_data['location']['address1'],
-                rating=cafe_data['rating'],
-                latitude=cafe_data['coordinates']['latitude'],
-                longitude=cafe_data['coordinates']['longitude'],
-            )
-            cafes.append(cafe)
-
-        Cafe.objects.all().delete()   
-        Cafe.objects.bulk_create(cafes) # store fetched cafes in the database
-
-        # Cache the data for future requests
-        cache.set(cache_key, data)
-        print(cache)
+    while total_cafes < 1000:
+        data = search_cafes(location, offset=offset)
+        businesses = data.get('businesses', [])
+        cafes.extend(businesses)
+        total_cafes += len(businesses)
+        offset += limit
         
+        if len(businesses) < limit:
+            break
+
+    Cafe.objects.all().delete()
+
+    # Store fetched cafes in the database
+    for cafe_data in cafes:
+        cafe = Cafe(
+            name=cafe_data['name'],
+            address=cafe_data['location']['address1'],
+            rating=cafe_data['rating'],
+            latitude=cafe_data['coordinates']['latitude'],
+            longitude=cafe_data['coordinates']['longitude'],
+        )
+
+        cafe.save()
+
+    # Cache the data for future requests
+    cache.set(cache_key, data, timeout=3600)
     
     serializer = CafeSerializer(cafes, many=True)
     return Response(serializer.data)
