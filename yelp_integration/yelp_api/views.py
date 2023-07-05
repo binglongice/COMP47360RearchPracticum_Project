@@ -32,7 +32,7 @@ def cafes_api(request, location):
     
 
     cafes = Cafe.objects.all()
-    print (cafes.count())
+    print ("Cafes in database", cafes.count())
 
     limit = 50
     offset = 0

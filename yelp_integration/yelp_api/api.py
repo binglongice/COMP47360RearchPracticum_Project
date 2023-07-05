@@ -4,7 +4,7 @@ import requests
 def search_cafes(location, offset=0):
     url = 'https://api.yelp.com/v3/businesses/search'
     headers = {
-        'Authorization': 'Bearer Lb5tEP0itSVkN0E6P8MeLvQYRuPw5uQKTDkrmbyvVGueym5b8Sas2GyMWSHBHQKoyTs0Wp9PqzKdUw4UGHBZIGM9y_77mDKOqv15nQW7E8sYIC4LFWeH39Z9rkOjZHYx',
+        'Authorization': 'Bearer TRtXaSCAEFNFdy0ku-9lmcLqu3Vt5zg35kr5aXt1Z8lbIwtWb66_2IlwSXb6FgGHuo-TzW3AloRihfCHYwK9x3z46frCQotstsWvsVfYBLtSx8hiPiii8qqYTgqbZHYx',
     }
     params = {
         'location': location,
