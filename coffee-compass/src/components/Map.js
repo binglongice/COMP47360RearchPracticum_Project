@@ -284,21 +284,35 @@ map.current.on('click', () => {
     });
   }, []);
 
-  const handleLayerChange = (index) => {
-    setCurrentGeoJSONIndex(index);
-    map.current.getSource('bench_locations').setData(geoJSONFiles[index]);
-    map.current.getSource('taxi_zones').setData(geoJSONFiles[index]);
-
-    if (index===0){
-          map.current.removeLayer('bench_locations_markers');
-          map.current.removeLayer('subway_markers');
-          map.current.removeLayer('bus_markers');
-    } else if (index===1) {
-      map.current.removeLayer('bus_markers');
-      map.current.removeLayer('subway_markers');
-
-        const filterExpression = ['==', ['get', 'borough'], 'Manhattan'];
-        map.current.addLayer({
+  const handleLayerChange = (activeButtons) => {
+    setCurrentGeoJSONIndex(activeButtons);
+    // map.current.getSource('bench_locations').setData(geoJSONFiles[activeButtons]);
+    // map.current.getSource('taxi_zones').setData(geoJSONFiles[activeButtons]);
+  
+    // Remove layers that are no longer needed
+    map.current.removeLayer('taxi_zones_fill');
+    map.current.removeLayer('bench_locations_markers');
+    map.current.removeLayer('subway_markers');
+    map.current.removeLayer('bus_markers');
+  
+    if (activeButtons.includes(0)) {
+      map.current.getSource('taxi_zones').setData('/filtered_geojson_file.geojson');
+      map.current.addLayer({
+        id: 'taxi_zones_fill',
+        type: 'fill',
+        source: 'taxi_zones',
+        paint: {
+          'fill-color': '#20826c',
+          'fill-opacity': 0.5,
+          'fill-outline-color': '#000000',
+        }
+      });
+    }
+    if (activeButtons.includes(1)) {
+      map.current.getSource('bench_locations').setData('/City_Bench_Locations.geojson');
+      
+      const filterExpression = ['==', ['get', 'borough'], 'Manhattan'];
+      map.current.addLayer({
         id: 'bench_locations_markers',
         type: 'symbol',
         source: 'bench_locations',
@@ -306,25 +320,23 @@ map.current.on('click', () => {
           'icon-image': 'custom-marker',
           'icon-size': 0.5,
         },
-        filter: filterExpression
+        filter: filterExpression,
       });
-    } else if (index===2) {
-        map.current.removeLayer('bench_locations_markers');
-        map.current.removeLayer('bus_markers');
-
-        map.current.addLayer({
+    }
+  
+    if (activeButtons.includes(2)) {
+      map.current.addLayer({
         id: 'subway_markers',
         type: 'symbol',
-        source: "subway",
+        source: 'subway',
         layout: {
           'icon-image': 'custom-marker-2',
           'icon-size': 0.3,
         },
-      })
-    } else if (index===3) {
-      map.current.removeLayer('subway_markers');
-      map.current.removeLayer('bench_locations_markers');
-
+      });
+    }
+  
+    if (activeButtons.includes(3)) {
       map.current.addLayer({
         id: 'bus_markers',
         type: 'symbol',
@@ -333,15 +345,12 @@ map.current.on('click', () => {
           'icon-image': 'custom-marker-3',
           'icon-size': 0.7,
         },
-        filter: ['==', 'boro_name', 'Manhattan']  // Add the filter condition here
-
-      })
-
+        filter: ['==', 'boro_name', 'Manhattan'],
+      });
     }
-
   };
-
-
+  
+  
 
   
 

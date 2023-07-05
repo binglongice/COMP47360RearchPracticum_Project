@@ -1,21 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function FilterNav({ handleLayerChange }) {
-  const [activeButton, setActiveButton] = useState(null);
-
-  const handleClick = (index) => {
-    handleLayerChange(index);
-    setActiveButton(index);
-  };
-
-  return (
+    const [activeButtons, setActiveButtons] = useState([]);
+  
+    const handleClick = (index) => {
+        if (activeButtons.includes(index)) {
+          // Index already exists in the array, so remove it
+          const updatedButtons = activeButtons.filter((buttonIndex) => buttonIndex !== index);
+          setActiveButtons(updatedButtons);
+          handleLayerChange(updatedButtons);
+        } else {
+          // Index doesn't exist in the array, so add it
+          const updatedButtons = [...activeButtons, index];
+          setActiveButtons(updatedButtons);
+          handleLayerChange(updatedButtons);
+        }
+        console.log(activeButtons);
+      };
+        return (
     <nav className="filter-nav" role="filter">
       <ul>
         <li>
           <a
             href="#"
             onClick={() => handleClick(0)}
-            className={activeButton === 0 ? 'active' : ''}
+            className={activeButtons.includes(0) ? 'active' : ''}
           >
             <span className="inner"></span>
             <img src="./taxi.png" alt="Taxi" />
@@ -25,7 +34,7 @@ function FilterNav({ handleLayerChange }) {
           <a
             href="#"
             onClick={() => handleClick(3)}
-            className={activeButton === 3 ? 'active' : ''}
+            className={activeButtons.includes(3) ? 'active' : ''}
           >
             <span className="inner"></span>
             <img src="./bus_stop.png" alt="Bus Stop" />
@@ -35,7 +44,7 @@ function FilterNav({ handleLayerChange }) {
           <a
             href="#"
             onClick={() => handleClick(2)}
-            className={activeButton === 2 ? 'active' : ''}
+            className={activeButtons.includes(2) ? 'active' : ''}
           >
             <span className="inner"></span>
             <img src="./metro.png" alt="Metro" />
@@ -45,7 +54,7 @@ function FilterNav({ handleLayerChange }) {
           <a
             href="#"
             onClick={() => handleClick(1)}
-            className={activeButton === 1 ? 'active' : ''}
+            className={activeButtons.includes(1) ? 'active' : ''}
           >
             <span className="inner"></span>
             <img src="./bench.png" alt="Bench" />
