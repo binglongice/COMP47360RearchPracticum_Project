@@ -17,5 +17,94 @@ code {
   }
 
 .nav-bar {
-  height: 10vh;
+  height: 5vh;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+  }
+
+
+  
+/** CSS FOR BUTTTONS **/
+
+.filter-nav {
+  padding: 0px;
+  margin-left: 0; /* Add this line to remove the left margin */
+  z-index: 20px;
+}
+
+nav li {
+  float: none;
+  font-size: 2em;
+  margin-right: 40px;
+  line-height: 80px;
+  position: relative;
+  text-align: center;
+  list-style-type: none; /*Hide bullets*/
+}
+
+nav li a {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden; /* Ensure the image stays within the circular shape */
+  border: 2px solid transparent; /* Set an initial transparent border */
+  transition: border-color 0.1s; /* Add transition for the border color change */  
+}
+
+nav li a img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  border: 2px solid #20826c; /* Add the border property with the desired color */
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+
+}
+nav li a:hover {
+  border-color: #20826c; /* Change the border color on hover */
+}
+nav li a .inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin: 0;
+  background-color: #20826c;
+  border-radius: 50%;
+  transition: all 0.1s;
+}
+
+nav li a:hover {
+  color: #fff;
+}
+
+nav li a:hover .inner {
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
+}
+
+.filter-nav-container {
+  position: absolute;
+  top: 15%;
+  left: -35px;
+  z-index: 1;
+}
+
+nav li a.active {
+  border-color: #20826c;
+}
+
+nav li a.active .inner {
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
 }
