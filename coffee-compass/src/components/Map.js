@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import Navbar from './Navbar';
-import { searchCafes } from '../api/api.js';
+import { getCafesByLocation } from '../api/api';
 import FilterNav from './FilterNav'
 
 
@@ -21,7 +21,12 @@ function Map({ selectedIndex }) {
     '/Subway_Entrances.geojson',
     '/Bus_Stop.geojson',
   ];
-  // const [currentGeoJSONIndex, setCurrentGeoJSONIndex] = useState(0);
+  // Set bounds for Manhattan, New York.
+  const bounds = [
+    [-74.255591, 40.477399], // Southwest coordinates
+    [-73.698697, 40.983697] // Northeast coordinates
+  ];
+      // const [currentGeoJSONIndex, setCurrentGeoJSONIndex] = useState(0);
   const [currentGeoJSONIndex, setCurrentGeoJSONIndex] = useState(selectedIndex);
 
   // useEffect(() => {
@@ -156,13 +161,16 @@ function Map({ selectedIndex }) {
 
 
   useEffect(() => {
+    
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v11',
       center: [lng, lat],
       zoom: zoom,
-      minZoom: zoom
+      minZoom: zoom,
+      maxBounds: bounds
+      
     });
 
     map.current.on('style.load', () => {
@@ -361,6 +369,7 @@ map.current.on('click', () => {
       {/* Render the name element */}
       {/* {name && <div className="nameElement">{name}</div>} */}
       <Navbar name = {zonename} />
+      <button onClick={getCafesByLocation}>test</button>
       {/* Map container */}
       {/* <button onClick={handleButtonClick} id="switchButton">Switch GeoJSON</button> */}
       <div ref={mapContainer} className="map-container" />

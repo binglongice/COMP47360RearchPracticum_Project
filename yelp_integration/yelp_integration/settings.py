@@ -78,8 +78,13 @@ WSGI_APPLICATION = "yelp_integration.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "cafes_manhattan",
+        "USER": "postgres",
+        "PASSWORD": "q767Mannheim$",
+        "HOST": "localhost",
+        "PORT": "5432",
+
     }
 }
 
@@ -124,3 +129,13 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://localhost:6379/0',
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }

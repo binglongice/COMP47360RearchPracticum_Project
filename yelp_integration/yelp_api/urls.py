@@ -11,3 +11,4 @@ from .views import cafes_api
 urlpatterns = [
     path('api/cafes/<str:location>/', cafes_api, name='cafes_api'),
 ]
+#

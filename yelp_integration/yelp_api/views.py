@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.core.cache import cache
 #from .api import search_cafes
 
 """def search_restaurants_view(request):
     
     location = "Manhattan"
     results = search_restaurants(location)
-    return JsonResponse(results)"""
+    return JsonResponse(results)"""""
 
 
 from rest_framework.decorators import api_view
@@ -20,9 +21,43 @@ from .serializers import CafeSerializer
 
 @api_view(['GET'])
 def cafes_api(request, location):
-    data = search_cafes(location)
+
+    # cache_key = f'cafes_{location}'  # Unique cache key based on the location
+    
+    # # Check if the data is already cached
+    # data = cache.get(cache_key)
+    # print("cached data,", data)
+    # if data is not None:
+    #     return Response(data)
+    
+
+    cafes = Cafe.objects.all()
+    print (cafes.count())
+
+    limit = 50
+    offset = 0
+    total_cafes = 0
     cafes = []
-    for cafe_data in data.get('businesses', []):
+
+
+    #filter(location=location)  # Query the stored cafes in the database
+
+    #if not cafes or cafes.count() != limit: # If cafes for the location are not stored in the databse
+
+    while total_cafes < 1000:
+        data = search_cafes(location, offset=offset)
+        businesses = data.get('businesses', [])
+        cafes.extend(businesses)
+        total_cafes += len(businesses)
+        offset += limit
+        
+        if len(businesses) < limit:
+            break
+
+    Cafe.objects.all().delete()
+
+    # Store fetched cafes in the database
+    for cafe_data in cafes:
         cafe = Cafe(
             name=cafe_data['name'],
             address=cafe_data['location']['address1'],
@@ -30,6 +65,11 @@ def cafes_api(request, location):
             latitude=cafe_data['coordinates']['latitude'],
             longitude=cafe_data['coordinates']['longitude'],
         )
-        cafes.append(cafe)
+
+        cafe.save()
+
+    # Cache the data for future requests
+    # cache.set(cache_key, data, timeout=3600)
+    
     serializer = CafeSerializer(cafes, many=True)
     return Response(serializer.data)
