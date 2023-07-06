@@ -9,7 +9,7 @@ def search_cafes(location, offset=0):
     params = {
         'location': location,
         'categories': 'cafes',
-        'limit': 50,
+        'limit': 20,
         "offset": offset,
         #'offset': offset,  # Add the offset parameter
     }
