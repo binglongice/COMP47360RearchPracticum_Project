@@ -37,7 +37,7 @@ def cafes_api(request, location):
     limit = 50
     offset = 0
     total_cafes = 0
-    cafes = []
+    cafes_list = []
 
 
     #filter(location=location)  # Query the stored cafes in the database
@@ -47,7 +47,7 @@ def cafes_api(request, location):
     while total_cafes < 1000:
         data = search_cafes(location, offset=offset)
         businesses = data.get('businesses', [])
-        cafes.extend(businesses)
+        cafes_list.extend(businesses)
         total_cafes += len(businesses)
         offset += limit
         
@@ -57,7 +57,7 @@ def cafes_api(request, location):
     Cafe.objects.all().delete()
 
     # Store fetched cafes in the database
-    for cafe_data in cafes:
+    for cafe_data in cafes_list:
         cafe = Cafe(
             name=cafe_data['name'],
             address=cafe_data['location']['address1'],
@@ -71,5 +71,5 @@ def cafes_api(request, location):
     # Cache the data for future requests
     cache.set(cache_key, data, timeout=3600)
     
-    serializer = CafeSerializer(cafes, many=True)
+    serializer = CafeSerializer(cafes_list, many=True)
     return Response(serializer.data)
