@@ -15,7 +15,7 @@ function FilterNav({ handleLayerChange }) {
           setActiveButtons(updatedButtons);
           handleLayerChange(updatedButtons);
         }
-        console.log(activeButtons);
+        // console.log(activeButtons);
       };
         return (
     <nav className="filter-nav" role="filter">
@@ -58,6 +58,16 @@ function FilterNav({ handleLayerChange }) {
           >
             <span className="inner"></span>
             <img src="./bench.png" alt="Bench" />
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            onClick={() => handleClick(4)}
+            className={activeButtons.includes(4) ? 'active' : ''}
+          >
+            <span className="inner"></span>
+            <img src="./coffee.png" alt="Cafe" />
           </a>
         </li>
       </ul>

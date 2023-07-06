@@ -1,14 +1,21 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import Navbar from './Navbar';
-import { getCafesByLocation } from '../api/api';
-import FilterNav from './FilterNav'
-
+// import { fetchData } from '../api/Api';
+import FilterNav from './FilterNav';
+import { ApiContext } from '../context/ApiContext.js';
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
 function Map({ selectedIndex }) {
+
+  const [data, setData] = useContext(ApiContext)
+  useEffect(() => {
+    console.log("initial data showage:", data)
+  }, [data])
+
+  const [isLoading, setIsLoading] = useState(true);
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(-73.9712);
@@ -29,139 +36,15 @@ function Map({ selectedIndex }) {
       // const [currentGeoJSONIndex, setCurrentGeoJSONIndex] = useState(0);
   const [currentGeoJSONIndex, setCurrentGeoJSONIndex] = useState(selectedIndex);
 
-  // useEffect(() => {
-  //   // Update map layer and markers when selectedIndex changes
-  //   handleLayerChange(selectedIndex);
-  // }, [selectedIndex]);
-
-
-
-  // const handleLayerChange = (index) => {
-  //   setCurrentGeoJSONIndex(index);
-  //   map.current.getSource('bench_locations').setData(geoJSONFiles[index]);
-  //   map.current.getSource('taxi_zones').setData(geoJSONFiles[index]);
-
-  //   if (index===0){
-  //         map.current.removeLayer('bench_locations_markers');
-  //         map.current.removeLayer('subway_markers');
-  //         map.current.removeLayer('bus_markers');
-  //   } else if (index===1) {
-  //       const filterExpression = ['==', ['get', 'borough'], 'Manhattan'];
-  //       map.current.addLayer({
-  //       id: 'bench_locations_markers',
-  //       type: 'symbol',
-  //       source: 'bench_locations',
-  //       layout: {
-  //         'icon-image': 'custom-marker',
-  //         'icon-size': 0.5,
-  //       },
-  //       filter: filterExpression
-  //     });
-  //   } else if (newIndex===2) {
-  //       map.current.removeLayer('bench_locations_markers');
-  //       map.current.addLayer({
-  //       id: 'subway_markers',
-  //       type: 'symbol',
-  //       source: "subway",
-  //       layout: {
-  //         'icon-image': 'custom-marker-2',
-  //         'icon-size': 0.3,
-  //       },
-  //     })
-  //   } else if (newIndex===3) {
-  //     map.current.removeLayer('subway_markers');
-  //     map.current.addLayer({
-  //       id: 'bus_markers',
-  //       type: 'symbol',
-  //       source: 'bus',
-  //       layout: {
-  //         'icon-image': 'custom-marker-3',
-  //         'icon-size': 0.7,
-  //       },
-  //       filter: ['==', 'boro_name', 'Manhattan']  // Add the filter condition here
-
-  //     })
-
-  //   }
-
-  // };
-
-    
-    
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  // // Function to handle the button click event
-  // const handleButtonClick = () => {
-  //   const newIndex = (currentGeoJSONIndex + 1) % 4; // Iterate up to 4
-  //   setCurrentGeoJSONIndex(newIndex);
-  //   map.current.getSource('bench_locations').setData(geoJSONFiles[newIndex]);
-  //   map.current.getSource('taxi_zones').setData(geoJSONFiles[newIndex]); 
-
-  //   //the logic for adding the bench layer has to be inside this function otherwise both layers will load by default
-  //   if (newIndex === 0) {
-  //     map.current.removeLayer('bench_locations_markers');
-  //     map.current.removeLayer('subway_markers');
-  //     map.current.removeLayer('bus_markers');
-
-
-  //   } else if (newIndex===1) {
-  //     const filterExpression = ['==', ['get', 'borough'], 'Manhattan'];
-  //     map.current.addLayer({
-  //       id: 'bench_locations_markers',
-  //       type: 'symbol',
-  //       source: 'bench_locations',
-  //       layout: {
-  //         'icon-image': 'custom-marker',
-  //         'icon-size': 0.5,
-  //       },
-  //       filter: filterExpression
-  //     });
-  //   } else if (newIndex===2) {
-  //     map.current.removeLayer('bench_locations_markers');
-  //       map.current.addLayer({
-  //       id: 'subway_markers',
-  //       type: 'symbol',
-  //       source: "subway",
-  //       layout: {
-  //         'icon-image': 'custom-marker-2',
-  //         'icon-size': 0.3,
-  //       },
-  //     })
-  //   } else if (newIndex===3) {
-  //     map.current.removeLayer('subway_markers');
-  //     map.current.addLayer({
-  //       id: 'bus_markers',
-  //       type: 'symbol',
-  //       source: 'bus',
-  //       layout: {
-  //         'icon-image': 'custom-marker-3',
-  //         'icon-size': 0.7,
-  //       },
-  //       filter: ['==', 'boro_name', 'Manhattan']  // Add the filter condition here
-
-  //     })
-
-  //   }
-
-  // };
-
-
+  useEffect(() => {
+    console.log('Test to see if my data is correct:', data);
+    if (data.length > 0) {
+      setIsLoading(false);
+    }
+  }, [data]);
 
   useEffect(() => {
-    
+    if (!isLoading && data.length > 0) {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -185,36 +68,23 @@ function Map({ selectedIndex }) {
         map.current.addImage('custom-marker-2', secondImage);
           // Add a GeoJSON source with 2 points
 
+      map.current.loadImage('/coffee.png', (error, fourthImage) => {
+        if (error) throw error;
+        map.current.addImage('custom-marker-4', fourthImage); 
+    
       map.current.loadImage('/bus_stop.png', (error, thirdImage) => {
         if (error) throw error;
         map.current.addImage('custom-marker-3', thirdImage); 
 
-
-          
-
         map.current.addSource('bench_locations', {
           type: 'geojson',
-          data: geoJSONFiles[currentGeoJSONIndex]                  
+          data: '/City_Bench_Locations.geojson',
+                  
         });
           
-      
-  
-
-
       map.current.addSource('taxi_zones', {
         type: 'geojson',
-        data: geoJSONFiles[currentGeoJSONIndex]      
-      });
-
-      map.current.addLayer({
-        id: 'taxi_zones_fill',
-        type: 'fill',
-        source: 'taxi_zones',
-        paint: {
-          'fill-color': '#20826c',
-          'fill-opacity': 0.5,
-          'fill-outline-color': '#000000',
-        }
+        data: '/filtered_geojson_file.geojson'      
       });
 
       map.current.addSource('subway', {
@@ -227,7 +97,26 @@ function Map({ selectedIndex }) {
         data: '/Bus_Stop.geojson'
       });
 
-
+    // Add the cafes data as a GeoJSON source
+    map.current.addSource('cafes', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: data.map((cafe) => ({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [cafe.longitude, cafe.latitude],
+          },
+          properties: {
+            name: cafe.name,
+            address: cafe.address,
+            rating: cafe.rating,
+          },
+        })),
+      },
+    });
+  });
     });
   });
 });
@@ -236,29 +125,43 @@ function Map({ selectedIndex }) {
         
 
 
-      // Create a popup
-      const popup = new mapboxgl.Popup({
-        closeButton: false,
-        closeOnClick: false,
-      });
-  
-      map.current.on('mouseenter', 'bench_locations_markers', (e) => {
-        console.log("testtesttest");
-        const bench = e.features[0].properties;
-        const popupContent = `<strong>Address:</strong> ${bench.address}<br>` +
-          `<strong>Category:</strong> ${bench.category}`;
-        popup.setLngLat(e.lngLat).setHTML(popupContent).addTo(map.current);
-      });
-  
-// Handle mouseleave event on bench markers
-map.current.on('mouseleave', 'bench_locations_markers', () => {
-  popup.remove();
-});
+    // Create a popup
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
 
-// Close the popup when the map is clicked
-map.current.on('click', () => {
-  popup.remove();
-});
+    map.current.on('mouseenter', 'bench_locations_markers', (e) => {
+      console.log("testtesttest");
+      const bench = e.features[0].properties;
+      const popupContent = `<strong>Address:</strong> ${bench.address}<br>` +
+        `<strong>Category:</strong> ${bench.category}`;
+      popup.setLngLat(e.lngLat).setHTML(popupContent).addTo(map.current);
+    });
+      
+    // Handle mouseleave event on bench markers
+    map.current.on('mouseleave', 'bench_locations_markers', () => {
+      popup.remove();
+    });
+
+
+    map.current.on('mouseenter', 'cafe_markers', (e) => {
+      const cafe = e.features[0].properties;
+      const popupContent = `<strong>Name:</strong> ${cafe.name}<br>` +
+        `<strong>Address:</strong> ${cafe.address}<br>` +
+        `<strong>Rating:</strong> ${cafe.rating}`;
+      popup.setLngLat(e.lngLat).setHTML(popupContent).addTo(map.current);
+    });
+    
+    // Handle mouseleave event on cafe markers
+    map.current.on('mouseleave', 'cafe_markers', () => {
+      popup.remove();
+    });
+
+    // Close the popup when the map is clicked
+    map.current.on('click', () => {
+      popup.remove();
+    });
     // Add mouseenter event listener to change zone color on hover
     map.current.on('mousemove', 'taxi_zones_fill', (e) => {
       const hoveredZone = e.features[0].properties.objectid; // Get the ID of the hovered zone
@@ -290,18 +193,25 @@ map.current.on('click', () => {
       };
       map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
     });
-  }, []);
+  };
+  }, [isLoading, data, lng, lat, zoom, bounds]); //This is the useEffect dependency array
+  //When any of the variables or states listed in the dependency array above change, the effect will run again.
+  
 
   const handleLayerChange = (activeButtons) => {
     setCurrentGeoJSONIndex(activeButtons);
-    // map.current.getSource('bench_locations').setData(geoJSONFiles[activeButtons]);
-    // map.current.getSource('taxi_zones').setData(geoJSONFiles[activeButtons]);
-  
-    // Remove layers that are no longer needed
-    map.current.removeLayer('taxi_zones_fill');
-    map.current.removeLayer('bench_locations_markers');
-    map.current.removeLayer('subway_markers');
-    map.current.removeLayer('bus_markers');
+  // Remove existing layers
+  map.current.getStyle().layers.forEach((layer) => {
+    if (
+      layer.id === 'bench_locations_markers' ||
+      layer.id === 'subway_markers' ||
+      layer.id === 'bus_markers' ||
+      layer.id === 'cafe_markers' ||
+      layer.id === 'taxi_zones_fill'
+    ) {
+      map.current.removeLayer(layer.id);
+    }
+  });
   
     if (activeButtons.includes(0)) {
       map.current.getSource('taxi_zones').setData('/filtered_geojson_file.geojson');
@@ -356,20 +266,26 @@ map.current.on('click', () => {
         filter: ['==', 'boro_name', 'Manhattan'],
       });
     }
-  };
-  
-  
+    if (activeButtons.includes(4)) {
+      map.current.addLayer({
+        id: 'cafe_markers',
+        type: 'symbol',
+        source: 'cafes',
+        layout: {
+          'icon-image': 'custom-marker-4',
+          'icon-size': 0.7,
+        }
+      });
+    }
 
-  
-
-  
+  };  
 
   return (
     <div>
       {/* Render the name element */}
       {/* {name && <div className="nameElement">{name}</div>} */}
       <Navbar name = {zonename} />
-      <button onClick={getCafesByLocation}>test</button>
+      {/* <button onClick={handleFetch}>test</button> */}
       {/* Map container */}
       {/* <button onClick={handleButtonClick} id="switchButton">Switch GeoJSON</button> */}
       <div ref={mapContainer} className="map-container" />

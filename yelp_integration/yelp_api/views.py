@@ -21,6 +21,17 @@ from .serializers import CafeSerializer
 
 @api_view(['GET'])
 def cafes_api(request, location):
+    cafes = Cafe.objects.all()
+    serializer = CafeSerializer(cafes, many=True)
+    # return Response(serializer.data)
+    # # Check if the database already contains 1000 objects
+    # if Cafe.objects.count() == 1000:
+    #     cafes = Cafe.objects.all()
+    #     serializer = CafeSerializer(cafes, many=True)
+    #     return Response(serializer.data)
+
+
+
 
     # cache_key = f'cafes_{location}'  # Unique cache key based on the location
     
@@ -34,7 +45,7 @@ def cafes_api(request, location):
     cafes = Cafe.objects.all()
     print (cafes.count())
 
-    limit = 50
+    limit = 10
     offset = 0
     total_cafes = 0
     cafes = []
@@ -44,7 +55,7 @@ def cafes_api(request, location):
 
     #if not cafes or cafes.count() != limit: # If cafes for the location are not stored in the databse
 
-    while total_cafes < 1000:
+    while total_cafes < 10:
         data = search_cafes(location, offset=offset)
         businesses = data.get('businesses', [])
         cafes.extend(businesses)

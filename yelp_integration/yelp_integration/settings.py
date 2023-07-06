@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'corsheaders',
    
 ]
 
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "yelp_integration.urls"
@@ -80,8 +82,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "cafes_manhattan",
-        "USER": "postgres",
-        "PASSWORD": "q767Mannheim$",
+        "USER": "maxgirt",
+        "PASSWORD": "admin",
         "HOST": "localhost",
         "PORT": "5432",
 
@@ -139,3 +141,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #         }
 #     }
 # }
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',  # Add the origin of your frontend application
+]
