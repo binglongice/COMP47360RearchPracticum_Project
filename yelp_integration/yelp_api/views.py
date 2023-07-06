@@ -22,13 +22,19 @@ from .serializers import CafeSerializer
 @api_view(['GET'])
 def cafes_api(request, location):
 
-    cache_key = f'cafes_{location}'  # Unique cache key based on the location
+    # Check if the database already contains 1000 objects
+    if Cafe.objects.count() == 1000:
+        cafes = Cafe.objects.all()
+        serializer = CafeSerializer(cafes, many=True)
+        return Response(serializer.data)
+
+    #cache_key = f'cafes_{location}'  # Unique cache key based on the location
     
     # Check if the data is already cached
-    data = cache.get(cache_key)
-    print("cached data,", data)
-    if data is not None:
-        return Response(data)
+    #data = cache.get(cache_key)
+    #print("cached data,", data)
+    #if data is not None:
+    #    return Response(data)
     
 
     cafes = Cafe.objects.all()
@@ -69,7 +75,7 @@ def cafes_api(request, location):
         cafe.save()
 
     # Cache the data for future requests
-    cache.set(cache_key, data, timeout=3600)
+    #cache.set(cache_key, data, timeout=3600)
     
     serializer = CafeSerializer(cafes_list, many=True)
     return Response(serializer.data)
