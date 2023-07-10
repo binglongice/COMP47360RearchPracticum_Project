@@ -66,6 +66,7 @@ def cafes_api(request, location):
     # Store fetched cafes in the database
     for cafe_data in cafes_list:
         cafe = Cafe(
+            id=cafe_data['id'],
             name=cafe_data['name'],
             address=cafe_data['location']['address1'],
             rating=cafe_data['rating'],
