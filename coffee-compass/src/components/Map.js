@@ -12,7 +12,7 @@ function Map({ selectedIndex }) {
 
   const [data, setData] = useContext(ApiContext)
   useEffect(() => {
-    console.log("initial data showage:", data)
+    console.log("Data changing:", data)
   }, [data])
 
   const [isLoading, setIsLoading] = useState(true);
@@ -279,13 +279,17 @@ function Map({ selectedIndex }) {
     }
 
   };  
+  const lnglat =  {lng: -73.9712, lat:40.7831};
+  const handleReset = () => {
+    map.current.flyTo({ center: lnglat, zoom: 11.75 }); // 
+  };
 
   return (
     <div>
       {/* Render the name element */}
       {/* {name && <div className="nameElement">{name}</div>} */}
       <Navbar name = {zonename} />
-      {/* <button onClick={handleFetch}>test</button> */}
+      <button onClick={handleReset}>Reset</button>
       {/* Map container */}
       {/* <button onClick={handleButtonClick} id="switchButton">Switch GeoJSON</button> */}
       <div ref={mapContainer} className="map-container" />
