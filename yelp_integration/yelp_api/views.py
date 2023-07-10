@@ -20,10 +20,14 @@ from .models import Cafe
 from .serializers import CafeSerializer
 from .serializers import Cafe_DB_Serializer
 
+# The cafes_api function takes two parameters: request and location. 
+# request is the incoming HTTP request object, and location is a parameter extracted from the URL.
+
 @api_view(['GET'])
 def cafes_api(request, location):
 
-    # Check if the database already contains 1000 objects
+    # Check if the database already contains 1000 objects, if so retrieve them from DB, 
+    #  serializes the data using the Cafe_DB_Serializer, and returns a Response with the serialized data.
     if Cafe.objects.count() == 1000:
         cafes_list = Cafe.objects.all()
         serializer = Cafe_DB_Serializer(cafes_list, many=True)
@@ -37,7 +41,11 @@ def cafes_api(request, location):
     #if data is not None:
     #    return Response(data)
     
+    # If there are not 1000 cafes, it uses the Yelp API to fetch cages in batches in 50 
+    # up until the limit of 1000
 
+    #Fetched cafes are stored in the cafes_list variable
+    
     cafes = Cafe.objects.all()
     print ("Cafes in database", cafes.count())
 
@@ -61,9 +69,11 @@ def cafes_api(request, location):
         if len(businesses) < limit:
             break
 
+    #After fetching the cafes, existing cafes in the cafe model are deleted from the DB
+    #   ~~~~~~~~~~WHY~~~~~~~~~
     Cafe.objects.all().delete()
 
-    # Store fetched cafes in the database
+    # Store fetched cafes in the database - having deleted old cafes?
     for cafe_data in cafes_list:
         cafe = Cafe(
             name=cafe_data['name'],
@@ -75,8 +85,18 @@ def cafes_api(request, location):
 
         cafe.save()
 
+
+    # QUESTION: Will the result in the same 1000 each time? e.g. first 1000?
+
     # Cache the data for future requests
     #cache.set(cache_key, data, timeout=3600)
-    
+
+    # Serialiser variable is created by instantiating the cafe serialiser class
+    # many=True indicates that the serializer should handle a list of objects rather than a single object. 
+    # This is because cafes_list contains multiple cafes
+        
     serializer = CafeSerializer(cafes_list, many=True)
+
+    # Response object is created using Response(serializer.data), which wraps the serialized data. 
+    # This response is returned from the view function and will be sent back to the client as the HTTP response.
     return Response(serializer.data)
