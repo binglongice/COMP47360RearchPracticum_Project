@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
+//every button has an index number associated with it
+// handle click button checks to see if 4 is in array, if not it will add it, if it is already there it will remove it
+// results in toggling buttons through the use of an array
+
 function FilterNav({ handleLayerChange }) {
     const [activeButtons, setActiveButtons] = useState([]);
   
@@ -24,7 +28,7 @@ function FilterNav({ handleLayerChange }) {
           <a
             href="#"
             onClick={() => handleClick(0)}
-            className={activeButtons.includes(0) ? 'active' : ''}
+            className={activeButtons.includes(0) ? 'active' : ''} //causes hover to stick (for buttons) - via CSS
           >
             <span className="inner"></span>
             <img src="./taxi.png" alt="Taxi" />

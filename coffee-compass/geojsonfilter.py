@@ -74,3 +74,6 @@ for neighborhood in neighborhoods:
 # Print crime count in each neighborhood
 for neighborhood, count in crime_count.items():
     print(f"Neighborhood: {neighborhood}, Crime Count: {count}")
+
+
+# Max code to filter GeoJSON files
