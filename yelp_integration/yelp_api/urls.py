@@ -6,9 +6,10 @@
 #]
 
 from django.urls import path
-from .views import cafes_api
+from .views import cafes_api, review_api
 
 urlpatterns = [
     path('api/cafes/<str:location>/', cafes_api, name='cafes_api'),
+    path('api/reviews/<str:id>/', review_api)
 ]
 #

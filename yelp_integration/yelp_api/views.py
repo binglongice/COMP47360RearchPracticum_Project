@@ -12,7 +12,7 @@ from django.core.cache import cache
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .api import search_cafes
+from .api import search_cafes, get_reviews
 from .models import Cafe
 #from yelp_integration import search_cafes
 
@@ -66,11 +66,13 @@ def cafes_api(request, location):
     # Store fetched cafes in the database
     for cafe_data in cafes_list:
         cafe = Cafe(
+            id=cafe_data['id'],
             name=cafe_data['name'],
             address=cafe_data['location']['address1'],
             rating=cafe_data['rating'],
             latitude=cafe_data['coordinates']['latitude'],
             longitude=cafe_data['coordinates']['longitude'],
+            image_url = cafe_data['image_url'],
         )
 
         cafe.save()
@@ -80,3 +82,10 @@ def cafes_api(request, location):
     
     serializer = CafeSerializer(cafes_list, many=True)
     return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+def review_api(requests, id):
+    data = get_reviews(id)
+    return Response(data)

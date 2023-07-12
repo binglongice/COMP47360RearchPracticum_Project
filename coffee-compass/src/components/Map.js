@@ -4,13 +4,15 @@ import Navbar from './Navbar';
 // import { fetchData } from '../api/Api';
 import FilterNav from './FilterNav';
 import { ApiContext } from '../context/ApiContext.js';
-
+import CafeDrawer from './CafeDrawer';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
-function Map({ selectedIndex }) {
-
+function Map({ selectedIndex, onCafeSelection }) {
+  const [selectedCafeId, setSelectedCafeId] = useState(null);
   const [data, setData] = useContext(ApiContext)
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedName, setSelectedName] = useState(null);
   useEffect(() => {
     console.log("Data changing:", data)
   }, [data])
@@ -112,6 +114,8 @@ function Map({ selectedIndex }) {
             name: cafe.name,
             address: cafe.address,
             rating: cafe.rating,
+            id: cafe.id,
+            image_url: cafe.image_url,
           },
         })),
       },
@@ -193,9 +197,24 @@ function Map({ selectedIndex }) {
       };
       map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
     });
+
+    map.current.on('click', 'cafe_markers', (e) => {
+      const cafe_id = e.features[0].properties.id;
+      const cafe_url = e.features[0].properties.image_url;
+      const cafe_name = e.features[0].properties.name;
+      console.log(cafe_id);
+      setSelectedCafeId(cafe_id);
+      setSelectedImage(cafe_url)
+      setSelectedName(cafe_name)
+      onCafeSelection(cafe_id);
+    });
+
+
   };
   }, [isLoading, data, lng, lat, zoom, bounds]); //This is the useEffect dependency array
   //When any of the variables or states listed in the dependency array above change, the effect will run again.
+  
+
   
 
   const handleLayerChange = (activeButtons) => {
@@ -287,12 +306,12 @@ function Map({ selectedIndex }) {
   return (
     <div>
       {/* Render the name element */}
-      {/* {name && <div className="nameElement">{name}</div>} */}
       <Navbar name = {zonename} />
       <button onClick={handleReset}>Reset</button>
-      {/* Map container */}
-      {/* <button onClick={handleButtonClick} id="switchButton">Switch GeoJSON</button> */}
-      <div ref={mapContainer} className="map-container" />
+      <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName}/>
+            {/* Map container */}
+      <div ref={mapContainer} className="map-container">
+      </div>
       <div className="filter-nav-container">
       <FilterNav handleLayerChange={handleLayerChange} />
     </div>

@@ -7,7 +7,7 @@ class CafeSerializer(serializers.ModelSerializer):
     latitude = serializers.DecimalField(source='coordinates.latitude', max_digits=9, decimal_places=6, allow_null=True)
     class Meta:
         model = Cafe
-        fields = ['name', 'address', 'rating', 'longitude', 'latitude']
+        fields = ['id','name', 'address', 'rating', 'longitude', 'latitude', 'image_url']
 
 class Cafe_DB_Serializer(serializers.ModelSerializer):
     #address = serializers.CharField(source='location.address1', allow_null=True, required=False)
@@ -15,4 +15,4 @@ class Cafe_DB_Serializer(serializers.ModelSerializer):
     #latitude = serializers.DecimalField(source='coordinates.latitude', max_digits=9, decimal_places=6, allow_null=True)
     class Meta:
         model = Cafe
-        fields = ['name', 'address', 'rating', 'longitude', 'latitude']
+        fields = ['id','name', 'address', 'rating', 'longitude', 'latitude', 'image_url']
