@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { IconButton, Drawer, Box, Typography } from '@mui/material';
 import { ApiContext } from '../context/ApiContext.js';
 
-const CafeDrawer = ({ cafeId, cafe_url, cafe_name }) => {
+const CafeDrawer = ({ cafeId, cafe_url, cafe_name, cafe_rating }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedCafeId, setSelectedCafeId] = useState(null);
   const [data, setData, reviews, setReviews] = useContext(ApiContext);
@@ -43,7 +43,7 @@ const CafeDrawer = ({ cafeId, cafe_url, cafe_name }) => {
         <Box>
         {/* <Typography>{selectedCafeId}</Typography> */}
         {/* Render the review texts as an unordered list */}
-        <Typography><h1>{cafe_name}</h1></Typography>
+        <Typography><h1>{cafe_name} ({cafe_rating})</h1></Typography>
         {reviews && Array.isArray(reviews.reviews) && (
           <ul>
             {reviews.reviews.map((review, index) => (
