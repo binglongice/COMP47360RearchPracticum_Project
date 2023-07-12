@@ -13,6 +13,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [data, setData] = useContext(ApiContext)
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
+  const [selectRating,  setSelectedRating] = useState(null);
   useEffect(() => {
     console.log("Data changing:", data)
   }, [data])
@@ -202,10 +203,12 @@ function Map({ selectedIndex, onCafeSelection }) {
       const cafe_id = e.features[0].properties.id;
       const cafe_url = e.features[0].properties.image_url;
       const cafe_name = e.features[0].properties.name;
+      const cafe_rating = e.features[0].properties.rating
       console.log(cafe_id);
       setSelectedCafeId(cafe_id);
       setSelectedImage(cafe_url)
       setSelectedName(cafe_name)
+      setSelectedRating(cafe_rating)
       onCafeSelection(cafe_id);
     });
 
@@ -308,7 +311,7 @@ function Map({ selectedIndex, onCafeSelection }) {
       {/* Render the name element */}
       <Navbar name = {zonename} />
       <button onClick={handleReset}>Reset</button>
-      <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName}/>
+      <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/>
             {/* Map container */}
       <div ref={mapContainer} className="map-container">
       </div>
