@@ -9,8 +9,19 @@ class Cafe(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
 
-class Meta:
+    class Meta:
         db_table = 'cafe'
+
+class Predictions(models.Model):
+    location_id = models.BigIntegerField(primary_key=True)
+    hour = models.BigIntegerField()
+    day = models.BigIntegerField()
+    month = models.BigIntegerField()
+    week_of_month = models.BigIntegerField()
+    normalised_prediction = models.FloatField()
+
+    class Meta:
+        db_table = 'predictions'
 
 def __str__(self):
         return self.name

@@ -2,6 +2,11 @@ import axios from 'axios';
 
 export const getCafesByLocation = (location) => {
   return axios.get(`http://127.0.0.1:8000/yelp_api/api/cafes/${location}/`)
+//export const getCafesByLocation = (location) => {
+  //return axios.get(`http://137.43.49.39:8000/yelp_api/api/cafes/${location}/`)
+  
+    
+
     .then(response => {
       console.log(response.data); // Log the data to the console
       // Handle the successful response

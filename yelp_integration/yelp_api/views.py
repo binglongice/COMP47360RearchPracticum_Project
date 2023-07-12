@@ -14,11 +14,24 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .api import search_cafes
 from .models import Cafe
+from .models import Predictions
 #from yelp_integration import search_cafes
 
 
 from .serializers import CafeSerializer
 from .serializers import Cafe_DB_Serializer
+from .serializers import PredictionsSerializer
+
+
+
+
+@api_view(['GET'])
+def predictions_api(request, location):
+    # Retrieve predictions from the database
+    predictions_list = Predictions.objects.all()[:10]
+    serializer = PredictionsSerializer(predictions_list, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['GET'])
 def cafes_api(request, location):
