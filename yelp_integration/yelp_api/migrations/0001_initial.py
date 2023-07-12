@@ -2,13 +2,21 @@
 
 from django.db import migrations, models
 
+# Django migration file
+# Automaticlaly generated when you run the makemigration command
+# The migration file contains instructions on how to modify the database schema to reflect changes in your models.
 
+
+# define migration class
 class Migration(migrations.Migration):
 
+    # indicates this is the initial migration of the app
     initial = True
 
+    # indicates any dependencies this migration has on other migrations
     dependencies = []
 
+    # list of migration operations that will be applied to the database, here there is just one
     operations = [
         migrations.CreateModel(
             name="Cafe",
@@ -30,3 +38,5 @@ class Migration(migrations.Migration):
             ],
         ),
     ]
+
+# Will result in database schema being modified to include a new table called Cafe with specified fields

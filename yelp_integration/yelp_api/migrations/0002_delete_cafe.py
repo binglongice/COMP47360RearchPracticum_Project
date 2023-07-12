@@ -2,8 +2,15 @@
 
 from django.db import migrations
 
+# Django migrations file
 
 class Migration(migrations.Migration):
+
+
+    # Depdency on previous migration with name 0001_initial.py from the yelp_api app
+    # Operations attribute is a list of migration operations will be applied to the database
+
+    # In this case the migrations.DeleteModel operation is used to delete a model from the database
 
     dependencies = [
         ("yelp_api", "0001_initial"),
@@ -14,3 +21,5 @@ class Migration(migrations.Migration):
             name="Cafe",
         ),
     ]
+
+# By running this migration, the database schema will be modified to delete the "Cafe" model and its associated table from the database.

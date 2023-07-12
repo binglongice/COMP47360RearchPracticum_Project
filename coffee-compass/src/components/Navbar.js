@@ -1,5 +1,6 @@
 import React from 'react';
 
+//Test passing in props
 
 const Navbar = (props) => {
     const {name} = props;

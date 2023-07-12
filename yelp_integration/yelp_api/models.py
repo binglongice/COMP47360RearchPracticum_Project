@@ -1,5 +1,9 @@
 from django.db import models
 
+# Cafe entity in a database
+
+# Specifying the set up of the database table
+
 class Cafe(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
@@ -8,6 +12,8 @@ class Cafe(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
 
+
+#Specifying that the name of the table is cafe
 class Meta:
         db_table = 'cafe'
 

@@ -198,6 +198,8 @@ function Map({ selectedIndex }) {
   //When any of the variables or states listed in the dependency array above change, the effect will run again.
   
 
+//Pass in active buttons from FilterNav to affect the layers
+
   const handleLayerChange = (activeButtons) => {
     setCurrentGeoJSONIndex(activeButtons);
   // Remove existing layers
@@ -213,6 +215,7 @@ function Map({ selectedIndex }) {
     }
   });
   
+  //if 0 (taxi button) then add in taxi zones as an overlay on the map
     if (activeButtons.includes(0)) {
       map.current.getSource('taxi_zones').setData('/filtered_geojson_file.geojson');
       map.current.addLayer({

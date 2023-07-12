@@ -2,6 +2,10 @@
 
 from django.db import migrations, models
 
+# Django migratio file
+
+# By running this migration, the database schema will be modified to create a new "Cafe" model 
+# and its associated table in the database with the specified fields.
 
 class Migration(migrations.Migration):
 
