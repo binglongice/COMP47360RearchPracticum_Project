@@ -19,7 +19,6 @@ from .models import Cafe
 
 from .serializers import CafeSerializer
 from .serializers import Cafe_DB_Serializer
-
 # The cafes_api function takes two parameters: request and location. 
 # request is the incoming HTTP request object, and location is a parameter extracted from the URL.
 
@@ -69,8 +68,7 @@ def cafes_api(request, location):
         if len(businesses) < limit:
             break
 
-    #After fetching the cafes, existing cafes in the cafe model are deleted from the DB
-    #   ~~~~~~~~~~WHY~~~~~~~~~
+    
     Cafe.objects.all().delete()
 
     # Store fetched cafes in the database - having deleted old cafes?
