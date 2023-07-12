@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         ("yelp_api", "0002_delete_cafe"),
     ]
 
-    operations = [
+    operations = [  
         migrations.CreateModel(
             name="Cafe",
             fields=[

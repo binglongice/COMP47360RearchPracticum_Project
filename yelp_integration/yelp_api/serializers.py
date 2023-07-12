@@ -1,16 +1,6 @@
 from rest_framework import serializers
 from .models import Cafe
-
-# These are serialisers
-# Serialisers are used to control the representation and structure of data in APIs, 
-# ensure data integrity, and provide a standardized way of transmitting and consuming data
-
-
-# The CafeSerializer class is a subclass of serializers.ModelSerializer. 
-# It provides a serialization/deserialization mechanism for the Cafe model. 
-# The fields of the Cafe model are specified as class attributes. 
-# The address, longitude, and latitude fields are specified with custom source and formatting 
-# options using the CharField and DecimalField serializers provided by Django REST Framework. 
+from .models import Predictions
 
 class CafeSerializer(serializers.ModelSerializer):
     address = serializers.CharField(source='location.address1', allow_null=True, required=False)
@@ -18,9 +8,7 @@ class CafeSerializer(serializers.ModelSerializer):
     latitude = serializers.DecimalField(source='coordinates.latitude', max_digits=9, decimal_places=6, allow_null=True)
     class Meta:
         model = Cafe
-        fields = ['id','name', 'address', 'rating', 'longitude', 'latitude', 'image_url']
-
-#Not being currently used
+        fields = ['id','name', 'address', 'rating', 'longitude', 'latitude']
 
 class Cafe_DB_Serializer(serializers.ModelSerializer):
     #address = serializers.CharField(source='location.address1', allow_null=True, required=False)
@@ -28,4 +16,11 @@ class Cafe_DB_Serializer(serializers.ModelSerializer):
     #latitude = serializers.DecimalField(source='coordinates.latitude', max_digits=9, decimal_places=6, allow_null=True)
     class Meta:
         model = Cafe
-        fields = ['id','name', 'address', 'rating', 'longitude', 'latitude', 'image_url']
+        fields = ['id','name', 'address', 'rating', 'longitude', 'latitude']
+
+class PredictionsSerializer(serializers.ModelSerializer):
+
+    class Meta: 
+        model = Predictions
+        fields = ['location_id', 'hour', 'day','month', 'week_of_month', 'normalised_prediction']
+    

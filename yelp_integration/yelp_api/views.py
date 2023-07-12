@@ -19,8 +19,17 @@ from .models import Cafe
 
 from .serializers import CafeSerializer
 from .serializers import Cafe_DB_Serializer
+from .serializers import PredictionsSerializer
 # The cafes_api function takes two parameters: request and location. 
 # request is the incoming HTTP request object, and location is a parameter extracted from the URL.
+
+@api_view(['GET'])
+def predictions_api(request, location):
+    # Retrieve predictions from the database
+    predictions_list = Predictions.objects.all()[:10]
+    serializer = PredictionsSerializer(predictions_list, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['GET'])
 def cafes_api(request, location):
