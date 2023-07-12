@@ -17,7 +17,7 @@ class Cafe_DB_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Cafe
         fields = ['id','name', 'address', 'rating', 'longitude', 'latitude']
-
+#this is new 
 class PredictionsSerializer(serializers.ModelSerializer):
 
     class Meta: 
