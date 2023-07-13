@@ -6,7 +6,7 @@
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.13.7",
+    "@mui/material": "^5.14.0",
     "axios": "^1.4.0",
     "framer-motion": "^4.1.17",
     "mapbox-gl": "^2.14.1",

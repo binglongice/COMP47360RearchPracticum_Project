@@ -14,6 +14,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .api import search_cafes, get_reviews
 from .models import Cafe
+from .models import Predictions
 #from yelp_integration import search_cafes
 
 
