@@ -12,3 +12,6 @@ yelp_integration/yelp_api/migrations/__pycache__/0002_cafe_image_url.cpython-39.
 yelp_integration/yelp_integration/__pycache__/__init__.cpython-39.pyc
 yelp_integration/yelp_integration/__pycache__/settings.cpython-39.pyc
 yelp_integration/yelp_integration/__pycache__/urls.cpython-39.pyc
+yelp_integration/yelp_integration/settings.py
+yelp_integration/yelp_integration/__pycache__/settings.cpython-39.pyc
+yelp_integration/yelp_integration/settings.py
