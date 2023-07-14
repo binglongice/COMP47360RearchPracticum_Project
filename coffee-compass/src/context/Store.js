@@ -53,6 +53,22 @@ function Store({ children, selectedCafeId }) {
     }
   }, [selectedCafeId]);
 
+  //new useEffect for model predictions - CURRENTLY HARDCODED - seems to be logging twice
+  useEffect(() => {
+    fetch('http://localhost:8000/yelp_api/pickle_views/model-output/11/3/9/2/')
+      .then(response => response.json())
+      .then(data => {
+        // Access the predictions data here
+        console.log(data.predictions);
+        // Use the data to generate the heatmap or perform other operations
+        // ...
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, []);
+  
+
   return (
     <ApiContext.Provider value={[data, setData, reviews, setReviews]}>
       {children}
