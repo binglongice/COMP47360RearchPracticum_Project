@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 import os
 import pickle
+import numpy as np
 
 @api_view(['GET'])
 def model_output_api(request, hour, day, month, week_of_month):
@@ -22,17 +23,26 @@ def model_output_api(request, hour, day, month, week_of_month):
     inputs = [hour, day, month, week_of_month]
 
     # Load pickle files and make predictions for each model
-    predictions = {}
+    predictions = []
     for model_number in model_numbers:
         pickle_file = os.path.join('pickle_models', f'model_{model_number}.pkl')
         with open(pickle_file, 'rb') as f:
             model = pickle.load(f)
 
         prediction = model.predict([inputs])
-        predictions[f'model_{model_number}'] = prediction.tolist()  # Convert NumPy array to Python list
+        predictions.append(prediction)
+
+    # Normalize predictions using min-max scaling
+    predictions = np.array(predictions)
+    prediction_min = np.min(predictions)
+    prediction_max = np.max(predictions)
+    normalized_predictions = (predictions - prediction_min) / (prediction_max - prediction_min)
+
+    # Convert normalized predictions to list
+    normalized_predictions = normalized_predictions.tolist()
 
     # Return the predictions as a JSON response
     response_data = {
-        'predictions': predictions
+        'predictions': normalized_predictions
     }
     return JsonResponse(response_data)
