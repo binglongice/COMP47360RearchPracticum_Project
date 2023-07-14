@@ -5,6 +5,7 @@ import axios from 'axios';
 function Store({ children, selectedCafeId }) {
   const [data, setData] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [picklePredictions, setPicklePredictions] = useState([]);
   const location = 'Manhattan';
 
   //API fetch request via axios
@@ -59,7 +60,9 @@ function Store({ children, selectedCafeId }) {
       .then(response => response.json())
       .then(data => {
         // Access the predictions data here
-        console.log(data.predictions);
+        console.log('new state for predictions', data.predictions);
+        // setPicklePredictions(data.predictions)
+        // console.log('new state for predictions', picklePredictions)
         // Use the data to generate the heatmap or perform other operations
         // ...
       })
