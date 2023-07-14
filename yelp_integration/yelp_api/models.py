@@ -19,7 +19,7 @@ class Predictions(models.Model):
     day = models.BigIntegerField()
     month = models.BigIntegerField()
     week_of_month = models.BigIntegerField()
-    normalised_prediction = models.FloatField()
+    normalized_prediction = models.FloatField()
 
     class Meta:
         db_table = 'predictions'

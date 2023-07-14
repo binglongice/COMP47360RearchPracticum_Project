@@ -23,5 +23,5 @@ class PredictionsSerializer(serializers.ModelSerializer):
 
     class Meta: 
         model = Predictions
-        fields = ['location_id', 'hour', 'day','month', 'week_of_month', 'normalised_prediction']
+        fields = ['location_id', 'hour', 'day','month', 'week_of_month', 'normalized_prediction']
     
