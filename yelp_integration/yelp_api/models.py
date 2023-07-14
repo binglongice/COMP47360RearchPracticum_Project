@@ -9,7 +9,6 @@ class Cafe(models.Model):
     longitude = models.FloatField()
     image_url = models.CharField(max_length=255, null=True)
 
-
     class Meta:
         db_table = 'cafe'
 
