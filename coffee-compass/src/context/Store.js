@@ -5,6 +5,7 @@ import axios from 'axios';
 function Store({ children, selectedCafeId }) {
   const [data, setData] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [picklePredictions, setPicklePredictions] = useState([]);
   const location = 'Manhattan';
 
   //API fetch request via axios
@@ -53,8 +54,28 @@ function Store({ children, selectedCafeId }) {
     }
   }, [selectedCafeId]);
 
+  //new useEffect for model predictions - CURRENTLY HARDCODED - seems to be logging twice
+  //Hour, Day, Month, Week_of_Month 
+  //0-23, 0-6, 1-12, 0-4
+  useEffect(() => {
+    fetch('http://localhost:8000/yelp_api/pickle_views/model-output/11/3/9/2/')
+      .then(response => response.json())
+      .then(data => {
+        // Access the predictions data here
+        console.log('new state for predictions', data.predictions);
+        setPicklePredictions(data.predictions)
+        // console.log('new state for predictions', picklePredictions)
+        // Use the data to generate the heatmap or perform other operations
+        // ...
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, []);
+  
+
   return (
-    <ApiContext.Provider value={[data, setData, reviews, setReviews]}>
+    <ApiContext.Provider value={[data, setData, reviews, setReviews, picklePredictions,setPicklePredictions]}>
       {children}
     </ApiContext.Provider>
   );
