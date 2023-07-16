@@ -1,13 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.cache import cache
-#from .api import search_cafes
 
-"""def search_restaurants_view(request):
-    
-    location = "Manhattan"
-    results = search_restaurants(location)
-    return JsonResponse(results)"""
 
 
 from rest_framework.decorators import api_view
@@ -24,12 +18,30 @@ from .serializers import PredictionsSerializer
 # The cafes_api function takes two parameters: request and location. 
 # request is the incoming HTTP request object, and location is a parameter extracted from the URL.
 
+
+from django.core.paginator import Paginator
+from rest_framework.pagination import PageNumberPagination
+
 @api_view(['GET'])
 def predictions_api(request, location):
     # Retrieve predictions from the database
-    predictions_list = Predictions.objects.all()[:10]
-    serializer = PredictionsSerializer(predictions_list, many=True)
-    return Response(serializer.data)
+    predictions_list = Predictions.objects.all()
+
+    # Configure pagination
+    paginator = Paginator(predictions_list, 100)  # Adjust the page size as needed
+    page = request.GET.get('page')
+    predictions_page = paginator.get_page(page)
+
+    # Serialize the paginated data
+    serializer = PredictionsSerializer(predictions_page, many=True)
+
+    # Return paginated response
+    return Response({
+        'count': paginator.count,
+        'num_pages': paginator.num_pages,
+        'results': serializer.data
+    })
+
 
 
 @api_view(['GET'])

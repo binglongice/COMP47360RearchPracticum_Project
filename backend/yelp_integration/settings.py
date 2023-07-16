@@ -25,8 +25,6 @@ SECRET_KEY = "django-insecure-5v!xcw5wu%y0f&6h3==u$g=23uy5k4u#b5xul&lpy2+9)o+pk-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -78,17 +76,27 @@ WSGI_APPLICATION = "yelp_integration.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "cafes_manhattan",
-        "USER": "postgres",
-        "PASSWORD": "q767Mannheim$",
-        "HOST": "localhost",
-        "PORT": "5432",
+ALLOWED_HOSTS = ['172.17.0.2','137.43.49.39','127.0.0.1']
 
-    }
-}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'ahorsewithnoName',
+        'HOST': 'database-1.c5bqixkyfabd.eu-west-2.rds.amazonaws.com',
+        'PORT': '5432',
+    }}
+    #"default": {
+     #   "ENGINE": "django.db.backends.postgresql",
+      #  "NAME": "cafes_manhattan",
+       # "USER": "postgres",
+        #"PASSWORD": "q767Mannheim$",
+        #"HOST": "localhost",
+        #"PORT": "5432",
+
+   
+#}
 
 
 # Password validation
@@ -147,7 +155,7 @@ CORS_ALLOWED_ORIGINS = [
 
 ]
 
-CACHES = {
+"""CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://localhost:6379/0',
@@ -155,4 +163,4 @@ CACHES = {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
-}
+}"""
