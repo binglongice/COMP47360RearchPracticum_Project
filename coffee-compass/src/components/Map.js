@@ -13,6 +13,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions] = useContext(ApiContext);  
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
+  
   const [selectRating,  setSelectedRating] = useState(null);
   useEffect(() => {
     console.log("Data changing:", data)
@@ -31,16 +32,30 @@ function Map({ selectedIndex, onCafeSelection }) {
 
   function getColorFromScore(score) {
     const stops = [
-      [0.1, '#00ff00'],
-      [0.2, '#33ff00'],
-      [0.3, '#66ff00'],
-      [0.4, '#99ff00'],
-      [0.5, '#ccff00'],
-      [0.6, '#ffff00'],
-      [0.7, '#ffcc00'],
-      [0.8, '#ff9900'],
-      [0.9, '#ff6600'],
+      [0.0, '#00ff00'],
+      [0.05, '#1eff00'],
+      [0.1, '#3dff00'],
+      [0.15, '#5cff00'],
+      [0.2, '#7bff00'],
+      [0.25, '#9aff00'],
+      [0.3, '#b9ff00'],
+      [0.35, '#d8ff00'],
+      [0.4, '#f7ff00'],
+      [0.45, '#ffff00'],
+      [0.5, '#ffeb00'],
+      [0.55, '#ffdb00'],
+      [0.6, '#ffcb00'],
+      [0.65, '#ffbb00'],
+      [0.7, '#ffab00'],
+      [0.75, '#ff9a00'],
+      [0.8, '#ff8a00'],
+      [0.85, '#ff7a00'],
+      [0.9, '#ff6a00'],
+      [0.95, '#ff5900'],
       [1.0, '#ff3300'],
+      [1.05, '#ff4c00'],
+      [1.1, '#ff6600'],
+      [1.15, '#ff7f00'],
       [1.2, '#ffc000']
     ];
   
@@ -58,7 +73,6 @@ function Map({ selectedIndex, onCafeSelection }) {
     return '#f00'; // Default color if the score is greater than or equal to 1.2
   }
 
-  
   
   
   useEffect(() => {
@@ -108,6 +122,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [lng, setLng] = useState(-73.9712);
   const [lat, setLat] = useState(40.7831);
   const [zoom, setZoom] = useState(11.75);
+  const [pitch, setPitch] = useState(45);
   const [zonename, setName] = useState('');
   const taxiZones = ['/filtered_geojson_file.geojson'];
 
@@ -135,12 +150,13 @@ function Map({ selectedIndex, onCafeSelection }) {
       center: [lng, lat],
       zoom: zoom,
       minZoom: zoom,
-      maxBounds: bounds
+      maxBounds: bounds,
+      pitch: pitch,
       
     });
 
     map.current.on('style.load', () => {
-      map.current.rotateTo(300);
+      map.current.rotateTo(0);
 
       map.current.loadImage('/bench.png', (error, image) => {
         if (error) throw error;
