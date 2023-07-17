@@ -10,13 +10,93 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpd
 
 function Map({ selectedIndex, onCafeSelection }) {
   const [selectedCafeId, setSelectedCafeId] = useState(null);
-  const [data, setData] = useContext(ApiContext)
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions] = useContext(ApiContext);  const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [selectRating,  setSelectedRating] = useState(null);
   useEffect(() => {
     console.log("Data changing:", data)
-  }, [data])
+  }, [data]);
+  
+
+  //checks to see if the predictions load in
+  // also removed the model_ text so that we have a hashmap where its just taxi_zone number : busyness value
+  useEffect(() => {
+    const predictions = Object.fromEntries(
+      Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
+    );
+    console.log("pickles: ", predictions);
+    // console.log("Pickles Pickles Pickles:", picklePredictions)
+  }, [picklePredictions]);
+
+        
+
+
+  function getColorFromScore(score) {
+    if (score === undefined) {
+      return '#000000';  // Return a single color value
+    }
+    if (score < 0.2) {
+      return '#00ff00';
+    }
+    if (score < 0.4) {
+      return '#40ff00';
+    }
+    if (score < 0.6) {
+      return '#80ff00';
+    }
+    if (score < 0.8) {
+      return '#c0ff00';
+    }
+    if (score < 1.0) {
+      return '#ffff00';
+    }
+    if (score < 1.2) {
+      return '#ffc000';
+    }
+    
+    return '#000000'; // Default color if none of the conditions match
+  }
+  
+  useEffect(() => {
+    if (picklePredictions) {
+      const predictions = Object.fromEntries(
+        Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
+      );
+  
+    // Load GeoJSON data
+    fetch('/filtered_geojson_file.geojson')
+      .then(response => response.json())
+      .then(geojsonData => {
+        // Now we have the GeoJSON data
+        if (map.current) {
+          geojsonData.features.forEach(feature => {
+            let objectid = feature.properties.objectid;
+            let score = predictions[objectid];
+            console.log("My objectid: ", objectid);
+            console.log("My score: ", score);          
+            feature.properties.color = getColorFromScore(score);
+          });
+  
+          map.current.getSource('taxi_zones').setData(geojsonData);
+  
+          map.current.addLayer({
+            id: 'taxi_zones_fill_map',
+            type: 'fill',
+            source: 'taxi_zones',
+            paint: {
+              'fill-color': ['get', 'color'],
+              'fill-opacity': 0.5,
+              'fill-outline-color': '#000000',
+            }
+          });
+        }
+      });
+    }
+  }, [picklePredictions]);  // Re-run effect whenever picklePredictions changes
+                      
+          
+
+// console.log(myColorFunction(4));
 
   const [isLoading, setIsLoading] = useState(true);
   const mapContainer = useRef(null);
@@ -25,12 +105,8 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [lat, setLat] = useState(40.7831);
   const [zoom, setZoom] = useState(11.75);
   const [zonename, setName] = useState('');
-  const geoJSONFiles = [
-    '/filtered_geojson_file.geojson',
-    '/City_Bench_Locations.geojson',
-    '/Subway_Entrances.geojson',
-    '/Bus_Stop.geojson',
-  ];
+  const taxiZones = ['/filtered_geojson_file.geojson'];
+
   // Set bounds for Manhattan, New York.
   const bounds = [
     [-74.255591, 40.477399], // Southwest coordinates
@@ -125,11 +201,66 @@ function Map({ selectedIndex, onCafeSelection }) {
     });
   });
 });
+// Get the reference to the added source
+// const taxiZonesSource = map.current.getSource('taxi_zones');
+
+// // Load the busyness values into the taxi zones GeoJSON features
+// if (taxiZonesSource) {
+//   taxiZonesSource.on('data', () => {
+//     const taxiZonesData = taxiZonesSource._data;
+
+//     // Iterate over the taxi zone features
+//     for (const feature of taxiZonesData.features) {
+//       const taxiZoneModelNumber = feature.properties.objectid;
+//       const busynessValue = picklePredictions[`model_${taxiZoneModelNumber}`] || 0;
+
+//       // Add the busyness value to the properties of the feature
+//       feature.properties.busyness = busynessValue;
+//     }
+
+//     // Update the taxi zones source data
+//     taxiZonesSource.setData(taxiZonesData);
+//   });
+// }
+// console.log("Taxi Zone Source:", taxiZonesSource);
+
+// // Add the heatmap layer using the 'taxi_zones' source
+// map.current.addLayer({
+//   id: 'taxi_zones_heatmap',
+//   type: 'heatmap',
+//   source: 'taxi_zones',
+//   paint: {
+//     'heatmap-color': [
+//       'interpolate',
+//       ['linear'],
+//       ['get', 'busyness'],
+//       0, 'rgba(0, 0, 0, 0)',
+//       0.1, '#20826c',
+//       0.3, '#ffeb3b',
+//       0.6, '#ff9800',
+//       1, '#f44336',
+//     ],
+//     'heatmap-opacity': 0.8,
+//     'heatmap-intensity': 1,
+//     'heatmap-radius': 30,
+//   },
+// });
+
+      // map.current.addLayer({
+      //   id: 'taxi_zones_fill',
+      //   type: 'fill',
+      //   source: 'taxi_zones',
+      //   paint: {
+      //     'fill-color': '#20826c',
+      //     'fill-opacity': 0.5,
+      //     'fill-outline-color': '#000000',
+      //   }
+      // });
+
+
 });
 
         
-
-
     // Create a popup
     const popup = new mapboxgl.Popup({
       closeButton: false,
