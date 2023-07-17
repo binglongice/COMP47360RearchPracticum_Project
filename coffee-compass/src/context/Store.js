@@ -62,11 +62,19 @@ function Store({ children, selectedCafeId }) {
       .then(response => response.json())
       .then(data => {
         // Access the predictions data here
-        console.log('new state for predictions', data.predictions);
-        setPicklePredictions(data.predictions)
+        // console.log('new state for predictions', data);
+        // setPicklePredictions(data.predictions)
         // console.log('new state for predictions', picklePredictions)
         // Use the data to generate the heatmap or perform other operations
         // ...
+        // Convert the data into a hashmap (object)
+        const hashmap = {};
+        Object.keys(data).forEach((key) => {
+          hashmap[key] = data[key][0];
+          });
+        // console.log("Test Test TEst", hashmap);
+        console.log("testing hashmap:", hashmap[4]);
+        setPicklePredictions(hashmap);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -75,7 +83,7 @@ function Store({ children, selectedCafeId }) {
   
 
   return (
-    <ApiContext.Provider value={[data, setData, reviews, setReviews, picklePredictions,setPicklePredictions]}>
+    <ApiContext.Provider value={[data, setData, reviews, setReviews, picklePredictions, setPicklePredictions]}>
       {children}
     </ApiContext.Provider>
   );
