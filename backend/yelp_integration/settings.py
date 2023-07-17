@@ -79,25 +79,25 @@ WSGI_APPLICATION = "yelp_integration.wsgi.application"
 ALLOWED_HOSTS = ['172.17.0.2','137.43.49.39','127.0.0.1']
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'ahorsewithnoName',
-        'HOST': 'database-1.c5bqixkyfabd.eu-west-2.rds.amazonaws.com',
-        'PORT': '5432',
-    }}
-    #"default": {
-     #   "ENGINE": "django.db.backends.postgresql",
-      #  "NAME": "cafes_manhattan",
-       # "USER": "postgres",
-        #"PASSWORD": "q767Mannheim$",
-        #"HOST": "localhost",
-        #"PORT": "5432",
+    #'default': {
+     #   'ENGINE': 'django.db.backends.postgresql',
+      #  'NAME': 'postgres',
+       # 'USER': 'postgres',
+       # 'PASSWORD': 'ahorsewithnoName',
+        #'HOST': 'database-1.c5bqixkyfabd.eu-west-2.rds.amazonaws.com',
+        #'PORT': '5432',
+    # }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "cafes_manhattan",
+        "USER": "postgres",
+        "PASSWORD": "q767Mannheim$",
+        "HOST": "localhost",
+        "PORT": "5432",
 
    
-#}
-
+}
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
