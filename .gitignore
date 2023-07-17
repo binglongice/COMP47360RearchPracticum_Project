@@ -43,3 +43,6 @@ backend/yelp_integration/__pycache__/wsgi.cpython-311.pyc
 
 backend/yelp_integration/settings.py
 backend/yelp_integration/__pycache__/settings.cpython-311.pyc
+backend/yelp_api/__pycache__/urls.cpython-311.pyc
+backend/yelp_integration/settings.py
+backend/yelp_integration/__pycache__/settings.cpython-311.pyc
