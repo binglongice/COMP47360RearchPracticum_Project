@@ -57,6 +57,8 @@ function Map({ selectedIndex, onCafeSelection }) {
   
     return '#f00'; // Default color if the score is greater than or equal to 1.2
   }
+
+  
   
   
   useEffect(() => {
