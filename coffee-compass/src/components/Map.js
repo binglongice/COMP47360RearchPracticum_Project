@@ -33,27 +33,41 @@ function Map({ selectedIndex, onCafeSelection }) {
 
   function getColorFromScore(score) {
     if (score === undefined) {
-      return '#000000';  // Return a single color value
+      return '#000000';
     }
-    if (score < 0.2) {
+    if (score < 0.1) {
       return '#00ff00';
     }
+    if (score < 0.2) {
+      return '#33ff00';
+    }
+    if (score < 0.3) {
+      return '#66ff00';
+    }
     if (score < 0.4) {
-      return '#40ff00';
+      return '#99ff00';
+    }
+    if (score < 0.5) {
+      return '#ccff00';
     }
     if (score < 0.6) {
-      return '#80ff00';
+      return '#ffff00';
+    }
+    if (score < 0.7) {
+      return '#ffcc00';
     }
     if (score < 0.8) {
-      return '#c0ff00';
+      return '#ff9900';
+    }
+    if (score < 0.9) {
+      return '#ff6600';
     }
     if (score < 1.0) {
-      return '#ffff00';
+      return '#ff3300';
     }
     if (score < 1.2) {
       return '#ffc000';
-    }
-    
+    }    
     return '#000000'; // Default color if none of the conditions match
   }
   
