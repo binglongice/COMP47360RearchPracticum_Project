@@ -10,7 +10,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpd
 
 function Map({ selectedIndex, onCafeSelection }) {
   const [selectedCafeId, setSelectedCafeId] = useState(null);
-  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions] = useContext(ApiContext);  const [selectedImage, setSelectedImage] = useState(null);
+  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions] = useContext(ApiContext);  
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [selectRating,  setSelectedRating] = useState(null);

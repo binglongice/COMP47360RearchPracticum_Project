@@ -18,16 +18,11 @@ def model_output_api(request, hour, day, month, week_of_month):
                      114, 116, 120, 125, 127, 128, 137, 140, 141, 142, 143, 144, 148, 151, 152, 153,
                      158, 161, 162, 163, 164, 166, 170, 186, 194, 202, 209, 211, 224, 229, 230, 231,
                      232, 233, 234, 236, 237, 238, 239, 243, 244, 246, 249, 261, 262, 263]
-                     114, 116, 120, 125, 127, 128, 137, 140, 141, 142, 143, 144, 148, 151, 152, 153,
-                     158, 161, 162, 163, 164, 166, 170, 186, 194, 202, 209, 211, 224, 229, 230, 231,
-                     232, 233, 234, 236, 237, 238, 239, 243, 244, 246, 249, 261, 262, 263]
 
     # Prepare the inputs
     inputs = [hour, day, month, week_of_month]
 
     # Load pickle files and make predictions for each model
-    predictions = {}
-    all_predictions = []
     predictions = {}
     all_predictions = []
     for model_number in model_numbers:
@@ -43,19 +38,8 @@ def model_output_api(request, hour, day, month, week_of_month):
     # Compute min and max across all predictions
     prediction_min = min(all_predictions)
     prediction_max = max(all_predictions)
-        all_predictions.extend(prediction)
-
-        predictions[f'model_{model_number}'] = prediction.tolist()
-
-    # Compute min and max across all predictions
-    prediction_min = min(all_predictions)
-    prediction_max = max(all_predictions)
 
     # Normalize predictions using min-max scaling
-    for model_number in model_numbers:
-        prediction = np.array(predictions[f'model_{model_number}'])
-        normalized_prediction = (prediction - prediction_min) / (prediction_max - prediction_min)
-        predictions[f'model_{model_number}'] = normalized_prediction.tolist()
     for model_number in model_numbers:
         prediction = np.array(predictions[f'model_{model_number}'])
         normalized_prediction = (prediction - prediction_min) / (prediction_max - prediction_min)

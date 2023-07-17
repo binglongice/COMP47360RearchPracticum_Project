@@ -76,7 +76,7 @@ WSGI_APPLICATION = "yelp_integration.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-ALLOWED_HOSTS = ['172.17.0.2','137.43.49.39','127.0.0.1']
+ALLOWED_HOSTS = ['172.17.0.2','137.43.49.39','127.0.0.1', 'localhost']
 
 DATABASES = {
     #'default': {
@@ -90,8 +90,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "cafes_manhattan",
-        "USER": "cormacegan",
-        "PASSWORD": "",
+        "USER": "maxgirt",
+        "PASSWORD": "admin",
         "HOST": "localhost",
         "PORT": "5432",
 
@@ -151,7 +151,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # }
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',  # Add the origin of your frontend application
+    'http://localhost:3000',
+    'http://localhost:8000',  # Add the origin of your frontend application
 
 ]
 
