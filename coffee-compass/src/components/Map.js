@@ -29,48 +29,35 @@ function Map({ selectedIndex, onCafeSelection }) {
     // console.log("Pickles Pickles Pickles:", picklePredictions)
   }, [picklePredictions]);
 
-        
-
-
   function getColorFromScore(score) {
+    const stops = [
+      [0.1, '#00ff00'],
+      [0.2, '#33ff00'],
+      [0.3, '#66ff00'],
+      [0.4, '#99ff00'],
+      [0.5, '#ccff00'],
+      [0.6, '#ffff00'],
+      [0.7, '#ffcc00'],
+      [0.8, '#ff9900'],
+      [0.9, '#ff6600'],
+      [1.0, '#ff3300'],
+      [1.2, '#ffc000']
+    ];
+  
     if (score === undefined) {
       return '#000000';
     }
-    if (score < 0.1) {
-      return '#00ff00';
+  
+    for (let i = 0; i < stops.length; i++) {
+      const [stopScore, color] = stops[i];
+      if (score < stopScore) {
+        return color;
+      }
     }
-    if (score < 0.2) {
-      return '#33ff00';
-    }
-    if (score < 0.3) {
-      return '#66ff00';
-    }
-    if (score < 0.4) {
-      return '#99ff00';
-    }
-    if (score < 0.5) {
-      return '#ccff00';
-    }
-    if (score < 0.6) {
-      return '#ffff00';
-    }
-    if (score < 0.7) {
-      return '#ffcc00';
-    }
-    if (score < 0.8) {
-      return '#ff9900';
-    }
-    if (score < 0.9) {
-      return '#ff6600';
-    }
-    if (score < 1.0) {
-      return '#ff3300';
-    }
-    if (score < 1.2) {
-      return '#ffc000';
-    }    
-    return '#000000'; // Default color if none of the conditions match
+  
+    return '#f00'; // Default color if the score is greater than or equal to 1.2
   }
+  
   
   useEffect(() => {
     if (picklePredictions) {
