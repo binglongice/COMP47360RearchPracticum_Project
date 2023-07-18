@@ -14,6 +14,8 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [selectRating,  setSelectedRating] = useState(null);
+  const [geojsonData, setGeojsonData] = useState(null); //we need to store the geoJson data in state so that we can use it outside where its defined 
+  const [predictionsData, setPredictions] = useState(null); //we need to store the predictions ... 
   useEffect(() => {
     console.log("Data changing:", data)
   }, [data]);
@@ -81,18 +83,21 @@ function Map({ selectedIndex, onCafeSelection }) {
     // Load GeoJSON data
     fetch('/filtered_geojson_file.geojson')
       .then(response => response.json())
-      .then(geojsonData => {
+      .then(data => {
         // Now we have the GeoJSON data
         if (map.current) {
-          geojsonData.features.forEach(feature => {
+          data.features.forEach(feature => {
             let objectid = feature.properties.objectid;
             let score = predictions[objectid];
             console.log("My objectid: ", objectid);
             console.log("My score: ", score);          
             feature.properties.color = getColorFromScore(score);
+            feature.properties.busyness = score;
+            setGeojsonData(data);
+            setPredictions(predictions);
           });
-  
-          map.current.getSource('taxi_zones').setData(geojsonData);
+
+          map.current.getSource('taxi_zones').setData(data);
   
           map.current.addLayer({
             id: 'taxi_zones_fill_map',
@@ -109,7 +114,23 @@ function Map({ selectedIndex, onCafeSelection }) {
     }
   }, [picklePredictions]);  // Re-run effect whenever picklePredictions changes
                       
-          
+  const addHeatMap = () => {
+    if (geojsonData && map.current) {
+      map.current.getSource("taxi_zones")?.setData(geojsonData);
+      if (!map.current.getLayer("taxi_zones_fill_map")) {
+        map.current.addLayer({
+          id: "taxi_zones_fill_map",
+          type: "fill",
+          source: "taxi_zones",
+          paint: {
+            "fill-color": ["get", "color"],
+            "fill-opacity": 0.5,
+            "fill-outline-color": "#000000",
+          },
+        });
+      }
+    }
+  };
 
 // console.log(myColorFunction(4));
 
@@ -120,6 +141,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [lat, setLat] = useState(40.7831);
   const [zoom, setZoom] = useState(11.75);
   const [zonename, setName] = useState('');
+  const [zonebusyness, setBusyness] = useState('');
   const taxiZones = ['/filtered_geojson_file.geojson'];
 
   // Set bounds for Manhattan, New York.
@@ -296,7 +318,7 @@ function Map({ selectedIndex, onCafeSelection }) {
       map.current.on('mousemove', 'taxi_zones_fill_map', (e) => {
         const hoveredZone = e.features[0].properties.objectid; // Get the ID of the hovered zone
         const zoneName = e.features[0].properties.zone;
-
+        const zoneBusyness = e.features[0].properties.busyness;
         // Change fill opacity only for the hovered zone
         map.current.setPaintProperty('taxi_zones_fill_map', 'fill-opacity', [
           'match',
@@ -306,14 +328,16 @@ function Map({ selectedIndex, onCafeSelection }) {
           0.5  // Default opacity for other zones
         ]);
 
-        // Update the name state with the zone name
+        // Update the name state with the zone name and zoneBusyness
         setName(zoneName);
+        setBusyness(zoneBusyness);
       });
 
       // Add mouseleave event listener to reset zone opacity when not hovering
       map.current.on('mouseleave', 'taxi_zones_fill_map', () => {
         map.current.setPaintProperty('taxi_zones_fill_map', 'fill-opacity', 0.5); // Reset fill opacity for last zone
         setName(''); // Clear the name state
+        setBusyness(''); // Clear the busyness state
       });
 
       map.current.on('click', 'taxi_zones_fill_map', (e) => {
@@ -355,7 +379,8 @@ function Map({ selectedIndex, onCafeSelection }) {
       layer.id === 'subway_markers' ||
       layer.id === 'bus_markers' ||
       layer.id === 'cafe_markers' ||
-      layer.id === 'taxi_zones_fill'
+      layer.id === 'taxi_zones_fill' ||
+      layer.id === 'taxi_zones_fill_map' 
     ) {
       map.current.removeLayer(layer.id);
     }
@@ -426,7 +451,9 @@ function Map({ selectedIndex, onCafeSelection }) {
         }
       });
     }
-
+    if (activeButtons.includes(5)) {
+      addHeatMap();
+    }
   };  
   const lnglat =  {lng: -73.9712, lat:40.7831};
   const handleReset = () => {
@@ -436,7 +463,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   return (
     <div>
       {/* Render the name element */}
-      <Navbar name = {zonename} />
+      <Navbar name = {zonename} busyness = {zonebusyness} />
       <button onClick={handleReset}>Reset</button>
       <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/>
             {/* Map container */}
