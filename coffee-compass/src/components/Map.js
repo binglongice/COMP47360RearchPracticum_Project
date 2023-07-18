@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import FilterNav from './FilterNav';
 import { ApiContext } from '../context/ApiContext.js';
 import CafeDrawer from './CafeDrawer';
+import Legend from './Legend';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
@@ -16,6 +17,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [selectRating,  setSelectedRating] = useState(null);
   const [geojsonData, setGeojsonData] = useState(null); //we need to store the geoJson data in state so that we can use it outside where its defined 
   const [predictionsData, setPredictions] = useState(null); //we need to store the predictions ... 
+  const [isButton5Active, setIsButton5Active] = useState(true); //render the heatmap legend or not
   useEffect(() => {
     console.log("Data changing:", data)
   }, [data]);
@@ -39,41 +41,42 @@ function Map({ selectedIndex, onCafeSelection }) {
       return '#000000';
     }
     if (score < 0.1) {
-      return '#00ff00';
+      return '#00FF00'; // Green
     }
     if (score < 0.2) {
-      return '#33ff00';
+        return '#33FF00';
     }
     if (score < 0.3) {
-      return '#66ff00';
+        return '#66FF00';
     }
     if (score < 0.4) {
-      return '#99ff00';
+        return '#99FF00';
     }
     if (score < 0.5) {
-      return '#ccff00';
+        return '#CCFF00';
     }
     if (score < 0.6) {
-      return '#ffff00';
+        return '#FFFF00'; // Yellow
     }
     if (score < 0.7) {
-      return '#ffcc00';
+        return '#FFCC00';
     }
     if (score < 0.8) {
-      return '#ff9900';
+        return '#FF9900';
     }
     if (score < 0.9) {
-      return '#ff6600';
+        return '#FF6600';
     }
     if (score < 1.0) {
-      return '#ff3300';
+        return '#FF3300';
     }
-    if (score < 1.2) {
-      return '#ffc000';
-    }    
-    return '#000000'; // Default color if none of the conditions match
-  }
-  
+    if (score >= 1.0) {
+        return '#FF0000'; // Red
+    }
+    
+      return '#000000'; // Default color if none of the conditions match
+    }
+    
   useEffect(() => {
     if (picklePredictions) {
       const predictions = Object.fromEntries(
@@ -452,9 +455,11 @@ function Map({ selectedIndex, onCafeSelection }) {
       });
     }
     if (activeButtons.includes(5)) {
+      setIsButton5Active(true);
       addHeatMap();
-    }
-  };  
+    } else {
+      setIsButton5Active(false);
+    }  };  
   const lnglat =  {lng: -73.9712, lat:40.7831};
   const handleReset = () => {
     map.current.flyTo({ center: lnglat, zoom: 11.75 }); // 
@@ -468,6 +473,7 @@ function Map({ selectedIndex, onCafeSelection }) {
       <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/>
             {/* Map container */}
       <div ref={mapContainer} className="map-container">
+      {isButton5Active && (<Legend/>)} {/* Render the legend if the button is active */}
       </div>
       <div className="filter-nav-container">
       <FilterNav handleLayerChange={handleLayerChange} />
