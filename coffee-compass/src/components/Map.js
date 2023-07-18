@@ -216,61 +216,7 @@ function Map({ selectedIndex, onCafeSelection }) {
     });
   });
 });
-// Get the reference to the added source
-// const taxiZonesSource = map.current.getSource('taxi_zones');
 
-// // Load the busyness values into the taxi zones GeoJSON features
-// if (taxiZonesSource) {
-//   taxiZonesSource.on('data', () => {
-//     const taxiZonesData = taxiZonesSource._data;
-
-//     // Iterate over the taxi zone features
-//     for (const feature of taxiZonesData.features) {
-//       const taxiZoneModelNumber = feature.properties.objectid;
-//       const busynessValue = picklePredictions[`model_${taxiZoneModelNumber}`] || 0;
-
-//       // Add the busyness value to the properties of the feature
-//       feature.properties.busyness = busynessValue;
-//     }
-
-//     // Update the taxi zones source data
-//     taxiZonesSource.setData(taxiZonesData);
-//   });
-// }
-// console.log("Taxi Zone Source:", taxiZonesSource);
-
-// // Add the heatmap layer using the 'taxi_zones' source
-// map.current.addLayer({
-//   id: 'taxi_zones_heatmap',
-//   type: 'heatmap',
-//   source: 'taxi_zones',
-//   paint: {
-//     'heatmap-color': [
-//       'interpolate',
-//       ['linear'],
-//       ['get', 'busyness'],
-//       0, 'rgba(0, 0, 0, 0)',
-//       0.1, '#20826c',
-//       0.3, '#ffeb3b',
-//       0.6, '#ff9800',
-//       1, '#f44336',
-//     ],
-//     'heatmap-opacity': 0.8,
-//     'heatmap-intensity': 1,
-//     'heatmap-radius': 30,
-//   },
-// });
-
-      // map.current.addLayer({
-      //   id: 'taxi_zones_fill',
-      //   type: 'fill',
-      //   source: 'taxi_zones',
-      //   paint: {
-      //     'fill-color': '#20826c',
-      //     'fill-opacity': 0.5,
-      //     'fill-outline-color': '#000000',
-      //   }
-      // });
 
 
 });
@@ -344,6 +290,40 @@ function Map({ selectedIndex, onCafeSelection }) {
       };
       map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
     });
+
+
+      // Add mouseenter event listener to change zone opacity on hover
+      map.current.on('mousemove', 'taxi_zones_fill_map', (e) => {
+        const hoveredZone = e.features[0].properties.objectid; // Get the ID of the hovered zone
+        const zoneName = e.features[0].properties.zone;
+
+        // Change fill opacity only for the hovered zone
+        map.current.setPaintProperty('taxi_zones_fill_map', 'fill-opacity', [
+          'match',
+          ['get', 'objectid'],
+          hoveredZone,
+          0.8, // Increase opacity for the hovered zone
+          0.5  // Default opacity for other zones
+        ]);
+
+        // Update the name state with the zone name
+        setName(zoneName);
+      });
+
+      // Add mouseleave event listener to reset zone opacity when not hovering
+      map.current.on('mouseleave', 'taxi_zones_fill_map', () => {
+        map.current.setPaintProperty('taxi_zones_fill_map', 'fill-opacity', 0.5); // Reset fill opacity for last zone
+        setName(''); // Clear the name state
+      });
+
+      map.current.on('click', 'taxi_zones_fill_map', (e) => {
+        const lngLat = {
+          lng: e.lngLat.lng,
+          lat: e.lngLat.lat
+        };
+        map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
+      });    
+    
 
     map.current.on('click', 'cafe_markers', (e) => {
       const cafe_id = e.features[0].properties.id;
