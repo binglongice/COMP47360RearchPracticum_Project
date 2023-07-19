@@ -14,6 +14,8 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions] = useContext(ApiContext);  
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
+  const [mapIsCurrent, setmapIsCurrent] = useState(false);
+
   const [selectRating,  setSelectedRating] = useState(null);
   const [geojsonData, setGeojsonData] = useState(null); //we need to store the geoJson data in state so that we can use it outside where its defined 
   const [predictionsData, setPredictions] = useState(null); //we need to store the predictions ... 
@@ -29,14 +31,41 @@ function Map({ selectedIndex, onCafeSelection }) {
     const predictions = Object.fromEntries(
       Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
     );
+    console.log("type of: ", typeof predictions);
     console.log("pickles: ", predictions);
     // console.log("Pickles Pickles Pickles:", picklePredictions)
+    console.log("Testing key:value", predictions["4"]);
   }, [picklePredictions]);
 
-        
-
-
   function getColorFromScore(score) {
+    const stops = [
+      [0.0, '#00ff00'],
+      [0.05, '#1eff00'],
+      [0.1, '#3dff00'],
+      [0.15, '#5cff00'],
+      [0.2, '#7bff00'],
+      [0.25, '#9aff00'],
+      [0.3, '#b9ff00'],
+      [0.35, '#d8ff00'],
+      [0.4, '#f7ff00'],
+      [0.45, '#ffff00'],
+      [0.5, '#ffeb00'],
+      [0.55, '#ffdb00'],
+      [0.6, '#ffcb00'],
+      [0.65, '#ffbb00'],
+      [0.7, '#ffab00'],
+      [0.75, '#ff9a00'],
+      [0.8, '#ff8a00'],
+      [0.85, '#ff7a00'],
+      [0.9, '#ff6a00'],
+      [0.95, '#ff5900'],
+      [1.0, '#ff3300'],
+      [1.05, '#ff4c00'],
+      [1.1, '#ff6600'],
+      [1.15, '#ff7f00'],
+      [1.2, '#ffc000']
+    ];
+  
     if (score === undefined) {
       return '#000000';
     }
@@ -82,17 +111,25 @@ function Map({ selectedIndex, onCafeSelection }) {
       const predictions = Object.fromEntries(
         Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
       );
-  
+      console.log("Predictions is not empty:", predictions);
+      console.log("Pickle predictions", picklePredictions);
+
     // Load GeoJSON data
     fetch('/filtered_geojson_file.geojson')
       .then(response => response.json())
       .then(data => {
         // Now we have the GeoJSON data
-        if (map.current) {
+        console.log("GeoJSON data: ", geojsonData);
+        if (mapIsCurrent) {
+          console.log("if map.current");
           data.features.forEach(feature => {
             let objectid = feature.properties.objectid;
-            let score = predictions[objectid];
+            let objectstring = objectid.toString();
+            console.log("Type of objectstring: ", typeof objectstring);
+            console.log("Type of objectid: ", typeof objectid);
             console.log("My objectid: ", objectid);
+            let score = predictions[objectstring];
+            // console.log("My objectid: ", objectid);
             console.log("My score: ", score);          
             feature.properties.color = getColorFromScore(score);
             feature.properties.busyness = score;
@@ -115,7 +152,7 @@ function Map({ selectedIndex, onCafeSelection }) {
         }
       });
     }
-  }, [picklePredictions]);  // Re-run effect whenever picklePredictions changes
+  }, [mapIsCurrent, picklePredictions]);  // Re-run effect whenever picklePredictions changes
                       
   const addHeatMap = () => {
     if (geojsonData && map.current) {
@@ -143,6 +180,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [lng, setLng] = useState(-73.9712);
   const [lat, setLat] = useState(40.7831);
   const [zoom, setZoom] = useState(11.75);
+  const [pitch, setPitch] = useState(45);
   const [zonename, setName] = useState('');
   const [zonebusyness, setBusyness] = useState('');
   const taxiZones = ['/filtered_geojson_file.geojson'];
@@ -171,12 +209,17 @@ function Map({ selectedIndex, onCafeSelection }) {
       center: [lng, lat],
       zoom: zoom,
       minZoom: zoom,
-      maxBounds: bounds
+      maxBounds: bounds,
+      pitch: pitch,
       
     });
 
+    // setmapIsCurrent(true);
+    // console.log("set map is current == TRUE");
+
     map.current.on('style.load', () => {
-      map.current.rotateTo(300);
+
+      map.current.rotateTo(0);
 
       map.current.loadImage('/bench.png', (error, image) => {
         if (error) throw error;
@@ -205,6 +248,10 @@ function Map({ selectedIndex, onCafeSelection }) {
         type: 'geojson',
         data: '/filtered_geojson_file.geojson'      
       });
+// useState to check if map is current and if taxi zones have been loaded (must be after addSource(taxi_zones))
+// used in heatmap function
+      setmapIsCurrent(true);
+
 
       map.current.addSource('subway', {
         type: 'geojson',

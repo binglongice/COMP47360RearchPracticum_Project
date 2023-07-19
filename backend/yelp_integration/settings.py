@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -38,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'corsheaders',
-   
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -90,8 +89,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "cafes_manhattan",
-        "USER": "postgres",
-        "PASSWORD": "q767Mannheim$",
+        "USER": "cormacegan",
+        "PASSWORD": "",
         "HOST": "localhost",
         "PORT": "5432",
 
@@ -140,23 +139,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django_redis.cache.RedisCache',
-#         'LOCATION': 'redis://localhost:6379/0',
-#         'OPTIONS': {
-#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-#         }
-#     }
-# }
-
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:8000',  # Add the origin of your frontend application
-
-]
-
-"""CACHES = {
+CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://localhost:6379/0',
@@ -164,4 +147,10 @@ CORS_ALLOWED_ORIGINS = [
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
-}"""
+}
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8000',  # Add the origin of your frontend application
+
+]

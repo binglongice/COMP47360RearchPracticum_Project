@@ -1,10 +1,15 @@
 # Used to load in predictions via pickle models
-
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
 import os
 import pickle
 import numpy as np
+import json
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+import redis
+
+redis_host = '127.0.0.1'
+redis_port = '6379'
+redis_client = redis.StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
 
 @api_view(['GET'])
 def model_output_api(request, hour, day, month, week_of_month):
@@ -22,28 +27,47 @@ def model_output_api(request, hour, day, month, week_of_month):
     # Prepare the inputs
     inputs = [hour, day, month, week_of_month]
 
-    # Load pickle files and make predictions for each model
-    predictions = {}
-    all_predictions = []
-    for model_number in model_numbers:
-        pickle_file = os.path.join('pickle_models', f'model_{model_number}.pkl')
-        with open(pickle_file, 'rb') as f:
-            model = pickle.load(f)
+    # Generate the Redis key using the input parameters
+    redis_key = f"model_predictions:{hour}-{day}-{month}-{week_of_month}"
 
-        prediction = model.predict([inputs])
-        all_predictions.extend(prediction)
+    # Check if the predictions are already cached in Redis
+    cached_predictions = redis_client.get(redis_key)
 
-        predictions[f'model_{model_number}'] = prediction.tolist()
 
-    # Compute min and max across all predictions
-    prediction_min = min(all_predictions)
-    prediction_max = max(all_predictions)
+    if cached_predictions is not None:
+        # If the predictions are already cached, load and use them
+        all_model_predictions = json.loads(cached_predictions)
+        print("Cache was used.")
+    else:
+        # If the predictions are not cached, unpickle the models and calculate predictions
+        all_model_predictions = {}
+        all_predictions = []
+        for model_number in model_numbers:
+            pickle_file = os.path.join('pickle_models', f'model_{model_number}.pkl')
+            with open(pickle_file, 'rb') as f:
+                model = pickle.load(f)
+            prediction = model.predict([inputs])
+            all_predictions.extend(prediction)
+            all_model_predictions[f'model_{model_number}'] = prediction.tolist()
 
-    # Normalize predictions using min-max scaling
-    for model_number in model_numbers:
-        prediction = np.array(predictions[f'model_{model_number}'])
-        normalized_prediction = (prediction - prediction_min) / (prediction_max - prediction_min)
-        predictions[f'model_{model_number}'] = normalized_prediction.tolist()
+        # Calculate the global min and max values
+        prediction_min = min(all_predictions)
+        prediction_max = max(all_predictions)
+
+        # Normalize each prediction array before adding it to all_model_predictions
+        for model_number in model_numbers:
+            prediction = np.array(all_model_predictions[f'model_{model_number}'])
+            normalized_prediction = (prediction - prediction_min) / (prediction_max - prediction_min)
+            # Update the dictionary with normalized values between 0 and 1
+            
+            all_model_predictions[f'model_{model_number}'] = normalized_prediction.tolist()
+        
+        print("Normalization has occurred.")
+
+        # Store all the predictions as one large JSON object in Redis
+        redis_client.set(redis_key, json.dumps(all_model_predictions))
+        print("Cache was not used.")
 
     # Return the predictions as a JSON response
-    return JsonResponse(predictions)
+    return JsonResponse(all_model_predictions)
+

@@ -124,7 +124,6 @@ def cafes_api(request, location):
     return Response(serializer.data)
 
 
-
 @api_view(['GET'])
 def review_api(requests, id):
     data = get_reviews(id)
