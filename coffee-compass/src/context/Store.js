@@ -58,7 +58,7 @@ function Store({ children, selectedCafeId }) {
   //Hour, Day, Month, Week_of_Month 
   //0-23, 0-6, 1-12, 0-4
   useEffect(() => {
-    fetch('http://localhost:8000/yelp_api/pickle_views/model-output/22/3/9/2/')
+    fetch('http://localhost:8000/yelp_api/pickle_views/model-output/12/3/9/2/')
       .then(response => response.json())
       .then(data => {
         // Access the predictions data here
@@ -72,8 +72,9 @@ function Store({ children, selectedCafeId }) {
         Object.keys(data).forEach((key) => {
           hashmap[key] = data[key][0];
           });
+        console.log("store keys", data.keys)
         // console.log("Test Test TEst", hashmap);
-        console.log("testing hashmap:", hashmap[4]);
+        console.log("testing hashmap:", hashmap["model_4"]);
         setPicklePredictions(hashmap);
       })
       .catch(error => {

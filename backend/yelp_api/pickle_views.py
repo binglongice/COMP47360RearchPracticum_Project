@@ -1,11 +1,11 @@
 # Used to load in predictions via pickle models
 
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
-import os
-import pickle
-import numpy as np
-import redis
+# from django.http import JsonResponse
+# from rest_framework.decorators import api_view
+# import os
+# import pickle
+# import numpy as np
+# import redis
 
 
 # @api_view(['GET'])
@@ -56,6 +56,7 @@ import numpy as np
 import json
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
+import redis
 
 redis_host = '127.0.0.1'
 redis_port = '6379'
