@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import FilterNav from './FilterNav';
 import { ApiContext } from '../context/ApiContext.js';
 import CafeDrawer from './CafeDrawer';
+import Legend from './Legend';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
@@ -14,6 +15,9 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [selectRating,  setSelectedRating] = useState(null);
+  const [geojsonData, setGeojsonData] = useState(null); //we need to store the geoJson data in state so that we can use it outside where its defined 
+  const [predictionsData, setPredictions] = useState(null); //we need to store the predictions ... 
+  const [isButton5Active, setIsButton5Active] = useState(true); //render the heatmap legend or not
   useEffect(() => {
     console.log("Data changing:", data)
   }, [data]);
@@ -37,41 +41,42 @@ function Map({ selectedIndex, onCafeSelection }) {
       return '#000000';
     }
     if (score < 0.1) {
-      return '#00ff00';
+      return '#00FF00'; // Green
     }
     if (score < 0.2) {
-      return '#33ff00';
+        return '#33FF00';
     }
     if (score < 0.3) {
-      return '#66ff00';
+        return '#66FF00';
     }
     if (score < 0.4) {
-      return '#99ff00';
+        return '#99FF00';
     }
     if (score < 0.5) {
-      return '#ccff00';
+        return '#CCFF00';
     }
     if (score < 0.6) {
-      return '#ffff00';
+        return '#FFFF00'; // Yellow
     }
     if (score < 0.7) {
-      return '#ffcc00';
+        return '#FFCC00';
     }
     if (score < 0.8) {
-      return '#ff9900';
+        return '#FF9900';
     }
     if (score < 0.9) {
-      return '#ff6600';
+        return '#FF6600';
     }
     if (score < 1.0) {
-      return '#ff3300';
+        return '#FF3300';
     }
-    if (score < 1.2) {
-      return '#ffc000';
-    }    
-    return '#000000'; // Default color if none of the conditions match
-  }
-  
+    if (score >= 1.0) {
+        return '#FF0000'; // Red
+    }
+    
+      return '#000000'; // Default color if none of the conditions match
+    }
+    
   useEffect(() => {
     if (picklePredictions) {
       const predictions = Object.fromEntries(
@@ -81,18 +86,21 @@ function Map({ selectedIndex, onCafeSelection }) {
     // Load GeoJSON data
     fetch('/filtered_geojson_file.geojson')
       .then(response => response.json())
-      .then(geojsonData => {
+      .then(data => {
         // Now we have the GeoJSON data
         if (map.current) {
-          geojsonData.features.forEach(feature => {
+          data.features.forEach(feature => {
             let objectid = feature.properties.objectid;
             let score = predictions[objectid];
             console.log("My objectid: ", objectid);
             console.log("My score: ", score);          
             feature.properties.color = getColorFromScore(score);
+            feature.properties.busyness = score;
+            setGeojsonData(data);
+            setPredictions(predictions);
           });
-  
-          map.current.getSource('taxi_zones').setData(geojsonData);
+
+          map.current.getSource('taxi_zones').setData(data);
   
           map.current.addLayer({
             id: 'taxi_zones_fill_map',
@@ -109,7 +117,23 @@ function Map({ selectedIndex, onCafeSelection }) {
     }
   }, [picklePredictions]);  // Re-run effect whenever picklePredictions changes
                       
-          
+  const addHeatMap = () => {
+    if (geojsonData && map.current) {
+      map.current.getSource("taxi_zones")?.setData(geojsonData);
+      if (!map.current.getLayer("taxi_zones_fill_map")) {
+        map.current.addLayer({
+          id: "taxi_zones_fill_map",
+          type: "fill",
+          source: "taxi_zones",
+          paint: {
+            "fill-color": ["get", "color"],
+            "fill-opacity": 0.5,
+            "fill-outline-color": "#000000",
+          },
+        });
+      }
+    }
+  };
 
 // console.log(myColorFunction(4));
 
@@ -120,6 +144,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [lat, setLat] = useState(40.7831);
   const [zoom, setZoom] = useState(11.75);
   const [zonename, setName] = useState('');
+  const [zonebusyness, setBusyness] = useState('');
   const taxiZones = ['/filtered_geojson_file.geojson'];
 
   // Set bounds for Manhattan, New York.
@@ -216,61 +241,7 @@ function Map({ selectedIndex, onCafeSelection }) {
     });
   });
 });
-// Get the reference to the added source
-// const taxiZonesSource = map.current.getSource('taxi_zones');
 
-// // Load the busyness values into the taxi zones GeoJSON features
-// if (taxiZonesSource) {
-//   taxiZonesSource.on('data', () => {
-//     const taxiZonesData = taxiZonesSource._data;
-
-//     // Iterate over the taxi zone features
-//     for (const feature of taxiZonesData.features) {
-//       const taxiZoneModelNumber = feature.properties.objectid;
-//       const busynessValue = picklePredictions[`model_${taxiZoneModelNumber}`] || 0;
-
-//       // Add the busyness value to the properties of the feature
-//       feature.properties.busyness = busynessValue;
-//     }
-
-//     // Update the taxi zones source data
-//     taxiZonesSource.setData(taxiZonesData);
-//   });
-// }
-// console.log("Taxi Zone Source:", taxiZonesSource);
-
-// // Add the heatmap layer using the 'taxi_zones' source
-// map.current.addLayer({
-//   id: 'taxi_zones_heatmap',
-//   type: 'heatmap',
-//   source: 'taxi_zones',
-//   paint: {
-//     'heatmap-color': [
-//       'interpolate',
-//       ['linear'],
-//       ['get', 'busyness'],
-//       0, 'rgba(0, 0, 0, 0)',
-//       0.1, '#20826c',
-//       0.3, '#ffeb3b',
-//       0.6, '#ff9800',
-//       1, '#f44336',
-//     ],
-//     'heatmap-opacity': 0.8,
-//     'heatmap-intensity': 1,
-//     'heatmap-radius': 30,
-//   },
-// });
-
-      // map.current.addLayer({
-      //   id: 'taxi_zones_fill',
-      //   type: 'fill',
-      //   source: 'taxi_zones',
-      //   paint: {
-      //     'fill-color': '#20826c',
-      //     'fill-opacity': 0.5,
-      //     'fill-outline-color': '#000000',
-      //   }
-      // });
 
 
 });
@@ -345,6 +316,42 @@ function Map({ selectedIndex, onCafeSelection }) {
       map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
     });
 
+
+      // Add mouseenter event listener to change zone opacity on hover
+      map.current.on('mousemove', 'taxi_zones_fill_map', (e) => {
+        const hoveredZone = e.features[0].properties.objectid; // Get the ID of the hovered zone
+        const zoneName = e.features[0].properties.zone;
+        const zoneBusyness = e.features[0].properties.busyness;
+        // Change fill opacity only for the hovered zone
+        map.current.setPaintProperty('taxi_zones_fill_map', 'fill-opacity', [
+          'match',
+          ['get', 'objectid'],
+          hoveredZone,
+          0.8, // Increase opacity for the hovered zone
+          0.5  // Default opacity for other zones
+        ]);
+
+        // Update the name state with the zone name and zoneBusyness
+        setName(zoneName);
+        setBusyness(zoneBusyness);
+      });
+
+      // Add mouseleave event listener to reset zone opacity when not hovering
+      map.current.on('mouseleave', 'taxi_zones_fill_map', () => {
+        map.current.setPaintProperty('taxi_zones_fill_map', 'fill-opacity', 0.5); // Reset fill opacity for last zone
+        setName(''); // Clear the name state
+        setBusyness(''); // Clear the busyness state
+      });
+
+      map.current.on('click', 'taxi_zones_fill_map', (e) => {
+        const lngLat = {
+          lng: e.lngLat.lng,
+          lat: e.lngLat.lat
+        };
+        map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
+      });    
+    
+
     map.current.on('click', 'cafe_markers', (e) => {
       const cafe_id = e.features[0].properties.id;
       const cafe_url = e.features[0].properties.image_url;
@@ -375,7 +382,8 @@ function Map({ selectedIndex, onCafeSelection }) {
       layer.id === 'subway_markers' ||
       layer.id === 'bus_markers' ||
       layer.id === 'cafe_markers' ||
-      layer.id === 'taxi_zones_fill'
+      layer.id === 'taxi_zones_fill' ||
+      layer.id === 'taxi_zones_fill_map' 
     ) {
       map.current.removeLayer(layer.id);
     }
@@ -446,8 +454,12 @@ function Map({ selectedIndex, onCafeSelection }) {
         }
       });
     }
-
-  };  
+    if (activeButtons.includes(5)) {
+      setIsButton5Active(true);
+      addHeatMap();
+    } else {
+      setIsButton5Active(false);
+    }  };  
   const lnglat =  {lng: -73.9712, lat:40.7831};
   const handleReset = () => {
     map.current.flyTo({ center: lnglat, zoom: 11.75 }); // 
@@ -456,11 +468,12 @@ function Map({ selectedIndex, onCafeSelection }) {
   return (
     <div>
       {/* Render the name element */}
-      <Navbar name = {zonename} />
+      <Navbar name = {zonename} busyness = {zonebusyness} />
       <button onClick={handleReset}>Reset</button>
       <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/>
             {/* Map container */}
       <div ref={mapContainer} className="map-container">
+      {isButton5Active && (<Legend/>)} {/* Render the legend if the button is active */}
       </div>
       <div className="filter-nav-container">
       <FilterNav handleLayerChange={handleLayerChange} />

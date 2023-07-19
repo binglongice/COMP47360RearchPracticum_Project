@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 // results in toggling buttons through the use of an array
 
 function FilterNav({ handleLayerChange }) {
-    const [activeButtons, setActiveButtons] = useState([]);
+    const [activeButtons, setActiveButtons] = useState([5]);
   
     const handleClick = (index) => {
         if (activeButtons.includes(index)) {
@@ -72,6 +72,16 @@ function FilterNav({ handleLayerChange }) {
           >
             <span className="inner"></span>
             <img src="./coffee.png" alt="Cafe" />
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            onClick={() => handleClick(5)}
+            className={activeButtons.includes(5) ? 'active' : ''}
+          >
+            <span className="inner"></span>
+            <img src="./traffic.png" alt="heatmap" />
           </a>
         </li>
       </ul>
