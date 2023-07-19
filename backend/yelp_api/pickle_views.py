@@ -54,7 +54,6 @@ import os
 import pickle
 import numpy as np
 import json
-
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 
@@ -83,6 +82,7 @@ def model_output_api(request, hour, day, month, week_of_month):
 
     # Check if the predictions are already cached in Redis
     cached_predictions = redis_client.get(redis_key)
+
 
     if cached_predictions is not None:
         # If the predictions are already cached, load and use them
