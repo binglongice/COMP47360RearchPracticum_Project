@@ -58,7 +58,7 @@ function Store({ children, selectedCafeId }) {
   //Hour, Day, Month, Week_of_Month 
   //0-23, 0-6, 1-12, 0-4
   useEffect(() => {
-    fetch('http://localhost:8000/yelp_api/pickle_views/model-output/12/3/9/2/')
+    fetch('http://localhost:8000/yelp_api/pickle_views/model-output/5/3/9/2/')
       .then(response => response.json())
       .then(data => {
         // Access the predictions data here
