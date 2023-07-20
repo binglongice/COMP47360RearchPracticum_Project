@@ -1,29 +1,27 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.cache import cache
-
-
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 from .api import search_cafes, get_reviews
 from .models import Cafe
 from .models import Predictions
 #from yelp_integration import search_cafes
-
-
 from .serializers import CafeSerializer
 from .serializers import Cafe_DB_Serializer
 from .serializers import PredictionsSerializer
-# The cafes_api function takes two parameters: request and location. 
-# request is the incoming HTTP request object, and location is a parameter extracted from the URL.
-
-
 from django.core.paginator import Paginator
 from rest_framework.pagination import PageNumberPagination
-
 import redis
+from django.conf import settings
+import redis
+import json
+from datetime import date
 
+
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = '6379'
 
 @api_view(['GET'])
 def predictions_api(request, location):
@@ -46,139 +44,89 @@ def predictions_api(request, location):
     })
 
 
-
-# @api_view(['GET'])
-# def cafes_api(request, location):
-
-#     # Check if the database already contains 1000 objects, if so retrieve them from DB, 
-#     #  serializes the data using the Cafe_DB_Serializer, and returns a Response with the serialized data.
-#     if Cafe.objects.count() == 1000:
-#         cafes_list = Cafe.objects.all()
-#         serializer = Cafe_DB_Serializer(cafes_list, many=True)
-#         return Response(serializer.data)
-
-#     #cache_key = f'cafes_{location}'  # Unique cache key based on the location
-    
-#     # Check if the data is already cached
-#     #data = cache.get(cache_key)
-#     #print("cached data,", data)
-#     #if data is not None:
-#     #    return Response(data)
-    
-#     # If there are not 1000 cafes, it uses the Yelp API to fetch cages in batches in 50 
-#     # up until the limit of 1000
-
-#     #Fetched cafes are stored in the cafes_list variable
-    
-#     cafes = Cafe.objects.all()
-#     print ("Cafes in database", cafes.count())
-
-#     limit = 50
-#     offset = 0
-#     total_cafes = 0
-#     cafes_list = []
-
-
-#     #filter(location=location)  # Query the stored cafes in the database
-
-#     #if not cafes or cafes.count() != limit: # If cafes for the location are not stored in the databse
-
-#     while total_cafes < 1000:
-#         data = search_cafes(location, offset=offset)
-#         businesses = data.get('businesses', [])
-#         cafes_list.extend(businesses)
-#         total_cafes += len(businesses)
-#         offset += limit
-        
-#         if len(businesses) < limit:
-#             break
-
-    
-#     Cafe.objects.all().delete()
-
-#     # Store fetched cafes in the database - having deleted old cafes?
-#     for cafe_data in cafes_list:
-#         cafe = Cafe(
-#             id=cafe_data['id'],
-#             name=cafe_data['name'],
-#             address=cafe_data['location']['address1'],
-#             rating=cafe_data['rating'],
-#             latitude=cafe_data['coordinates']['latitude'],
-#             longitude=cafe_data['coordinates']['longitude'],
-#             image_url = cafe_data['image_url'],
-#         )
-
-#         cafe.save()
-
-
-#     # QUESTION: Will the result in the same 1000 each time? e.g. first 1000?
-
-#     # Cache the data for future requests
-#     #cache.set(cache_key, data, timeout=3600)
-
-#     # Serialiser variable is created by instantiating the cafe serialiser class
-#     # many=True indicates that the serializer should handle a list of objects rather than a single object. 
-#     # This is because cafes_list contains multiple cafes
-        
-#     serializer = CafeSerializer(cafes_list, many=True)
-
-#     # Response object is created using Response(serializer.data), which wraps the serialized data. 
-#     # This response is returned from the view function and will be sent back to the client as the HTTP response.
-#     return Response(serializer.data)
-
-
-from django.conf import settings
-import redis
-import json
-from datetime import date
-
-redis_host = '127.0.0.1'
-redis_port = '6379'
-redis_client = redis.StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
-
-
 @api_view(['GET'])
 def cafes_api(request, location):
+    try:
+        redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
-    # Create a key with Yelp API and current date
-    redis_key = f"Yelp_API:{date.today()}:{location}"
+        # Create a key with Yelp API and current date
+        redis_key = f"Yelp_API:{date.today()}:{location}"
 
-    # Check if the data is already cached in Redis
-    cached_data = redis_client.get(redis_key)
+        # Check if the data is already cached in Redis
+        cached_data = redis_client.get(redis_key)
 
-    if cached_data:
-        # If the data is cached in Redis, retrieve and return it
-        cafes_list = json.loads(cached_data)
-        print("Data read from Redis.")
-        serializer = Cafe_DB_Serializer(cafes_list, many=True)
+        if cached_data:
+            # If the data is cached in Redis, retrieve and return it
+            cafes_list = json.loads(cached_data)
+            print("Yelp API Data read from Redis.")
+            serializer = Cafe_DB_Serializer(cafes_list, many=True)
+            return Response(serializer.data)
+
+        if Cafe.objects.count() == 1000:
+            cafes_list = Cafe.objects.all()
+            serializer = Cafe_DB_Serializer(cafes_list, many=True)
+
+            # Store the data in Redis with the specified key for future use
+            redis_client.set(redis_key, json.dumps(serializer.data))
+            print("Yelp API Data stored in Redis from the database.")
+            return Response(serializer.data)
+
+        print("Making Yelp API call to fetch the data.")
+        cafes = Cafe.objects.all()
+        print("Cafes in database", cafes.count())
+
+        limit = 50
+        offset = 0
+        total_cafes = 0
+        cafes_list = []
+
+        while total_cafes < 1000:
+            data = search_cafes(location, offset=offset)
+            businesses = data.get('businesses', [])
+            cafes_list.extend(businesses)
+            total_cafes += len(businesses)
+            offset += limit
+            
+            if len(businesses) < limit:
+                break
+
+        Cafe.objects.all().delete()
+
+        for cafe_data in cafes_list:
+            cafe = Cafe(
+                id=cafe_data['id'],
+                name=cafe_data['name'],
+                address=cafe_data['location']['address1'],
+                rating=cafe_data['rating'],
+                latitude=cafe_data['coordinates']['latitude'],
+                longitude=cafe_data['coordinates']['longitude'],
+                image_url=cafe_data['image_url'],
+            )
+
+            cafe.save()
+
+        serializer = CafeSerializer(cafes_list, many=True)
+
+        # Store the data in Redis with the specified key for future use
+        redis_client.set(redis_key, json.dumps(serializer.data))
+        print("Yelp API Data stored in Redis from the API call.")
+        
         return Response(serializer.data)
 
-    # Make the API call to fetch the data
-    data = search_cafes(location)
-    cafes_list = data.get('businesses', [])
+    except redis.ConnectionError:
+        # Handle Redis connection error gracefully
+        print("Error: Unable to connect to the Redis cache - when trying to get cafe info")
+        try:
+            # Attempt to read from the database if the Redis cache is unavailable
+            cafes_list = Cafe.objects.all()
+            serializer = Cafe_DB_Serializer(cafes_list, many=True)
+            return Response(serializer.data)
 
-    # Store the data in Redis with the specified key for future use
-    redis_client.set(redis_key, json.dumps(cafes_list))
-    print("Data stored in Redis.")
+        except Exception as e:
+            # Handle database connection error gracefully
+            print("Error: Unable to connect to the database - - when trying to get cafe info")
+            return Response({"error": "Unable to connect to the cache and database"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    Cafe.objects.all().delete()
-
-    for cafe_data in cafes_list:
-        cafe = Cafe(
-            id=cafe_data['id'],
-            name=cafe_data['name'],
-            address=cafe_data['location']['address1'],
-            rating=cafe_data['rating'],
-            latitude=cafe_data['coordinates']['latitude'],
-            longitude=cafe_data['coordinates']['longitude'],
-            image_url=cafe_data['image_url'],
-        )
-
-        cafe.save()
-
-    serializer = CafeSerializer(cafes_list, many=True)
-
-    return Response(serializer.data)
 
 
 

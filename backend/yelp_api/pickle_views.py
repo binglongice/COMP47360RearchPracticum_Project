@@ -4,12 +4,14 @@ import pickle
 import numpy as np
 import json
 from django.http import JsonResponse
+from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import redis
+from django.conf import settings
 
-redis_host = '127.0.0.1'
-redis_port = '6379'
-redis_client = redis.StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = '6379'
+
 
 @api_view(['GET'])
 def model_output_api(request, hour, day, month, week_of_month):
@@ -30,16 +32,50 @@ def model_output_api(request, hour, day, month, week_of_month):
     # Generate the Redis key using the input parameters
     redis_key = f"model_predictions:{hour}-{day}-{month}-{week_of_month}"
 
-    # Check if the predictions are already cached in Redis
-    cached_predictions = redis_client.get(redis_key)
+    try:
+        # Attempt to connect to Redis
+        redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
+        # Check if the predictions are already cached in Redis
+        cached_predictions = redis_client.get(redis_key)
 
-    if cached_predictions is not None:
-        # If the predictions are already cached, load and use them
-        all_model_predictions = json.loads(cached_predictions)
-        print("Cache was used.")
-    else:
-        # If the predictions are not cached, unpickle the models and calculate predictions
+        if cached_predictions is not None:
+            # If the predictions are already cached, load and use them
+            all_model_predictions = json.loads(cached_predictions)
+            print("Cache was used for predictions.")
+        else:
+            # If the predictions are not cached, unpickle the models and calculate predictions
+            all_model_predictions = {}
+            all_predictions = []
+            for model_number in model_numbers:
+                pickle_file = os.path.join('pickle_models', f'model_{model_number}.pkl')
+                with open(pickle_file, 'rb') as f:
+                    model = pickle.load(f)
+                prediction = model.predict([inputs])
+                all_predictions.extend(prediction)
+                all_model_predictions[f'model_{model_number}'] = prediction.tolist()
+
+            # Calculate the global min and max values
+            prediction_min = min(all_predictions)
+            prediction_max = max(all_predictions)
+
+            # Normalize each prediction array before adding it to all_model_predictions
+            for model_number in model_numbers:
+                prediction = np.array(all_model_predictions[f'model_{model_number}'])
+                normalized_prediction = (prediction - prediction_min) / (prediction_max - prediction_min)
+                # Update the dictionary with normalized values between 0 and 1
+                all_model_predictions[f'model_{model_number}'] = normalized_prediction.tolist()
+
+            print("Normalization has occurred for predictions.")
+
+            # Store all the predictions as one large JSON object in Redis
+            redis_client.set(redis_key, json.dumps(all_model_predictions))
+            print("Cache was not used for predictions.")
+
+    except redis.ConnectionError:
+        # Handle Redis connection error gracefully
+        print("Error: Unable to connect to the Redis cache for predictions.")
+        # If Redis connection fails, directly calculate the predictions without using Redis
         all_model_predictions = {}
         all_predictions = []
         for model_number in model_numbers:
@@ -59,14 +95,9 @@ def model_output_api(request, hour, day, month, week_of_month):
             prediction = np.array(all_model_predictions[f'model_{model_number}'])
             normalized_prediction = (prediction - prediction_min) / (prediction_max - prediction_min)
             # Update the dictionary with normalized values between 0 and 1
-            
             all_model_predictions[f'model_{model_number}'] = normalized_prediction.tolist()
-        
-        print("Normalization has occurred.")
 
-        # Store all the predictions as one large JSON object in Redis
-        redis_client.set(redis_key, json.dumps(all_model_predictions))
-        print("Cache was not used.")
+        print("Normalization has occurred for predictions.")
 
     # Return the predictions as a JSON response
     return JsonResponse(all_model_predictions)
