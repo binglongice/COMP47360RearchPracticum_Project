@@ -69,3 +69,8 @@ backend/yelp_integration/settings.py
 backend/yelp_integration/__pycache__/urls.cpython-39.pyc
 backend/yelp_integration/__pycache__/wsgi.cpython-39.pyc
 >>>>>>> origin/features/cormac/backend/model_performance
+backend/yelp_api/__pycache__/pickle_views.cpython-39.pyc
+backend/yelp_api/__pycache__/pickle_views.cpython-39.pyc
+backend/yelp_api/__pycache__/serializers.cpython-39.pyc
+.gitignore
+backend/yelp_integration/__pycache__/settings.cpython-39.pyc
