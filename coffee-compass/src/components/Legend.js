@@ -95,13 +95,22 @@ const Legend = () => {
         .attr('y', height)
         .style('fill', 'white')
         .text('1');
+
+
+        svg.append('text')
+        .attr('x', 30)
+        .attr('y', height/2)
+        .style('fill', 'white')
+        .text('0.5');
     }
+
+    
   }, [svg, width, height]);
   
   return (
     <div className="legend">
       <h4>Busyness</h4>
-      <svg id="legend-svg" width="60" height="100" />
+      <svg id="legend-svg" width="50" height="100" />
     </div>
   );
 };
