@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'corsheaders',
-    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +153,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',  # Add the origin of your frontend application
 
 ]
+
+REDIS_HOST = '127.0.0.1'   # Replace 'your_redis_host' with the actual Redis host
+REDIS_PORT = 6379                # Replace '6379' with the actual Redis port number
+REDIS_DB = 0                     # Replace '0' with the actual Redis database number you want to use
