@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ApiContext } from '../context/ApiContext';
 import axios from 'axios';
+import Papa from 'papaparse';
 
 function Store({ children, selectedCafeId }) {
   const [data, setData] = useState([]);
@@ -81,7 +82,7 @@ function Store({ children, selectedCafeId }) {
         console.error('Error:', error);
       });
   }, []);
-  
+
 
   return (
     <ApiContext.Provider value={[data, setData, reviews, setReviews, picklePredictions, setPicklePredictions]}>

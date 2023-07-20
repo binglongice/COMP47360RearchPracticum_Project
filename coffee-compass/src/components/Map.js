@@ -20,6 +20,10 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [geojsonData, setGeojsonData] = useState(null); //we need to store the geoJson data in state so that we can use it outside where its defined 
   const [predictionsData, setPredictions] = useState(null); //we need to store the predictions ... 
   const [isButton5Active, setIsButton5Active] = useState(true); //render the heatmap legend or not
+  const [prices, setPrices] = useState(null); //we need to store the prices ...
+  const [priceGeoJsonData, setPriceGeoJsonData] = useState(null); //we need to store the prices ...
+
+
   useEffect(() => {
     console.log("Data changing:", data)
   }, [data]);
@@ -125,12 +129,12 @@ function Map({ selectedIndex, onCafeSelection }) {
           data.features.forEach(feature => {
             let objectid = feature.properties.objectid;
             let objectstring = objectid.toString();
-            console.log("Type of objectstring: ", typeof objectstring);
-            console.log("Type of objectid: ", typeof objectid);
-            console.log("My objectid: ", objectid);
+            // console.log("Type of objectstring: ", typeof objectstring);
+            // console.log("Type of objectid: ", typeof objectid);
+            // console.log("My objectid: ", objectid);
             let score = predictions[objectstring];
             // console.log("My objectid: ", objectid);
-            console.log("My score: ", score);          
+            // console.log("My score: ", score);          
             feature.properties.color = getColorFromScore(score);
             feature.properties.busyness = score;
             setGeojsonData(data);
@@ -171,6 +175,73 @@ function Map({ selectedIndex, onCafeSelection }) {
       }
     }
   };
+
+//We will read from market.json and take the data from there and add the rating to '/filtered_geojson_file.geojson'
+useEffect(() => {
+  // Load the market data
+  fetch('/market.json')
+    .then(response => response.json())
+    .then(marketData => {
+      // Now we have the market data
+      console.log("Original Market data: ", marketData);
+
+      // Format the data as a key-value pair object
+      let formattedData = marketData.reduce((accumulator, current) => {
+        accumulator[current.TLC] = current.normalized_price;
+        return accumulator;
+      }, {});
+
+      console.log("Formatted Market data: ", formattedData);
+
+      if (mapIsCurrent) {
+        console.log("if map.current");
+
+        // Load GeoJSON data
+        fetch('/filtered_geojson_file.geojson')
+          .then(response => response.json())
+          .then(data => {
+            // Now we have the GeoJSON data
+            console.log("GeoJSON data: ", data);
+
+            data.features.forEach(feature => {
+              let objectid = feature.properties.objectid;
+              let objectstring = objectid.toString();
+              let normalizedPrice = formattedData[objectstring];
+
+              if (normalizedPrice) {
+                console.log("PRICE: ", normalizedPrice)
+                feature.properties.color = getColorFromScore(normalizedPrice);
+                feature.properties.price = normalizedPrice;
+              }
+
+            });
+            setPrices(formattedData);
+            setPriceGeoJsonData(data);
+          });
+      }
+    });
+}, [mapIsCurrent]);  // Re-run effect whenever mapIsCurrent changes
+
+
+  const addPriceHeatMap = () => {
+    if (geojsonData && map.current) {
+      map.current.getSource("taxi_zones")?.setData(priceGeoJsonData);
+      if (!map.current.getLayer("taxi_zones_price_map")) {
+        map.current.addLayer({
+          id: "taxi_zones_price_map",
+          type: "fill",
+          source: "taxi_zones",
+          paint: {
+            "fill-color": ["get", "color"],
+            "fill-opacity": 0.5,
+            "fill-outline-color": "#000000",
+          },
+        });
+      }
+    }
+  };
+
+
 
 // console.log(myColorFunction(4));
 
@@ -363,7 +434,10 @@ function Map({ selectedIndex, onCafeSelection }) {
       map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
     });
 
-
+////////////
+///////////
+////////////
+///THIS IS FOR THE MAP WITH THE BUSYNESS DATA
       // Add mouseenter event listener to change zone opacity on hover
       map.current.on('mousemove', 'taxi_zones_fill_map', (e) => {
         const hoveredZone = e.features[0].properties.objectid; // Get the ID of the hovered zone
@@ -397,7 +471,47 @@ function Map({ selectedIndex, onCafeSelection }) {
         };
         map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
       });    
-    
+////////////
+///////////
+////////////
+// THIS IS FOR PRICE HEATMAP 
+    // Add mouseenter event listener to change zone opacity on hover
+    map.current.on('mousemove', 'taxi_zones_price_map', (e) => {
+      const hoveredZone = e.features[0].properties.objectid; // Get the ID of the hovered zone
+      const zoneName = e.features[0].properties.zone;
+      const zoneBusyness = e.features[0].properties.price;
+      // Change fill opacity only for the hovered zone
+      map.current.setPaintProperty('taxi_zones_price_map', 'fill-opacity', [
+        'match',
+        ['get', 'objectid'],
+        hoveredZone,
+        0.8, // Increase opacity for the hovered zone
+        0.5  // Default opacity for other zones
+      ]);
+
+      // Update the name state with the zone name and zoneBusyness
+      setName(zoneName);
+      setBusyness(zoneBusyness);
+    });
+
+    // Add mouseleave event listener to reset zone opacity when not hovering
+    map.current.on('mouseleave', 'taxi_zones_price_map', () => {
+      map.current.setPaintProperty('taxi_zones_price_map', 'fill-opacity', 0.5); // Reset fill opacity for last zone
+      setName(''); // Clear the name state
+      setBusyness(''); // Clear the busyness state
+    });
+
+    map.current.on('click', 'taxi_zones_price_map', (e) => {
+      const lngLat = {
+        lng: e.lngLat.lng,
+        lat: e.lngLat.lat
+      };
+      map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
+    });    
+
+
+
+    // cafe marker click function
 
     map.current.on('click', 'cafe_markers', (e) => {
       const cafe_id = e.features[0].properties.id;
@@ -430,7 +544,8 @@ function Map({ selectedIndex, onCafeSelection }) {
       layer.id === 'bus_markers' ||
       layer.id === 'cafe_markers' ||
       layer.id === 'taxi_zones_fill' ||
-      layer.id === 'taxi_zones_fill_map' 
+      layer.id === 'taxi_zones_fill_map' ||
+      layer.id === 'taxi_zones_price_map'
     ) {
       map.current.removeLayer(layer.id);
     }
@@ -506,7 +621,12 @@ function Map({ selectedIndex, onCafeSelection }) {
       addHeatMap();
     } else {
       setIsButton5Active(false);
-    }  };  
+    }  
+    if (activeButtons.includes(6)) {
+      addPriceHeatMap();
+    }
+  };
+  
   const lnglat =  {lng: -73.9712, lat:40.7831};
   const handleReset = () => {
     map.current.flyTo({ center: lnglat, zoom: 11.75 }); // 
