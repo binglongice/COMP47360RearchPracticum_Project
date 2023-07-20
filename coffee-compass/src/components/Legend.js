@@ -25,24 +25,85 @@ const levels = [
   { color: '#ff0000', value: 1 },
 ];
 
-const gradient = `linear-gradient(to bottom, ${levels.map((level) => level.color).join(', ')})`;
+// const gradient = `linear-gradient(to bottom, ${levels.map((level) => level.color).join(', ')})`;
 
-const Legend = () => (
-  <div className="legend">
-    <h4>Busyness</h4>
-    <div className="scale-container" style={{ background: gradient }}>
-      <div className="scale-item">
-        <span>{levels[0].value}</span>
-      </div>
-      <div className="scale-item">
-        <span>{levels[levels.length - 1].value}</span>
-      </div>
+// const Legend = () => (
+//   <div className="legend">
+//     <h4>Busyness</h4>
+//     <div className="scale-container" style={{ background: gradient }}>
+//       <div className="scale-item">
+//         <span>{levels[0].value}</span>
+//       </div>
+//       <div className="scale-item">
+//         <span>{levels[levels.length - 1].value}</span>
+//       </div>
+//     </div>
+//   </div>
+// );
+
+// I want to make a horizontal gradient that changes color based on the busyness of the cafe from 0 to 1 (0 being not busy, 1 being very busy)
+// I want the color to change left to right
+// i want the letter 0 and 1 to be on the left and right side of the gradient respectively
+
+const Legend = () => { 
+  const [width, setWidth] = useState(60); 
+  const [height, setHeight] = useState(100);
+  const [svg, setSvg] = useState(null);
+
+  useEffect(() => {
+    const svg = d3.select('#legend-svg');
+    setSvg(svg);    
+    const { width, height } = svg.node().getBoundingClientRect();  
+    setWidth(width);
+    setHeight(height);  
+  }, []);
+
+  useEffect(() => {
+    if (svg) {
+      const defs = svg.append('defs');
+  
+      const linearGradient = defs
+        .append('linearGradient')
+        .attr('id', 'linear-gradient')
+        .attr('x1', '0%')
+        .attr('y1', '0%')
+        .attr('x2', '0%')
+        .attr('y2', '100%');
+  
+      linearGradient
+        .selectAll('stop')  
+        .data(levels)
+        .enter()
+        .append('stop')
+        .attr('offset', (d) => `${d.value * 100}%`)
+        .attr('stop-color', (d) => d.color);
+  
+      svg
+        .append('rect')
+        .attr('width', 20)
+        .attr('height', height)
+        .style('fill', 'url(#linear-gradient)');
+  
+      svg.append('text')
+        .attr('x', 30)
+        .attr('y', 10)
+        .style('fill', 'white')
+        .text('0');
+      
+      svg.append('text')
+        .attr('x', 30)
+        .attr('y', height)
+        .style('fill', 'white')
+        .text('1');
+    }
+  }, [svg, width, height]);
+  
+  return (
+    <div className="legend">
+      <h4>Busyness</h4>
+      <svg id="legend-svg" width="60" height="100" />
     </div>
-  </div>
-);
+  );
+};
 
 export default Legend;
-
-  
-
-
