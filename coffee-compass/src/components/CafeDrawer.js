@@ -6,7 +6,7 @@ const CafeDrawer = ({ cafeId, cafe_url, cafe_name, cafe_rating }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedCafeId, setSelectedCafeId] = useState(null);
   const [data, setData, reviews, setReviews] = useContext(ApiContext);
-  console.log("Drawer Reviews: ", reviews)
+  // console.log("Drawer Reviews: ", reviews)
 
 
   useEffect(() => {
