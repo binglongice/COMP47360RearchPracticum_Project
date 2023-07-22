@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 // results in toggling buttons through the use of an array
 
 function FilterNav({ handleLayerChange }) {
-    const [activeButtons, setActiveButtons] = useState([5]);
+    const [activeButtons, setActiveButtons] = useState([]);
   
     const handleClick = (index) => {
         if (activeButtons.includes(index)) {
