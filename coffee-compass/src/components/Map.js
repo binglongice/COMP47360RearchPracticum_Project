@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, useContext } from 'react';
-import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import mapboxgl from 'mapbox-gl'; 
+// import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import Navbar from './Navbar';
 // import { fetchData } from '../api/Api';
 import FilterNav from './FilterNav';
@@ -34,7 +35,11 @@ function Map({ selectedIndex, onCafeSelection }) {
   const[newGeoJson, setNewGeoJson] = useState(null);
 
 
-
+//takes in the json objects for busyness prices and crime
+//returns a json object with the objectid as the key and the rank as the value
+//assigns rank to each feature and creates a combined rank and current rank
+//the current rank is updated after each filter is applied via activeMaps
+//combined rank is updated if busyness data is changed
   useEffect(() => {
     if (busyness && prices && crimeData) {
       let rankedData = {
@@ -127,7 +132,8 @@ function Map({ selectedIndex, onCafeSelection }) {
     }
   
   }, [busyness, prices, crimeData, activeMaps]);
-  
+ 
+ //takes in a rank and returns a color 
 function getColorFromRank(rank) {
   if (rank === undefined) {
     return '#000000';
@@ -137,6 +143,8 @@ function getColorFromRank(rank) {
   return `hsl(120, 100%, ${lightness}%)`;
 }
 
+//creates the geojson for the heatmap
+//adds rank and color to each feature and score
 const createHeatMapGeo = async (rankedData) => {
   // fetch('/filtered_geojson_file.geojson')
   // .then(response => response.json())
@@ -201,6 +209,8 @@ const createHeatMapGeo = async (rankedData) => {
 }
 
 // logic to handle heatmap creation
+//takes in the geojson file and the color property
+//colorProperty is a string that is a name of a property in the geojson (ex: busyness_color)
 const createHeatMap = (geoJson, colorProperty) => {
   map.current.getSource("taxi_zones")?.setData(geoJson);
   
@@ -216,7 +226,8 @@ const createHeatMap = (geoJson, colorProperty) => {
   });
 }
 
-
+//creates the geojson for the heatmap
+//called everytime the rankedData changes or the activeMaps changes (when a checkmark is clicked)
 useEffect(() => {
   const generateGeoJson = async () => {
     if (mapIsCurrent && rankedData) {
@@ -228,86 +239,9 @@ useEffect(() => {
   generateGeoJson();
 }, [mapIsCurrent, rankedData, activeMaps]);
 
-//updates the taxi_zone geojson data with the ranked data
-// useEffect(() => {
-//   if (mapIsCurrent && rankedData) {
-//     createHeatMapGeo(rankedData);
-    
-//   }
-// }, [mapIsCurrent, rankedData, activeMaps]);
 
-// //adds busyness heatmap on page load
-// useEffect(() => {
-//   if (mapIsCurrent && rankedGeoJson) {
-//     createHeatMap(rankedGeoJson, "busyness_color");
-//   }
-// }, [mapIsCurrent, rankedGeoJson]);
-
-
-
-////////////////////////
-
-  // useEffect(() => {
-  //   console.log("Data changing:", data)
-  // }, [data]);
-  
-
-
-  //checks to see if the predictions load in
-  // also removed the model_ text so that we have a hashmap where its just taxi_zone number : busyness value
-  // useEffect(() => {
-  //   const predictions = Object.fromEntries(
-  //     Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
-  //   );
-  //   console.log("type of: ", typeof predictions);
-  //   console.log("pickles: ", predictions);
-  //   // console.log("Pickles Pickles Pickles:", picklePredictions)
-  //   console.log("Testing key:value", predictions["4"]);
-  // }, [picklePredictions]);
-
-  // function getColorFromScore(score) {
-  //   if (score === undefined) {
-  //     return '#000000';
-  //   }
-  //   if (score < 0.1) {
-  //     return '#00FF00'; // Green
-  //   }
-  //   if (score < 0.2) {
-  //       return '#33FF00';
-  //   }
-  //   if (score < 0.3) {
-  //       return '#66FF00';
-  //   }
-  //   if (score < 0.4) {
-  //       return '#99FF00';
-  //   }
-  //   if (score < 0.5) {
-  //       return '#CCFF00';
-  //   }
-  //   if (score < 0.6) {
-  //       return '#FFFF00'; // Yellow
-  //   }
-  //   if (score < 0.7) {
-  //       return '#FFCC00';
-  //   }
-  //   if (score < 0.8) {
-  //       return '#FF9900';
-  //   }
-  //   if (score < 0.9) {
-  //       return '#FF6600';
-  //   }
-  //   if (score < 1.0) {
-  //       return '#FF3300';
-  //   }
-  //   if (score >= 1.0) {
-  //       return '#FF0000'; // Red
-  //   }
-    
-  //     return '#000000'; // Default color if none of the conditions match
-  //   }
-    
-
-  //cleans up busyness data and sets it to state
+  //cleans up busyness data and sets it to a state variable
+  //called everytime the picklePredictions changes (when the predictions are updated)
   useEffect(() => {
     if (picklePredictions) {
       const predictions = Object.fromEntries(
@@ -319,69 +253,10 @@ useEffect(() => {
 
       }
   }, [mapIsCurrent, picklePredictions]);
-      ///this might be removed once we have the data all together
 
-    // Load GeoJSON data
-  //   fetch('/filtered_geojson_file.geojson')
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       // Now we have the GeoJSON data
-  //       console.log("GeoJSON data: ", geojsonData);
-  //       if (mapIsCurrent) {
-  //         console.log("if map.current");
-  //         data.features.forEach(feature => {
-  //           let objectid = feature.properties.objectid;
-  //           let objectstring = objectid.toString();
-  //           // console.log("Type of objectstring: ", typeof objectstring);
-  //           // console.log("Type of objectid: ", typeof objectid);
-  //           // console.log("My objectid: ", objectid);
-  //           let score = predictions[objectstring];
-  //           // console.log("My objectid: ", objectid);
-  //           // console.log("My score: ", score);          
-  //           feature.properties.color = getColorFromScore(score);
-  //           feature.properties.busyness = score;
-  //           setGeojsonData(data);
-  //           setPredictions(predictions);
-  //         });
-
-  //         map.current.getSource('taxi_zones').setData(data);
-  
-  //         map.current.addLayer({
-  //           id: 'taxi_zones_fill_map',
-  //           type: 'fill',
-  //           source: 'taxi_zones',
-  //           paint: {
-  //             'fill-color': ['get', 'color'],
-  //             'fill-opacity': 0.5,
-  //             'fill-outline-color': '#000000',
-  //           }
-  //         });
-  //       }
-  //     });
-  //   }
-  // }, [mapIsCurrent, picklePredictions]);  // Re-run effect whenever picklePredictions changes
-                      
-  // const addHeatMap = () => {
-  //   if (geojsonData && map.current) {
-  //     map.current.getSource("taxi_zones")?.setData(geojsonData);
-  //     if (!map.current.getLayer("taxi_zones_fill_map")) {
-  //       map.current.addLayer({
-  //         id: "taxi_zones_fill_map",
-  //         type: "fill",
-  //         source: "taxi_zones",
-  //         paint: {
-  //           "fill-color": ["get", "color"],
-  //           "fill-opacity": 0.5,
-  //           "fill-outline-color": "#000000",
-  //         },
-  //       });
-  //     }
-  //   }
-  // };
-
-  //
-//We will read from market.json and take the data from there and add the rating to '/filtered_geojson_file.geojson'
-useEffect(() => {
+//cleans up market data and sets it to a state variable
+//triggered upon when the map is loaded in
+  useEffect(() => {
   // Load the market data
   fetch('/market.json')
     .then(response => response.json())
@@ -426,9 +301,6 @@ useEffect(() => {
     });
 }, [mapIsCurrent]);  // Re-run effect whenever mapIsCurrent changes
 
-
-
-
   //clean crime data and set it to state
   useEffect(() => {
     fetch('/crime_count.json')
@@ -472,6 +344,8 @@ useEffect(() => {
   const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
 
   // Create a function that sets up the Isochrone API query then makes an fetch call
+  // to the API and returns the data
+  //this is what we call when we want to get the takeaway radius and add the layer
   async function getIso() {
     const query = await fetch(
     `${urlBase}${profile}/${takeoutLng},${takeoutLat}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
@@ -483,7 +357,7 @@ useEffect(() => {
   }
 
 
-// add the source and layer to the map for takeaway radius
+  // add the source and layer to the map for takeaway radius
   useEffect(() => {
     if (map.current) {
     map.current.on('load', () => {
@@ -514,6 +388,7 @@ useEffect(() => {
     }    
    }, [map.current]); 
 
+   //calls getIso (adds takeaway radius to map)
    useEffect(() => {
     if (profile && minutes && takeoutLng && takeoutLat) {
       getIso();
@@ -529,6 +404,8 @@ useEffect(() => {
       // const [currentGeoJSONIndex, setCurrentGeoJSONIndex] = useState(0);
   const [currentGeoJSONIndex, setCurrentGeoJSONIndex] = useState(selectedIndex);
 
+  //sets the IsLoading state to false when the cafe data is loaded
+  //updates every time the cafe data changes (should not change after initial load)
   useEffect(() => {
     console.log('Test to see if my data is correct:', data);
     if (data.length > 0) {
@@ -802,8 +679,9 @@ useEffect(() => {
 
 //Pass in active buttons from FilterNav to affect the layers
 
-// this function will now only handle markers that are currently active
-//WE HAVE TO REMOVE HEATMAPS 
+// this function handles the logic for the layer change behind markers
+// it takes in the active buttons from the FilterNav component
+// and then adds/removes layers based on the active buttons
   const handleLayerChange = (activeButtons) => {
     setCurrentGeoJSONIndex(activeButtons);
   // Remove existing layers
@@ -890,7 +768,9 @@ useEffect(() => {
 
 
 
-//this function will add the heatmap to the map
+// this function adds the heatmap to the map
+// calls the createHeatMap fuction and passes in newGeoJson and the colorProperty (current_color)
+//this function is only called when a checkbox is checked
   const handleHeatMap = (activeMaps) => {
 
     // save the state of activeMaps on function call
@@ -950,7 +830,8 @@ useEffect(() => {
   };
 
 
-
+//this function calls handleHeatMap when newGeoJson is updated
+//aka when a checkbox is checked
 useEffect(() => {
   if (newGeoJson) {
     handleHeatMap(activeMaps);

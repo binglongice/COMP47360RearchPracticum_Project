@@ -199,3 +199,15 @@ nav li a.active .inner {
     text-align: center;
     }
   
+
+   
+  .mapboxgl-ctrl-geocoder {
+      min-width: 100%;
+      position: relative;
+      z-index: 1;
+      width: 50%;
+      left: 0%;
+      margin-left: -25%;
+      top: 20px;
+
+  }
