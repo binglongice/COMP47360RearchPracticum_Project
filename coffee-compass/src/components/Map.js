@@ -7,6 +7,8 @@ import { ApiContext } from '../context/ApiContext.js';
 import CafeDrawer from './CafeDrawer';
 import Legend from './Legend';
 import HeatMapBox from './HeatMapBox';
+import TakeOutBox from './TakeOutBox';
+import MapContext from '../context/MapContext';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
@@ -425,23 +427,6 @@ useEffect(() => {
 }, [mapIsCurrent]);  // Re-run effect whenever mapIsCurrent changes
 
 
-  // const addPriceHeatMap = () => {
-  //   if (geojsonData && map.current) {
-  //     map.current.getSource("taxi_zones")?.setData(priceGeoJsonData);
-  //     if (!map.current.getLayer("taxi_zones_price_map")) {
-  //       map.current.addLayer({
-  //         id: "taxi_zones_price_map",
-  //         type: "fill",
-  //         source: "taxi_zones",
-  //         paint: {
-  //           "fill-color": ["get", "color"],
-  //           "fill-opacity": 0.5,
-  //           "fill-outline-color": "#000000",
-  //         },
-  //       });
-  //     }
-  //   }
-  // };
 
 
   //clean crime data and set it to state
@@ -451,20 +436,7 @@ useEffect(() => {
       .then(crimeData => {
         // Now we have the crime data
         console.log("Original Crime data: ", crimeData);
-        /*
-    OBJECTID  Count
-0        4.0    417
-1       12.0     10
-2       13.0    106
-3       24.0    121
-4       41.0   1162
-..       ...    ...
-61     246.0    252
-62     249.0    621
-63     261.0    210
-64     262.0    177
-65     263.0    363
-        */
+       
        // for each object in crimeData create a new json object thats ObjectID: Count
         let formattedCrimeData = crimeData.reduce((accumulator, current) => {
           accumulator[current.OBJECTID] = current.Count;
@@ -488,7 +460,66 @@ useEffect(() => {
   const [pitch, setPitch] = useState(45);
   const [zonename, setName] = useState('');
   const [zonebusyness, setBusyness] = useState('');
-  const taxiZones = ['/filtered_geojson_file.geojson'];
+
+
+
+  // TAKEAWAY RADIUS
+  // for our takeaway radius
+  const [takeoutLng, setTakeoutLng] = useState(null);
+  const [takeoutLat, setTakeoutLat] = useState(null);
+  const [profile, setProfile] = useState(null) 
+  const [minutes, setMinutes] = useState(null) 
+  const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
+
+  // Create a function that sets up the Isochrone API query then makes an fetch call
+  async function getIso() {
+    const query = await fetch(
+    `${urlBase}${profile}/${takeoutLng},${takeoutLat}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
+    { method: 'GET' }
+    );
+    const data = await query.json();
+    console.log("take out data: ", data);
+    map.current.getSource('iso').setData(data);
+  }
+
+
+// add the source and layer to the map for takeaway radius
+  useEffect(() => {
+    if (map.current) {
+    map.current.on('load', () => {
+      // When the map loads, add the source and layer
+      map.current.addSource('iso', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      });
+      map.current.addLayer(
+        {
+          id: 'isoLayer',
+          type: 'fill',
+          // Use "iso" as the data source for this layer
+          source: 'iso',
+          layout: {},
+          paint: {
+            // The fill color for the layer is set to a light purple
+            'fill-color': '#5a3fc0',
+            'fill-opacity': 0.3
+          }
+        },
+        'poi-label'
+      );
+      });    
+    }    
+   }, [map.current]); 
+
+   useEffect(() => {
+    if (profile && minutes && takeoutLng && takeoutLat) {
+      getIso();
+    }
+  }, [profile, minutes, takeoutLng, takeoutLat]);
+
 
   // Set bounds for Manhattan, New York.
   const bounds = [
@@ -505,6 +536,9 @@ useEffect(() => {
     }
   }, [data]);
 
+
+  //this code actually creates our map and sets the bounds
+  //This should probably be moved to a different file or to the top of this file
   useEffect(() => {
     if (!isLoading && data.length > 0) {
     if (map.current) return; // initialize map only once
@@ -852,15 +886,6 @@ useEffect(() => {
         }
       });
     }
-    if (activeButtons.includes(5)) {
-      setIsButton5Active(true);
-      // addHeatMap();
-    } else {
-      setIsButton5Active(false);
-    }  
-    if (activeButtons.includes(6)) {
-      // addPriceHeatMap();
-    }
   };
 
 
@@ -870,10 +895,7 @@ useEffect(() => {
 
     // save the state of activeMaps on function call
     setActiveMaps(activeMaps);
-
-
-
-
+    
     //if the current layer is taxi zones, remove it
     if (map.current.getLayer("taxi_zones_fill_map")) {
     map.current.removeLayer("taxi_zones_fill_map");
@@ -891,9 +913,6 @@ useEffect(() => {
     }
   }
   else {
-
-
-
     if (activeMaps.busyness) {
       console.log('Busyness is checked');
       // add heatmap 
@@ -931,29 +950,6 @@ useEffect(() => {
   };
 
 
-// const handleHeatMap = (activeMaps) => {
-//   //if the current layer is taxi zones, remove it
-//   if (map.current.getLayer("taxi_zones_fill_map")) {
-//     map.current.removeLayer("taxi_zones_fill_map");
-//   }
-
-
-//   let selectedFeatures = [];
-
-//   if (selectedFeatures.length > 0) {
-//     let selectedFeatures = [];
-//   }
-
-  
-//   for (let feature in activeMaps) {
-//     if (activeMaps[feature]) {
-//       console.log(`${feature} is checked`);
-//       selectedFeatures.push(feature);
-//     }
-//   }
-
-//   createHeatMapGeo(rankedData, selectedFeatures);
-// }
 
 useEffect(() => {
   if (newGeoJson) {
@@ -967,20 +963,23 @@ useEffect(() => {
   };
 
   return (
+    <MapContext.Provider value={map.current}>
     <div>
       {/* Render the name element */}
       <Navbar name = {zonename} busyness = {zonebusyness} />
       <button onClick={handleReset}>Reset</button>
       <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/>
             {/* Map container */}
-      <div ref={mapContainer} className="map-container">
+      <div ref={mapContainer} className="map-container"> {/*the useRef is being used to render the map */}
       {/* {isButton5Active && (<Legend/>)} Render the legend if the button is active */}
       </div>
       <HeatMapBox handleHeatMap = {handleHeatMap} />
-      {/* <div className="filter-nav-container"> */}
-      {/* <FilterNav handleLayerChange={handleLayerChange} /> */}
-    {/* </div> */}
+      <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng}/>
+      <div className="filter-nav-container">
+      <FilterNav handleLayerChange={handleLayerChange} />
     </div>
+    </div>
+    </MapContext.Provider>
   );
 }
 

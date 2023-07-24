@@ -8,7 +8,7 @@ const HeatMapBox = ({handleHeatMap}) => {
     //state variable to keep track of which checkboxes are checked
     //this is used to determine which layers to display on the map
     const [checked, setChecked] = useState({
-        busyness: true,
+        busyness: false,
         crimeData: false,
         prices: false,
     });

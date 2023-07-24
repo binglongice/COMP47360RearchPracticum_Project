@@ -74,26 +74,6 @@ function FilterNav({ handleLayerChange }) {
             <img src="./coffee.png" alt="Cafe" />
           </a>
         </li>
-        <li>
-          <a
-            href="#"
-            onClick={() => handleClick(5)}
-            className={activeButtons.includes(5) ? 'active' : ''}
-          >
-            <span className="inner"></span>
-            <img src="./traffic.png" alt="heatmap" />
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            onClick={() => handleClick(6)}
-            className={activeButtons.includes(6) ? 'active' : ''}
-          >
-            <span className="inner"></span>
-            <img src="./price.png" alt="heatmap-price" />
-          </a>
-        </li>
       </ul>
     </nav>
   );
