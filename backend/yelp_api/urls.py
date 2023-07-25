@@ -15,5 +15,5 @@ urlpatterns = [
     path('api/cafes/<str:location>/', cafes_api, name='cafes_api'),
     path('api/reviews/<str:id>/', review_api),
     path('api/predictions/<str:location>/', predictions_api, name='predictions_api'),
-    path('pickle_views/model-output/<int:hour>/<int:day>/<int:month>/<int:week_of_month>/', model_output_api, name='model-output-api'),
+    path('pickle_views/model-output/<int:hour>/<int:day>/<int:month>/<int:week_of_year>/', model_output_api, name='model-output-api'),
 ]
