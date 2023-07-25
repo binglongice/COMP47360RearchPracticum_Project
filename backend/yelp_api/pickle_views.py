@@ -14,11 +14,11 @@ REDIS_PORT = '6379'
 
 
 @api_view(['GET'])
-def model_output_api(request, hour, day, month, week_of_month):
+def model_output_api(request, hour, day, month, week_of_year):
     print(f"Hour: {hour}")
     print(f"Day: {day}")
     print(f"Month: {month}")
-    print(f"Week of Month: {week_of_month}")
+    print(f"Week of Year: {week_of_year}")
 
     # Define the model numbers you want to include
     model_numbers = [4, 12, 13, 24, 41, 42, 43, 45, 48, 50, 68, 74, 75, 79, 87, 88, 90, 100, 107, 113,
@@ -27,10 +27,10 @@ def model_output_api(request, hour, day, month, week_of_month):
                      232, 233, 234, 236, 237, 238, 239, 243, 244, 246, 249, 261, 262, 263]
 
     # Prepare the inputs
-    inputs = [hour, day, month, week_of_month]
+    inputs = [hour, day, month, week_of_year]
 
     # Generate the Redis key using the input parameters
-    redis_key = f"model_predictions:{hour}-{day}-{month}-{week_of_month}"
+    redis_key = f"model_predictions:{hour}-{day}-{month}-{week_of_year}"
 
     try:
         # Attempt to connect to Redis
@@ -70,7 +70,7 @@ def model_output_api(request, hour, day, month, week_of_month):
 
             # Store all the predictions as one large JSON object in Redis
             redis_client.set(redis_key, json.dumps(all_model_predictions))
-            print("Cache was not used for predictions.")
+            print("Cache was not used for predictions. Unpickled models instead")
 
     except redis.ConnectionError:
         # Handle Redis connection error gracefully
@@ -97,7 +97,7 @@ def model_output_api(request, hour, day, month, week_of_month):
             # Update the dictionary with normalized values between 0 and 1
             all_model_predictions[f'model_{model_number}'] = normalized_prediction.tolist()
 
-        print("Normalization has occurred for predictions.")
+        print("Normalization has occurred for predictions. Unpickled models instead")
 
     # Return the predictions as a JSON response
     return JsonResponse(all_model_predictions)

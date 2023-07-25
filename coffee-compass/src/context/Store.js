@@ -55,10 +55,10 @@ function Store({ children, selectedCafeId }) {
   }, [selectedCafeId]);
 
   //new useEffect for model predictions - CURRENTLY HARDCODED - seems to be logging twice
-  //Hour, Day, Month, Week_of_Month 
-  //0-23, 0-6, 1-12, 0-4
+  //Hour, Day, Month, Week_of_Year 
+  //0-23, 0-6, 1-12, 0-52
   useEffect(() => {
-    fetch('http://localhost:8000/yelp_api/pickle_views/model-output/10/3/10/2/')
+    fetch('http://localhost:8000/yelp_api/pickle_views/model-output/10/3/10/30/')
       .then(response => response.json())
       .then(data => {
         // Access the predictions data here
