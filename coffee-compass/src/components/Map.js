@@ -33,7 +33,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [rankedGeoJson, setRankGeojsonData] = useState(null);
   const [activeMaps, setActiveMaps] = useState(null);
   const[newGeoJson, setNewGeoJson] = useState(null);
-
+  const [transportData, setTransportData] = useState(null);
 
 //takes in the json objects for busyness prices and crime
 //returns a json object with the objectid as the key and the rank as the value
@@ -41,19 +41,20 @@ function Map({ selectedIndex, onCafeSelection }) {
 //the current rank is updated after each filter is applied via activeMaps
 //combined rank is updated if busyness data is changed
   useEffect(() => {
-    if (busyness && prices && crimeData) {
+    if (busyness && prices && crimeData && transportData) {
       let rankedData = {
         "busyness": {},
         "prices": {},
         "crimeData": {},
+        "transportData": {},
         "combined": {},
         "current": {},
       };
   
       let sortedKeysBusyness = Object.keys(busyness).sort((a, b) => busyness[b] - busyness[a]);
       let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[b] - prices[a]);
-      let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[a] - crimeData[b]); //sort so that zone with lowest crime is first
-  
+      let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[b] - crimeData[a]); //sort so that zone with lowest crime is first
+      let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
       let combined = {};
       let current = {};
   
@@ -80,6 +81,14 @@ function Map({ selectedIndex, onCafeSelection }) {
         // Add crimeData rank to combined rank
         combined[objectid].rank += rank + 1;
       }
+
+      for (let rank = 0; rank < sortedKeysTransport.length; rank++) {
+        let objectid = sortedKeysTransport[rank];
+        rankedData.transportData[objectid] = { score: transportData[objectid], rank: rank + 1 };
+  
+        // Add transport rank to combined rank
+        combined[objectid].rank += rank + 1;
+      }
   
       // Sort combined data and assign ranks
       // The ranks are all added together, so the lowest combined rank is the best
@@ -95,7 +104,7 @@ function Map({ selectedIndex, onCafeSelection }) {
         if (activeCount > 1) {
           // Initialize current
           rankedData.current = {};
-          const sources = { busyness: sortedKeysBusyness, prices: sortedKeysPrices, crimeData: sortedKeysCrime };
+          const sources = { busyness: sortedKeysBusyness, prices: sortedKeysPrices, crimeData: sortedKeysCrime, transportData: sortedKeysTransport };
       
           // Loop over each data source
           for (let source in sources) {
@@ -176,6 +185,14 @@ const createHeatMapGeo = async (rankedData) => {
         } else {
           console.log(`objectid ${objectid} not found in rankedData.prices.`);
         }
+        if (rankedData.transportData.hasOwnProperty(objectid)) {
+          let transportRank = rankedData.transportData[objectid].rank;
+          let transportColor = getColorFromRank(transportRank);
+          feature.properties.transport_color = transportColor;
+          feature.properties.transport_rank = transportRank;
+        } else {
+          console.log(`objectid ${objectid} not found in rankedData.transportData.`);
+        }
         if (rankedData.crimeData.hasOwnProperty(objectid)) {
           let crimeRank = rankedData.crimeData[objectid].rank;
           let crimeColor = getColorFromRank(crimeRank);
@@ -185,6 +202,7 @@ const createHeatMapGeo = async (rankedData) => {
         } else {
           console.log(`objectid ${objectid} not found in rankedData.crimeData.`);
         }
+
         //count of activeMaps
         if (activeMaps) {
         let activeCount = Object.values(activeMaps).filter(val => val).length;
@@ -321,19 +339,42 @@ useEffect(() => {
   }, [mapIsCurrent]);  // Re-run effect whenever mapIsCurrent changes
 
 
+//clean up the total_stations.json and set it to state
+  useEffect(() => {
+    fetch('/total_stations.json')
+      .then(response => response.json())
+      .then(totalStations => {
+        console.log("Original Total Stations data: ", totalStations);
+
+        //for each object in totalStations create a new json object that is ObjectID: Count
+        let formattedTotalStations = totalStations.reduce((accumulator, current) => {
+          accumulator[current.OBJECTID] = current.Total_Count;
+          return accumulator;
+        }
+        , {});
+        console.log("Formatted Total Stations data: ", formattedTotalStations);
+        setTransportData(formattedTotalStations);
+      }
+      );
+  }
+  , [mapIsCurrent]);  // Re-run effect whenever mapIsCurrent changes
+
 // console.log(myColorFunction(4));
 
   const [isLoading, setIsLoading] = useState(true);
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(-73.9712);
-  const [lat, setLat] = useState(40.7831);
-  const [zoom, setZoom] = useState(11.75);
-  const [pitch, setPitch] = useState(45);
+  const [lng, setLng] = useState(-73.991462);
+  const [lat, setLat] = useState(40.724637);
+  const [zoom, setZoom] = useState(12);
+  const [pitch, setPitch] = useState(60);
   const [zonename, setName] = useState('');
   const [zonebusyness, setBusyness] = useState('');
 
-
+  const easingFunctions = {
+    easeInCubic: function (t) {
+      return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1;
+  },};
 
   // TAKEAWAY RADIUS
   // for our takeaway radius
@@ -356,11 +397,56 @@ useEffect(() => {
     map.current.getSource('iso').setData(data);
   }
 
+  //code that handles the logic for animating on page load:
+
+  // const easingFunctions = {
+  //   // start slow and gradually increase speed
+  //   easeInCubic: function (t) {
+  //   return t * t * t;
+  //   }
+  //   };
 
   // add the source and layer to the map for takeaway radius
   useEffect(() => {
     if (map.current) {
     map.current.on('load', () => {
+
+       
+      //  map.current.addLayer({
+      //  'id': '3d-buildings',
+      //  'source': 'composite',
+      //  'source-layer': 'building',
+      //  'filter': ['==', 'extrude', 'true'],
+      //  'type': 'fill-extrusion',
+      //  'minzoom': 15,
+      //  'paint': {
+      //  'fill-extrusion-color': '#aaa',
+       
+      //  // use an 'interpolate' expression to add a smooth transition effect to the
+      //  // buildings as the user zooms in
+      //  'fill-extrusion-height': [
+      //  'interpolate',
+      //  ['linear'],
+      //  ['zoom'],
+      //  15,
+      //  0,
+      //  15.05,
+      //  ['get', 'height']
+      //  ],
+      //  'fill-extrusion-base': [
+      //  'interpolate',
+      //  ['linear'],
+      //  ['zoom'],
+      //  15,
+      //  0,
+      //  15.05,
+      //  ['get', 'min_height']
+      //  ],
+      //  'fill-extrusion-opacity': 0.6
+      //  }
+      //  });
+
+
       // When the map loads, add the source and layer
       map.current.addSource('iso', {
         type: 'geojson',
@@ -422,11 +508,12 @@ useEffect(() => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v11',
-      center: [lng, lat],
-      zoom: zoom,
-      minZoom: zoom,
+      center: [lng - 0.05, lat - 0.05],
+      zoom: 10,
+      // minZoom: zoom,
       maxBounds: bounds,
-      pitch: pitch,
+      pitch: 0,
+      bearing: 0,
       
     });
 
@@ -435,7 +522,14 @@ useEffect(() => {
 
     map.current.on('style.load', () => {
 
-      map.current.rotateTo(0);
+    //   map.current.style.stylesheet.layers.forEach(function(layer) {
+    //     if (layer.type === 'symbol') {
+    //         map.current.removeLayer(layer.id);
+    //     }
+    // });
+
+
+
 
       map.current.loadImage('/bench.png', (error, image) => {
         if (error) throw error;
@@ -454,6 +548,12 @@ useEffect(() => {
         if (error) throw error;
         map.current.addImage('custom-marker-3', thirdImage); 
 
+        map.current.loadImage('/bike.png', (error, image) => {
+          if (error) throw error;
+          map.current.addImage('custom-marker-5', image);
+
+  
+
         map.current.addSource('bench_locations', {
           type: 'geojson',
           data: '/City_Bench_Locations.geojson',
@@ -464,9 +564,34 @@ useEffect(() => {
         type: 'geojson',
         data: '/filtered_geojson_file.geojson'      
       });
+
+
+      map.current.addSource('bike_locations', {
+        type: 'geojson',
+        data: '/bike_locations.geojson',
+                
+      });
+
 // useState to check if map is current and if taxi zones have been loaded (must be after addSource(taxi_zones))
 // used in heatmap function
       setmapIsCurrent(true);
+
+
+
+
+      map.current.flyTo({
+        center: [lng - 0.01, lat - 0.01], // offset the center
+        zoom: zoom,
+        minZoom: zoom,
+        pitch: pitch,
+        bearing: 0,
+        curve: 1.42, // Default value
+        speed: 0.1, // Make the flying slow
+        duration: 5000,
+        easing: easingFunctions.easeInCubic,
+        essential: true,
+    });
+
 
 
       map.current.addSource('subway', {
@@ -501,6 +626,7 @@ useEffect(() => {
       },
     });
   });
+});
     });
   });
 });
@@ -671,7 +797,7 @@ useEffect(() => {
       onCafeSelection(cafe_id);
     });
 
-
+  
   };
   }, [isLoading, data, lng, lat, zoom, bounds]); //This is the useEffect dependency array
   //When any of the variables or states listed in the dependency array above change, the effect will run again.
@@ -693,10 +819,12 @@ useEffect(() => {
       layer.id === 'cafe_markers' ||
       layer.id === 'taxi_zones_fill' ||
       layer.id === 'taxi_zones_fill_map' ||
-      layer.id === 'taxi_zones_price_map'
+      layer.id === 'taxi_zones_price_map' ||
+      layer.id === 'bike_locations'
     ) {
       map.current.removeLayer(layer.id);
     }
+  
   });
   
   //if 0 (taxi button) then add in taxi zones as an overlay on the map
@@ -764,6 +892,19 @@ useEffect(() => {
         }
       });
     }
+
+    if (activeButtons.includes(5)) {
+      map.current.addLayer({
+        id: 'bike_locations',
+        type: 'symbol',
+        source: 'bike_locations',
+        layout: {
+          'icon-image': 'custom-marker-5',
+          'icon-size': 0.5,
+        }
+      });
+    }
+
   };
 
 
@@ -801,7 +942,6 @@ useEffect(() => {
         }
   } else {
       console.log('Busyness is unchecked');
-      // Your code when 'busyness' is unchecked
   }
 
   if (activeMaps.crimeData) {
@@ -812,7 +952,6 @@ useEffect(() => {
       }
 } else {
       console.log('Crime Rate is unchecked');
-      // Your code when 'crimeRate' is unchecked
   }
 
   if (activeMaps.prices) {
@@ -823,8 +962,16 @@ useEffect(() => {
       }
 } else {
       console.log('Property Prices is unchecked');
-      // Your code when 'propertyPrices' is unchecked
   }
+  if (activeMaps.transportData) {
+    console.log('Transport is checked');
+    // add heatmap 
+    if (mapIsCurrent && rankedGeoJson) {
+      createHeatMap(newGeoJson, "transport_color");
+    }
+} else {
+    console.log('Transport is unchecked');
+}
 }
     }
   };

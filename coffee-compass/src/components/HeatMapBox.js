@@ -4,13 +4,14 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 const HeatMapBox = ({handleHeatMap}) => {
-
+    const [header, setHeader] = useState('Busyness');
     //state variable to keep track of which checkboxes are checked
     //this is used to determine which layers to display on the map
     const [checked, setChecked] = useState({
         busyness: false,
         crimeData: false,
         prices: false,
+        transportData: false,
     });
 
     //function to handle when a checkbox is checked or unchecked
@@ -68,8 +69,31 @@ const HeatMapBox = ({handleHeatMap}) => {
                     }
                     label={<span style={{ fontSize: '12px' }}>Property Prices</span>}
                 />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={checked.transportData}
+                            onChange={handleCheckChange}
+                            name="transportData"
+                            style={{ color: '#00FF00', padding: '3px' }}
+                            size="small"
+                        />
+                    }
+                    label={<span style={{ fontSize: '12px' }}>Transport Links</span>}
+                />
+
             </FormGroup>
+            <div className='session'>
+                <h3>{header}</h3>
+                <div className='row colors'>
+                </div>
+            <div className='row labels'>
+                <div className='label-first'>0</div>
+                <div className='label-middle'>0.5</div>
+                <div className='label-last'>1</div>
+            </div>
         </div>
+    </div>
     );
 };
 export default  HeatMapBox;

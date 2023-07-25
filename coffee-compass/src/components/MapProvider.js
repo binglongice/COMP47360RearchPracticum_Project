@@ -13,7 +13,7 @@ const MapProvider = ({ children }) => {
 
     //define functions here
 
-    const initializeMap = () => {
+    const initializeMap = (lng,lat,zoom,bounds,pitch) => {
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/dark-v11',
