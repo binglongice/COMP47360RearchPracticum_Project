@@ -365,7 +365,7 @@ useEffect(() => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(-73.991462);
-  const [lat, setLat] = useState(40.724637);
+  const [lat, setLat] = useState(40.74629855245445);
   const [zoom, setZoom] = useState(12);
   const [pitch, setPitch] = useState(60);
   const [zonename, setName] = useState('');
@@ -373,9 +373,9 @@ useEffect(() => {
 
   const easingFunctions = {
     easeInCubic: function (t) {
-      return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1;
-  },};
-
+      return t * t;
+     }
+  };
   // TAKEAWAY RADIUS
   // for our takeaway radius
   const [takeoutLng, setTakeoutLng] = useState(null);
@@ -398,13 +398,13 @@ useEffect(() => {
   }
 
   //code that handles the logic for animating on page load:
-
-  // const easingFunctions = {
-  //   // start slow and gradually increase speed
-  //   easeInCubic: function (t) {
-  //   return t * t * t;
-  //   }
-  //   };
+const  [isoReady, setIsoReady] = useState(false);
+const [takeOutReady ,setTakeOutReady] = useState(false);
+  useEffect(() => {
+    if (profile && minutes && takeoutLng && takeoutLat) {
+      setIsoReady(true);
+    }
+  }, [profile, minutes, takeoutLng, takeoutLat]);
 
   // add the source and layer to the map for takeaway radius
   useEffect(() => {
@@ -470,16 +470,17 @@ useEffect(() => {
         },
         'poi-label'
       );
-      });    
+      });   
+      setTakeOutReady(true); 
     }    
-   }, [map.current]); 
+   }, [isoReady]); 
 
    //calls getIso (adds takeaway radius to map)
    useEffect(() => {
     if (profile && minutes && takeoutLng && takeoutLat) {
       getIso();
     }
-  }, [profile, minutes, takeoutLng, takeoutLat]);
+  }, [takeOutReady]);
 
 
   // Set bounds for Manhattan, New York.
@@ -508,12 +509,12 @@ useEffect(() => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v11',
-      center: [lng - 0.05, lat - 0.05],
-      zoom: 10,
+      center: [lng, lat],
+      zoom: 11.5,
       // minZoom: zoom,
       maxBounds: bounds,
       pitch: 0,
-      bearing: 0,
+      bearing: 0,//300,
       
     });
 
@@ -521,14 +522,6 @@ useEffect(() => {
     // console.log("set map is current == TRUE");
 
     map.current.on('style.load', () => {
-
-    //   map.current.style.stylesheet.layers.forEach(function(layer) {
-    //     if (layer.type === 'symbol') {
-    //         map.current.removeLayer(layer.id);
-    //     }
-    // });
-
-
 
 
       map.current.loadImage('/bench.png', (error, image) => {
@@ -578,16 +571,15 @@ useEffect(() => {
 
 
 
-
       map.current.flyTo({
-        center: [lng - 0.01, lat - 0.01], // offset the center
-        zoom: zoom,
+        center: [lng, lat], // offset the center
+        zoom: 12.063698237457222,
         minZoom: zoom,
-        pitch: pitch,
+        pitch: 57.418875067604525,
         bearing: 0,
         curve: 1.42, // Default value
         speed: 0.1, // Make the flying slow
-        duration: 5000,
+        duration: 6000,
         easing: easingFunctions.easeInCubic,
         essential: true,
     });
@@ -799,7 +791,7 @@ useEffect(() => {
 
   
   };
-  }, [isLoading, data, lng, lat, zoom, bounds]); //This is the useEffect dependency array
+  }, [isLoading, data, lng, lat, bounds]); //This is the useEffect dependency array
   //When any of the variables or states listed in the dependency array above change, the effect will run again.
   
 
