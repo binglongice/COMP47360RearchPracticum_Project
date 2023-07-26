@@ -2,6 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { ApiContext } from '../context/ApiContext';
 import axios from 'axios';
 
+// Need to pass in current date
+const getFormattedDate = () => {
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+  const month = today.getMonth() + 1; // 1 (January) to 12 (December)
+
+  // Calculate the week_of_year based on the date
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+  const pastDaysOfYear = (today - firstDayOfYear) / 86400000;
+  const weekOfYear = Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+
+  return `${dayOfWeek}/${month}/${weekOfYear}`;
+};
+
+
 function Store({ children, selectedCafeId }) {
   const [data, setData] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -55,25 +70,24 @@ function Store({ children, selectedCafeId }) {
   }, [selectedCafeId]);
 
   //new useEffect for model predictions - CURRENTLY HARDCODED - seems to be logging twice
-  //Hour, Day, Month, Week_of_Year 
-  //0-23, 0-6, 1-12, 0-52
+  //Day, Month, Week_of_Year 
+  //0-6, 1-12, 0-52
   useEffect(() => {
-    fetch('http://localhost:8000/yelp_api/pickle_views/model-output/10/3/10/30/')
+    const todayDate = getFormattedDate();
+    console.log('input to 24 hour API - day/month/week_of_year', todayDate);
+
+    fetch(`http://localhost:8000/yelp_api/pickle_views/model-output/${todayDate}/`)
       .then(response => response.json())
       .then(data => {
         // Access the predictions data here
-        // console.log('new state for predictions', data);
-        // setPicklePredictions(data.predictions)
-        // console.log('new state for predictions', picklePredictions)
-        // Use the data to generate the heatmap or perform other operations
-        // ...
         // Convert the data into a hashmap (object)
+        console.log('API data', data);
         const hashmap = {};
-        Object.keys(data).forEach((key) => {
+        Object.keys(data).forEach(key => {
           hashmap[key] = data[key][0];
-          });
-        console.log("store keys", data.keys)
-        // console.log("Test Test TEst", hashmap);
+        });
+
+        console.log("store keys", data.keys);
         console.log("testing hashmap:", hashmap["model_4"]);
         setPicklePredictions(hashmap);
       })
@@ -81,6 +95,7 @@ function Store({ children, selectedCafeId }) {
         console.error('Error:', error);
       });
   }, []);
+
   
 
   return (
