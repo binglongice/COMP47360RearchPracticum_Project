@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ApiContext } from '../context/ApiContext';
 import axios from 'axios';
 
+
+
 // Need to pass in current date
 const getFormattedDate = () => {
   const today = new Date();
