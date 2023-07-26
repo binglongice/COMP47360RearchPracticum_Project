@@ -79,24 +79,36 @@ function Store({ children, selectedCafeId }) {
     console.log('input to 24 hour API - day/month/week_of_year', todayDate);
 
     fetch(`http://localhost:8000/yelp_api/pickle_views/model-output/${todayDate}/`)
-      .then(response => response.json())
-      .then(data => {
-        // Access the predictions data here
-        // Convert the data into a hashmap (object)
-        console.log('API data', data);
-        const hashmap = {};
-        Object.keys(data).forEach(key => {
-          hashmap[key] = data[key][0];
+    .then(response => response.json())
+    .then(data => {
+      console.log('API data', data);
+  
+      // Initiate an empty hashmap
+      const hashmap = {};
+  
+      // Iterate through all keys (hours) in the data object
+      Object.keys(data).forEach(hourKey => {
+        const hourData = data[hourKey];
+  
+        // For each hour, iterate through all keys (models)
+        Object.keys(hourData).forEach(modelKey => {
+          // If the model does not exist in the hashmap, create an empty array
+          if (!hashmap[modelKey]) {
+            hashmap[modelKey] = [];
+          }
+  
+          // Push the model value into the corresponding array
+          hashmap[modelKey].push(hourData[modelKey]);
         });
-
-        console.log("store keys", data.keys);
-        console.log("testing hashmap:", hashmap["model_4"]);
-        setPicklePredictions(hashmap);
-      })
-      .catch(error => {
-        console.error('Error:', error);
       });
-  }, []);
+  
+      console.log("store keys", Object.keys(data));
+      console.log("testing hashmap for model_4:", hashmap["model_4"]);
+      setPicklePredictions(hashmap);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });  }, []);
 
   
 
