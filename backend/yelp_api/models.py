@@ -18,11 +18,40 @@ class Predictions(models.Model):
     hour = models.BigIntegerField()
     day = models.BigIntegerField()
     month = models.BigIntegerField()
-    week_of_month = models.BigIntegerField()
-    normalized_prediction = models.FloatField()
+    week_of_year = models.BigIntegerField()
+    prediction = models.BigIntegerField(null = True)
+    datetime = models.DateTimeField(null=True)
 
     class Meta:
         db_table = 'predictions'
+
+
+
+class AggregatedPredictions(models.Model):
+    location_id = models.BigIntegerField()
+    day = models.BigIntegerField()
+    month = models.BigIntegerField()
+    week_of_year = models.BigIntegerField(null=True)
+    average_prediction = models.BigIntegerField()
+
+    class Meta:
+        db_table = 'aggregated_predictions'
+
+
+class MonthlyPredictions(models.Model):
+    location_id = models.BigIntegerField()
+    month = models.BigIntegerField()
+  #  week_of_year = models.BigIntegerField(null=True)
+    monthly_prediction = models.BigIntegerField()
+
+    class Meta:
+        db_table = 'monthly_predictions'
+
+
+
+
+
+
 
 def __str__(self):
         return self.name
