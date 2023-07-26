@@ -387,6 +387,7 @@ useEffect(() => {
   // Create a function that sets up the Isochrone API query then makes an fetch call
   // to the API and returns the data
   //this is what we call when we want to get the takeaway radius and add the layer
+  // Create a function that sets up the Isochrone API query then makes an fetch call
   async function getIso() {
     const query = await fetch(
     `${urlBase}${profile}/${takeoutLng},${takeoutLat}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
@@ -397,56 +398,11 @@ useEffect(() => {
     map.current.getSource('iso').setData(data);
   }
 
-  //code that handles the logic for animating on page load:
-const  [isoReady, setIsoReady] = useState(false);
-const [takeOutReady ,setTakeOutReady] = useState(false);
-  useEffect(() => {
-    if (profile && minutes && takeoutLng && takeoutLat) {
-      setIsoReady(true);
-    }
-  }, [profile, minutes, takeoutLng, takeoutLat]);
 
-  // add the source and layer to the map for takeaway radius
+// add the source and layer to the map for takeaway radius
   useEffect(() => {
     if (map.current) {
     map.current.on('load', () => {
-
-       
-      //  map.current.addLayer({
-      //  'id': '3d-buildings',
-      //  'source': 'composite',
-      //  'source-layer': 'building',
-      //  'filter': ['==', 'extrude', 'true'],
-      //  'type': 'fill-extrusion',
-      //  'minzoom': 15,
-      //  'paint': {
-      //  'fill-extrusion-color': '#aaa',
-       
-      //  // use an 'interpolate' expression to add a smooth transition effect to the
-      //  // buildings as the user zooms in
-      //  'fill-extrusion-height': [
-      //  'interpolate',
-      //  ['linear'],
-      //  ['zoom'],
-      //  15,
-      //  0,
-      //  15.05,
-      //  ['get', 'height']
-      //  ],
-      //  'fill-extrusion-base': [
-      //  'interpolate',
-      //  ['linear'],
-      //  ['zoom'],
-      //  15,
-      //  0,
-      //  15.05,
-      //  ['get', 'min_height']
-      //  ],
-      //  'fill-extrusion-opacity': 0.6
-      //  }
-      //  });
-
-
       // When the map loads, add the source and layer
       map.current.addSource('iso', {
         type: 'geojson',
@@ -470,17 +426,15 @@ const [takeOutReady ,setTakeOutReady] = useState(false);
         },
         'poi-label'
       );
-      });   
-      setTakeOutReady(true); 
+      });    
     }    
-   }, [isoReady]); 
+   }, [map.current]); 
 
-   //calls getIso (adds takeaway radius to map)
    useEffect(() => {
     if (profile && minutes && takeoutLng && takeoutLat) {
       getIso();
     }
-  }, [takeOutReady]);
+  }, [profile, minutes, takeoutLng, takeoutLat]);
 
 
   // Set bounds for Manhattan, New York.

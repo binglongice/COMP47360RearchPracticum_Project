@@ -104,6 +104,7 @@ function Store({ children, selectedCafeId }) {
   
       console.log("store keys", Object.keys(data));
       console.log("testing hashmap for model_4:", hashmap["model_4"]);
+      console.log("hashmap:", hashmap);
       setPicklePredictions(hashmap);
     })
     .catch(error => {
