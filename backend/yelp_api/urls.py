@@ -17,7 +17,7 @@ urlpatterns = [
     path('api/reviews/<str:id>/', review_api),
     path('api/predictions/<str:location>/', predictions_api, name='predictions_api'),
     path('pickle_views/model-output/<int:day>/<int:month>/<int:week_of_year>/', model_output_api, name='model-output-api'),
-    path('pickle_views/weekly/<int:month>/<int:week_of_year>/', weekly_aggregation_api, name='weekly-aggregation-api'),
+    path('pickle_views/weekly/<int:week_of_year>/', weekly_aggregation_api, name='weekly-aggregation-api'),
     path('pickle_views/monthly/', monthly_aggregation_api, name='monthly-aggregation-api'),
 
 
