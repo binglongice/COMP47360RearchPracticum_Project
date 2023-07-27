@@ -287,4 +287,15 @@ nav li a.active .inner {
       margin-bottom: 10px;
     }
 
+
+/* browsers except firefox
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: #00FF00;
+    }
+    input[type="range"]::-moz-range-track {
+      background: #20826c;
+      height: 0.5rem;
+    }
+ */
+
     

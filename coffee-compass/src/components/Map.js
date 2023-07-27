@@ -695,44 +695,6 @@ useEffect(() => {
         };
         map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
       });    
-////////////
-///////////
-////////////
-// THIS IS FOR PRICE HEATMAP 
-    // Add mouseenter event listener to change zone opacity on hover
-    map.current.on('mousemove', 'taxi_zones_price_map', (e) => {
-      const hoveredZone = e.features[0].properties.objectid; // Get the ID of the hovered zone
-      const zoneName = e.features[0].properties.zone;
-      const zoneBusyness = e.features[0].properties.price;
-      // Change fill opacity only for the hovered zone
-      map.current.setPaintProperty('taxi_zones_price_map', 'fill-opacity', [
-        'match',
-        ['get', 'objectid'],
-        hoveredZone,
-        0.8, // Increase opacity for the hovered zone
-        0.5  // Default opacity for other zones
-      ]);
-
-      // Update the name state with the zone name and zoneBusyness
-      setName(zoneName);
-      setBusyness(zoneBusyness);
-    });
-
-    // Add mouseleave event listener to reset zone opacity when not hovering
-    map.current.on('mouseleave', 'taxi_zones_price_map', () => {
-      map.current.setPaintProperty('taxi_zones_price_map', 'fill-opacity', 0.5); // Reset fill opacity for last zone
-      setName(''); // Clear the name state
-      setBusyness(''); // Clear the busyness state
-    });
-
-    map.current.on('click', 'taxi_zones_price_map', (e) => {
-      const lngLat = {
-        lng: e.lngLat.lng,
-        lat: e.lngLat.lat
-      };
-      map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
-    });    
-
 
 
     // cafe marker click function
