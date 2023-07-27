@@ -10,7 +10,7 @@ import Legend from './Legend';
 import HeatMapBox from './HeatMapBox';
 import TakeOutBox from './TakeOutBox';
 import MapContext from '../context/MapContext';
-
+import BusynessSlider from './BusynessSlider';
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
 function Map({ selectedIndex, onCafeSelection }) {
@@ -34,6 +34,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [activeMaps, setActiveMaps] = useState(null);
   const[newGeoJson, setNewGeoJson] = useState(null);
   const [transportData, setTransportData] = useState(null);
+  const [hour, setHour] = useState(12);
 
 //takes in the json objects for busyness prices and crime
 //returns a json object with the objectid as the key and the rank as the value
@@ -51,7 +52,7 @@ function Map({ selectedIndex, onCafeSelection }) {
         "current": {},
       };
   
-      let sortedKeysBusyness = Object.keys(busyness).sort((a, b) => busyness[b] - busyness[a]);
+      let sortedKeysBusyness = Object.keys(busyness).sort((a, b) => busyness[b][hour] - busyness[a][hour]);
       let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[b] - prices[a]);
       let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[b] - crimeData[a]); //sort so that zone with lowest crime is first
       let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
@@ -140,7 +141,7 @@ function Map({ selectedIndex, onCafeSelection }) {
       setRankedData(rankedData);
     }
   
-  }, [busyness, prices, crimeData, activeMaps]);
+  }, [busyness, prices, crimeData, activeMaps, hour]);
  
  //takes in a rank and returns a color 
 function getColorFromRank(rank) {
@@ -371,11 +372,17 @@ useEffect(() => {
   const [zonename, setName] = useState('');
   const [zonebusyness, setBusyness] = useState('');
 
-  const easingFunctions = {
-    easeInCubic: function (t) {
-      return t * t;
-     }
-  };
+  // const easingFunctions = {
+  //   easeInCubic: function (t) {
+  //     return t * t;
+  //    }
+  // };
+
+  // wewrite the above function as one function
+
+  const easeInCubic = (t) => {
+    return t * t * t;
+  }
   // TAKEAWAY RADIUS
   // for our takeaway radius
   const [takeoutLng, setTakeoutLng] = useState(null);
@@ -462,7 +469,7 @@ useEffect(() => {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
+      style: 'mapbox://styles/max1738/clkjsvxxp00ed01pg1pdq577i/draft',
       center: [lng, lat],
       zoom: 11.5,
       // minZoom: zoom,
@@ -531,10 +538,10 @@ useEffect(() => {
         minZoom: zoom,
         pitch: 57.418875067604525,
         bearing: 0,
-        curve: 1.42, // Default value
+        curve: 0.19, // Default value
         speed: 0.1, // Make the flying slow
-        duration: 6000,
-        easing: easingFunctions.easeInCubic,
+        duration: 8000,
+        easing: easeInCubic,
         essential: true,
     });
 
@@ -949,6 +956,7 @@ useEffect(() => {
       </div>
       <HeatMapBox handleHeatMap = {handleHeatMap} />
       <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng}/>
+      <BusynessSlider busyness = {busyness} setBusyness = {setBusyness} hour = {hour} setHour = {setHour} />
       <div className="filter-nav-container">
       <FilterNav handleLayerChange={handleLayerChange} />
     </div>
