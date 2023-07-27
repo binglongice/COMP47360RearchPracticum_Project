@@ -14,8 +14,16 @@ import BusynessSlider from './BusynessSlider';
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
 function Map({ selectedIndex, onCafeSelection }) {
+
+  const getHour = () => {
+    const today = new Date();
+    return today.getHours();
+  }
+
+
+
   const [selectedCafeId, setSelectedCafeId] = useState(null);
-  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions] = useContext(ApiContext);  
+  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData] = useContext(ApiContext);  
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [mapIsCurrent, setmapIsCurrent] = useState(false);
@@ -34,15 +42,17 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [activeMaps, setActiveMaps] = useState(null);
   const[newGeoJson, setNewGeoJson] = useState(null);
   const [transportData, setTransportData] = useState(null);
-  const [hour, setHour] = useState(12);
-
+  const [hour, setHour] = useState(getHour());
+  const [weekRankData, setWeekRankData] = useState(null);
+  const [yearRankData, setYearRankData] = useState(null);
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState('day');
 //takes in the json objects for busyness prices and crime
 //returns a json object with the objectid as the key and the rank as the value
 //assigns rank to each feature and creates a combined rank and current rank
 //the current rank is updated after each filter is applied via activeMaps
 //combined rank is updated if busyness data is changed
   useEffect(() => {
-    if (busyness && prices && crimeData && transportData) {
+    if (selectedTimeFrame && prices && crimeData && transportData) {
       let rankedData = {
         "busyness": {},
         "prices": {},
@@ -51,8 +61,24 @@ function Map({ selectedIndex, onCafeSelection }) {
         "combined": {},
         "current": {},
       };
+      //depending on the value of busyness Data we will switch the data that we use to rank busyness
+      let busynessData;
+      switch(selectedTimeFrame) {
+        case 'day':
+          busynessData = busyness;
+          break;
+        case 'week':
+          busynessData = weekRankData;
+          break;
+        case 'year':
+          busynessData = yearRankData;
+          break;
+        default:
+          busynessData = busyness;
+      }
+      console.log("This is busynessData as it switches!: ", busynessData);
   
-      let sortedKeysBusyness = Object.keys(busyness).sort((a, b) => busyness[b][hour] - busyness[a][hour]);
+      let sortedKeysBusyness = Object.keys(busynessData).sort((a, b) => busynessData[b][hour] - busynessData[a][hour]);
       let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[b] - prices[a]);
       let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[b] - crimeData[a]); //sort so that zone with lowest crime is first
       let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
@@ -141,7 +167,7 @@ function Map({ selectedIndex, onCafeSelection }) {
       setRankedData(rankedData);
     }
   
-  }, [busyness, prices, crimeData, activeMaps, hour]);
+  }, [selectedTimeFrame, prices, crimeData, activeMaps, hour]);
  
  //takes in a rank and returns a color 
 function getColorFromRank(rank) {
@@ -258,20 +284,32 @@ useEffect(() => {
   generateGeoJson();
 }, [mapIsCurrent, rankedData, activeMaps]);
 
-
+  //should be deleted and done in the backend 
   //cleans up busyness data and sets it to a state variable
   //called everytime the picklePredictions changes (when the predictions are updated)
   useEffect(() => {
-    if (picklePredictions) {
+    if (picklePredictions && yearData && weekData) {
       const predictions = Object.fromEntries(
         Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
       );
+      const weekPredictions = Object.fromEntries(
+        Object.entries(weekData).map(([key, value]) => [key.replace("model_", ""), value])
+      );
+      const yearPredictions = Object.fromEntries(
+        Object.entries(yearData).map(([key, value]) => [key.replace("model_", ""), value])
+      );
+
       console.log("Predictions is not empty:", predictions);
-      console.log("Pickle predictions", picklePredictions);
+      console.log("Week Predictions", weekPredictions);
+      console.log("year predictions", yearPredictions);
       setBusynessData(predictions);
+      setWeekRankData(weekPredictions);
+      setYearRankData(yearPredictions);
+      // setYearData(yearPredictions);
+      // setWeekData(weekPredictions);
 
       }
-  }, [mapIsCurrent, picklePredictions]);
+  }, [mapIsCurrent, picklePredictions, yearData, weekData]);  // Re-run effect whenever mapIsCurrent changes
 
 //cleans up market data and sets it to a state variable
 //triggered upon when the map is loaded in
@@ -918,7 +956,7 @@ useEffect(() => {
       </div>
       <HeatMapBox handleHeatMap = {handleHeatMap} />
       <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng}/>
-      <BusynessSlider busyness = {busyness} setBusyness = {setBusyness} hour = {hour} setHour = {setHour} />
+      <BusynessSlider selectedTimeFrame = {selectedTimeFrame} setSelectedTimeFrame = {setSelectedTimeFrame} hour = {hour} setHour = {setHour} />
       <div className="filter-nav-container">
       <FilterNav handleLayerChange={handleLayerChange} />
     </div>
