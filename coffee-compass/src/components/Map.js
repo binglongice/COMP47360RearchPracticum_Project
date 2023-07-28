@@ -11,6 +11,7 @@ import HeatMapBox from './HeatMapBox';
 import TakeOutBox from './TakeOutBox';
 import MapContext from '../context/MapContext';
 import BusynessSlider from './BusynessSlider';
+import LineChart from './LineChart';
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
 function Map({ selectedIndex, onCafeSelection }) {
@@ -46,6 +47,8 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [weekRankData, setWeekRankData] = useState(null);
   const [yearRankData, setYearRankData] = useState(null);
   const [selectedTimeFrame, setSelectedTimeFrame] = useState('day');
+  const [chartFlag, setChartFlag] = useState(false);
+  const [currentObjectId, setCurrentObjectId] = useState(null);
 //takes in the json objects for busyness prices and crime
 //returns a json object with the objectid as the key and the rank as the value
 //assigns rank to each feature and creates a combined rank and current rank
@@ -727,11 +730,16 @@ useEffect(() => {
       });
 
       map.current.on('click', 'taxi_zones_fill_map', (e) => {
-        const lngLat = {
-          lng: e.lngLat.lng,
-          lat: e.lngLat.lat
-        };
-        map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
+        const objectid = e.features[0].properties.objectid;
+        setChartFlag(true);
+        setCurrentObjectId(objectid);
+
+
+        // const lngLat = {
+        //   lng: e.lngLat.lng,
+        //   lat: e.lngLat.lat
+        // };
+        // map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
       });    
 
 
@@ -960,6 +968,7 @@ useEffect(() => {
       <div className="filter-nav-container">
       <FilterNav handleLayerChange={handleLayerChange} />
     </div>
+    {chartFlag && currentObjectId &&  <LineChart dayData = {busyness} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId}/>}
     </div>
     </MapContext.Provider>
   );
