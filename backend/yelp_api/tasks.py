@@ -1,11 +1,13 @@
 import json
 import pickle
 import os
+import datetime
 import redis
 from django.conf import settings
 from django.http import JsonResponse
 from celery import shared_task
 import redis.exceptions
+
 
 
 @shared_task
@@ -16,6 +18,9 @@ def adding_task(x, y):
 
 @shared_task
 def calculate_and_cache_predictions(day, month, week_of_year):
+
+    result = {}
+
     print(f"Day: {day}")
     print(f"Month: {month}")
     print(f"Week of Year: {week_of_year}")
