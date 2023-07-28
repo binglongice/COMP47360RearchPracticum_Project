@@ -19,8 +19,6 @@ def adding_task(x, y):
 @shared_task
 def calculate_and_cache_predictions(day, month, week_of_year):
 
-    result = {}
-
     print(f"Day: {day}")
     print(f"Month: {month}")
     print(f"Week of Year: {week_of_year}")
@@ -38,7 +36,7 @@ def calculate_and_cache_predictions(day, month, week_of_year):
         # Attempt to connect to Redis
         redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
-        # Generate the Redis key using the input parameters (without hour)
+        # Generate the Redis key using the input parameters
         redis_key = f"model_predictions:{day}-{month}-{week_of_year}"
 
         # Check if the predictions are already cached in Redis
@@ -49,8 +47,7 @@ def calculate_and_cache_predictions(day, month, week_of_year):
             all_model_predictions = json.loads(cached_predictions)
             print("Predictions are already in Redis cache.")
         else:
-            # If the predictions are not cached, unpickle the models and calculate predictions
-            all_model_predictions = {f'hour_{hour}': {} for hour in range(24)}
+            all_model_predictions = {f'{model_number}': {} for model_number in model_numbers}
             for model_number in model_numbers:
                 pickle_file = os.path.join('pickle_models', f'model_{model_number}.pkl')
                 with open(pickle_file, 'rb') as f:
@@ -60,26 +57,26 @@ def calculate_and_cache_predictions(day, month, week_of_year):
                 for hour in range(24):
                     inputs_with_hour = [hour] + inputs
                     prediction = model.predict([inputs_with_hour])
-                    all_model_predictions[f'hour_{hour}'][f'model_{model_number}'] = prediction[0]
+                    all_model_predictions[f'{model_number}'][f'{hour}'] = prediction[0]  # Get the prediction value for the hour
 
             # Calculate the global min and max values
-            all_predictions = [prediction for predictions_by_hour in all_model_predictions.values() for prediction in predictions_by_hour.values()]
+            all_predictions = [prediction for predictions_by_model in all_model_predictions.values() for prediction in predictions_by_model.values()]
             prediction_min = min(all_predictions)
             prediction_max = max(all_predictions)
 
             # Normalize each prediction array before adding it to all_model_predictions
-            for hour, predictions_by_model in all_model_predictions.items():
-                for model_number, prediction in predictions_by_model.items():
+            for model_number, predictions_by_hour in all_model_predictions.items():
+                for hour, prediction in predictions_by_hour.items():
                     normalized_prediction = (prediction - prediction_min) / (prediction_max - prediction_min)
-                    all_model_predictions[hour][model_number] = normalized_prediction.tolist()
+                    all_model_predictions[model_number][hour] = normalized_prediction.tolist()
 
             print("Normalization has occurred for predictions.")
 
             # Store all the predictions as one large JSON object in Redis
             redis_client.set(redis_key, json.dumps(all_model_predictions))
-            print("Predictions have been stored in Redis cache.")
+            print("Cache was not used for predictions. Unpickled models instead")
             redis_client.expire(redis_key, 24 * 60 * 60)
-            print("24-hour expiry set")
+            print("24 hour expiry set")
 
     except redis.exceptions.ConnectionError:
         # Handle Redis connection error gracefully

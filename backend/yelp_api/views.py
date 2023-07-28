@@ -89,6 +89,8 @@ def cafes_api(request, location):
             
             if len(businesses) < limit:
                 break
+        
+        print('populated db with cafes up to limit')
 
         Cafe.objects.all().delete()
 

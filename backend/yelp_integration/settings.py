@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import datetime
-
+from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -166,12 +167,19 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Dublin'
+
+now = datetime.now()
+current_day = now.weekday()
+current_month = now.month
+current_week_of_year = now.isocalendar()[1]
+
 
 CELERY_BEAT_SCHEDULE = {
     'calculate_and_cache_predictions_task': {
         'task': 'yelp_api.tasks.calculate_and_cache_predictions',
-        'schedule': 120.0,  # Run every 2 minutes
-        'args': (datetime.now().weekday(), datetime.now().month, datetime.now().isocalendar()[1]),
+        'schedule': crontab(hour=2, minute=0),
+        'args': (current_day, current_month, current_week_of_year),
     },
 }
 
