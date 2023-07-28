@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import datetime
+from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -157,3 +160,26 @@ CORS_ALLOWED_ORIGINS = [
 REDIS_HOST = '127.0.0.1'   # Replace 'your_redis_host' with the actual Redis host
 REDIS_PORT = 6379                # Replace '6379' with the actual Redis port number
 REDIS_DB = 0                     # Replace '0' with the actual Redis database number you want to use
+
+# celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Dublin'
+
+now = datetime.now()
+current_day = now.weekday()
+current_month = now.month
+current_week_of_year = now.isocalendar()[1]
+
+
+CELERY_BEAT_SCHEDULE = {
+    'calculate_and_cache_predictions_task': {
+        'task': 'yelp_api.tasks.calculate_and_cache_predictions',
+        'schedule': crontab(hour=2, minute=0),
+        'args': (current_day, current_month, current_week_of_year),
+    },
+}
+
