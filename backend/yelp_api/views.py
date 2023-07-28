@@ -20,8 +20,8 @@ import json
 from datetime import date
 
 
-REDIS_HOST = '127.0.0.1'
-REDIS_PORT = '6379'
+#REDIS_HOST = '127.0.0.1'
+#REDIS_PORT = '6379'
 
 @api_view(['GET'])
 def predictions_api(request, location):

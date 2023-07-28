@@ -1,0 +1,30 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./coffee-compass
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./coffee-compass:/app
+
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile 
+
+    ports: 
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+
+    depends_on:
+    - redis_cache
+
+  redis_cache:
+    image: redis/redis-stack:latest
+    container_name: redis-stack
+
+
