@@ -26,55 +26,53 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, hour, setHour}
     const [activeDay, setActiveDay] = useState(getDay);
     const [activeMonth, setActiveMonth] = useState(getMonth);
     const [activeIndex, setActiveIndex] = useState(getHour());
-    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
-    //sets the active hour to the hour selected on the slider
-    let day = (getDay() - 1);
-    let month = (getMonth());
     useEffect(() => {
-        // a variable that returns the index of the current day from days array
-  
-    console.log("switch", activeIndex)
         switch(selectedTimeFrame) {
-          case 'day':
-            setActiveIndex(hour);
-            setHour(hour);
-            break;
-          case 'week':
-            setActiveIndex(day);
-            setHour(day);
-            break;
-          case 'year':
-            setActiveIndex(month);
-            setHour(month)
-            break;
-          default:
-            setActiveIndex(hour);
-            setHour(hour)
+            case 'day':
+                setActiveIndex(hour);
+                setHour(hour);
+                break;
+            case 'week':
+                setActiveIndex(getDay());
+                setHour(getDay());
+                break;
+            case 'year':
+                setActiveIndex(getMonth());
+                setHour(getMonth())
+                break;
+            default:
+                setActiveIndex(hour);
+                setHour(hour)
         }
-      }, [selectedTimeFrame]);
+    }, [selectedTimeFrame, hour]);
 
-
-
-
-
-
-
-    //if the hour is >= 12, it is PM, otherwise it is AM
-    //if the hour is 0, it is 12 AM
-    //hour  is the slider index, if month is selected than the index is 0-11 and it will pick the correct month
     useEffect(() => {
-        const ampm = activeIndex >= 12 ? 'PM' : 'AM';
-        const hour12 = activeIndex % 12 === 0 ? 12 : activeIndex % 12;
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const hour12 = hour % 12 === 0 ? 12 : hour % 12;
         setActiveHour(`${hour12} ${ampm}`);
-        setActiveDay(days[activeIndex % 7]); 
-        setActiveMonth(months[activeIndex % 12]);     }, [activeIndex]);
+        setActiveDay(days[getDay()]);
+        setActiveMonth(months[getMonth()]);
+    }, [hour]);
 
     const handleSliderChange = (event) => {
         const index = parseInt(event.target.value);
         setActiveIndex(index);
-        setHour(index);
+        switch(selectedTimeFrame) {
+            case 'day':
+                setHour(index);
+                break;
+            case 'week':
+                setHour(index);
+                break;
+            case 'year':
+                setHour(index);
+                break;
+            default:
+                setHour(index);
+        }
     }
 
     const handleTimeframeChange = (event) => {
@@ -89,18 +87,19 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, hour, setHour}
     if (selectedTimeFrame === 'day') {
         displayTimeframe = 'Hour';
         displayValue = activeHour;
-        inputValue = 
+        inputValue = activeIndex;
         maxRange = 23;
     } else if (selectedTimeFrame === 'week') {
         displayTimeframe = 'Day';
         displayValue = activeDay;
+        inputValue = activeIndex;
         maxRange = 6;
     } else if (selectedTimeFrame === 'year') {
         displayTimeframe = 'Month';
         displayValue = activeMonth;
+        inputValue = activeIndex;
         maxRange = 11;
     }
-
 
 return (
     <div className="BusynessSliderBox">

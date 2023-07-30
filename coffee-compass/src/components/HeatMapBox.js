@@ -4,11 +4,11 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 const HeatMapBox = ({handleHeatMap}) => {
-    const [header, setHeader] = useState('Busyness');
+    // const [header, setHeader] = useState('Busyness');
     //state variable to keep track of which checkboxes are checked
     //this is used to determine which layers to display on the map
     const [checked, setChecked] = useState({
-        busyness: false,
+        busyness: true,
         crimeData: false,
         prices: false,
         transportData: false,
@@ -28,6 +28,10 @@ const HeatMapBox = ({handleHeatMap}) => {
         // Pass new state to parent component
         handleHeatMap(newCheckedState);
         };
+
+        useEffect(() => {
+            handleHeatMap(checked);
+        }, []);  // passing an empty dependency array to ensure this effect runs only once, on mount
 
     return (
         <div className="HeatMapBox">
@@ -83,16 +87,7 @@ const HeatMapBox = ({handleHeatMap}) => {
                 />
 
             </FormGroup>
-            <div className='session'>
-                <h3>{header}</h3>
-                <div className='row colors'>
-                </div>
-            <div className='row labels'>
-                <div className='label-first'>0</div>
-                <div className='label-middle'>0.5</div>
-                <div className='label-last'>1</div>
-            </div>
-        </div>
+         <button className = "buttonSuggestion">Find Your Location</button>
     </div>
     );
 };

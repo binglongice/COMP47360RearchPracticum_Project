@@ -12,6 +12,12 @@ import TakeOutBox from './TakeOutBox';
 import MapContext from '../context/MapContext';
 import BusynessSlider from './BusynessSlider';
 import LineChart from './LineChart';
+import Drawer from './Drawer';
+import centroid from '@turf/centroid';
+import HeatMapButton from './HeatMapButton';
+import TakeOutButton from './TakeOutButton';
+import HelpButton from './HelpButton';
+import HelpBox from './HelpBox';
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
 function Map({ selectedIndex, onCafeSelection }) {
@@ -49,6 +55,18 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [selectedTimeFrame, setSelectedTimeFrame] = useState('day');
   const [chartFlag, setChartFlag] = useState(false);
   const [currentObjectId, setCurrentObjectId] = useState(null);
+  const [rightSidebar, setRightSidebar] = useState(false);
+  const [sideBarName, setSideBarName] = useState(null);
+  const [zoneBusynessRank, setZoneBusynessRank ] = useState(null);
+  const [zonePropertyRank, setZonePropertyRank ] = useState(null);
+  const [zoneCrimeRank, setZoneCrimeRank ] = useState(null);
+  const [zoneTransportRank, setZoneTransportRank ] = useState(null);
+  const [zoneCombinedRank, setZoneCombinedRank ] = useState(null);
+  const [heatMap, setHeatMap] = useState(1); // 1 to render on page load
+  const [takeOut, setTakeOut] = useState(false); // true to render on page load
+  const [isMouseOverPopup, setIsMouseOverPopup] = useState(false);
+  const [helpBox, setHelpBox] = useState(false);
+  const [mouseOverPopup, setPopup] = useState(null);
 //takes in the json objects for busyness prices and crime
 //returns a json object with the objectid as the key and the rank as the value
 //assigns rank to each feature and creates a combined rank and current rank
@@ -231,6 +249,11 @@ const createHeatMapGeo = async (rankedData) => {
           feature.properties.crime_score = rankedData.crimeData[objectid].score;
         } else {
           console.log(`objectid ${objectid} not found in rankedData.crimeData.`);
+        }
+
+        if (rankedData.combined.hasOwnProperty(objectid)) {
+          let combinedRank = rankedData.combined[objectid].rank;
+          feature.properties.combined_rank = combinedRank;
         }
 
         //count of activeMaps
@@ -522,6 +545,7 @@ useEffect(() => {
 
     // setmapIsCurrent(true);
     // console.log("set map is current == TRUE");
+    // console.log("map.current: ", map.current);
 
     map.current.on('style.load', () => {
 
@@ -629,7 +653,8 @@ useEffect(() => {
 
 });
 
-        
+            
+
     // Create a popup
     const popup = new mapboxgl.Popup({
       closeButton: false,
@@ -719,7 +744,7 @@ useEffect(() => {
 
         // Update the name state with the zone name and zoneBusyness
         setName(zoneName);
-        setBusyness(zoneBusyness);
+        setBusyness(hoveredZone);
       });
 
       // Add mouseleave event listener to reset zone opacity when not hovering
@@ -731,16 +756,84 @@ useEffect(() => {
 
       map.current.on('click', 'taxi_zones_fill_map', (e) => {
         const objectid = e.features[0].properties.objectid;
+        const zoneName = e.features[0].properties.zone;
+        const zoneBusynessRank = e.features[0].properties.busyness_rank;
+        const zoneCrimeRank = e.features[0].properties.crime_rank;
+        const zonePropertyRank  = e.features[0].properties.prices_rank;
+        const zoneCombinedRank = e.features[0].properties.combined_rank;
+        const zoneTransportRank = e.features[0].properties.transport_rank;
+
         setChartFlag(true);
         setCurrentObjectId(objectid);
+        setRightSidebar(true)
+        setSideBarName(zoneName);
+        setZoneBusynessRank(zoneBusynessRank);
+        setZoneCrimeRank(zoneCrimeRank);
+        setZonePropertyRank(zonePropertyRank);
+        setZoneCombinedRank(zoneCombinedRank);
+        setZoneTransportRank(zoneTransportRank);
 
+        const lngLat = {
+          lng: e.lngLat.lng,
+          lat: e.lngLat.lat
+        };
+        setTimeout(() => {
+          map.current.flyTo({ center: lngLat, zoom: 14 });
+        }, 1000); // Delay in milliseconds
+    });
+      let currentZone = null; // Holds the current zone
 
-        // const lngLat = {
+      map.current.on('mousemove', 'taxi_zones_fill_map', (e) => {
+        const zoneName = e.features[0].properties.zone;
+
+        // If the mouse has moved to a new zone
+        if (zoneName !== currentZone) {
+          // Update the current zone
+          currentZone = zoneName;
+          setName(zoneName);
+  
+
+          // If a popup already exists, remove it
+          if (popup) {
+            popup.remove();
+          }
+
+          // Create a new popup with the current zoneName
+        var offset = {
+            'right': [500],
+        };
+
+        popup.setLngLat(e.lngLat, { offset: offset['right'] });          
+        popup.setHTML(`
+
+          <div class="my-custom-popup">
+          
+          <strong class = "large-text">${zoneName}</strong> <br>
+          <strong class = "small-text">Busyness Rank:</strong> ${e.features[0].properties.busyness_rank} <br>
+          <strong class = "small-text">Suitability Rank:</strong> ${e.features[0].properties.combined_rank} <br>
+          </div>
+          `);
+          
+          popup.addTo(map.current);
+        }
+      });
+      
+      
+      
+      map.current.on('mouseleave', 'taxi_zones_fill_map', () => {
+        if (popup ) {
+          popup.remove();
+        }
+        currentZone = null; // Reset the current zone when the mouse leaves the layer
+      });
+      
+      
+      // const lngLat = {
         //   lng: e.lngLat.lng,
         //   lat: e.lngLat.lat
         // };
         // map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
-      });    
+      // });    
 
 
     // cafe marker click function
@@ -762,7 +855,10 @@ useEffect(() => {
   };
   }, [isLoading, data, lng, lat, bounds]); //This is the useEffect dependency array
   //When any of the variables or states listed in the dependency array above change, the effect will run again.
-  
+  useEffect(() => {
+    console.log("POPUP", mouseOverPopup)
+  }, [mouseOverPopup])
+
 
 //Pass in active buttons from FilterNav to affect the layers
 
@@ -945,30 +1041,57 @@ useEffect(() => {
     handleHeatMap(activeMaps);
   }
 }, [newGeoJson]);
+
+useEffect(() => {
+  console.log("This is our chart flag ", chartFlag);
+  console.log("This is our chart object id", currentObjectId);
+}, [chartFlag, currentObjectId]);
+
   
   const lnglat =  {lng: -73.9712, lat:40.7831};
   const handleReset = () => {
     map.current.flyTo({ center: lnglat, zoom: 11.75 }); // 
   };
+  
+  //this returns map.current and allows us to use it in other components
+  //this is used in the Drawer component
+  //this helps with avoiding common pitfalls of useState asynchronous behavior
+  const getMap = () => map.current;
+
 
   return (
     <MapContext.Provider value={map.current}>
     <div>
       {/* Render the name element */}
-      <Navbar name = {zonename} busyness = {zonebusyness} />
-      <button onClick={handleReset}>Reset</button>
-      <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/>
+      {/* <Navbar name = {zonename} busyness = {zonebusyness} /> */}
+
+      {/* <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/> */}
             {/* Map container */}
-      <div ref={mapContainer} className="map-container"> {/*the useRef is being used to render the map */}
+      {mapIsCurrent && chartFlag === true && currentObjectId !== null && <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {busyness} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} />}
+
+      <div ref={mapContainer} className="map-container"/> {/*the useRef is being used to render the map */}
       {/* {isButton5Active && (<Legend/>)} Render the legend if the button is active */}
+
+       <div className = "heatmap-analytics">
+
+       <BusynessSlider selectedTimeFrame = {selectedTimeFrame} setSelectedTimeFrame = {setSelectedTimeFrame} hour = {hour} setHour = {setHour} />
+
+       <Legend/>
+
+       <HeatMapButton heatMap = {heatMap} setHeatMap = {setHeatMap} />
+
+       {mapIsCurrent && <div style={{ visibility: heatMap === 1 ? "hidden" : "visible" }}> <HeatMapBox handleHeatMap = {handleHeatMap} /> </div>} 
+
       </div>
-      <HeatMapBox handleHeatMap = {handleHeatMap} />
-      <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng}/>
-      <BusynessSlider selectedTimeFrame = {selectedTimeFrame} setSelectedTimeFrame = {setSelectedTimeFrame} hour = {hour} setHour = {setHour} />
+      <TakeOutButton takeOut = {takeOut} setTakeOut = {setTakeOut} />
+      {takeOut && <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng}/> }
       <div className="filter-nav-container">
       <FilterNav handleLayerChange={handleLayerChange} />
+
+      <HelpButton helpBox = {helpBox} setHelpBox = {setHelpBox} />
+      {helpBox && <HelpBox setHelpBox = {setHelpBox}/>}
     </div>
-    {chartFlag && currentObjectId &&  <LineChart dayData = {busyness} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId}/>}
+    {/* {chartFlag === true && currentObjectId !== null &&  <LineChart dayData = {busyness} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId}/>} */}
     </div>
     </MapContext.Provider>
   );

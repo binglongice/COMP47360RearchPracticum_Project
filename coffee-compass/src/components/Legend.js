@@ -1,27 +1,21 @@
-import { Container } from '@mui/material';
-import zIndex from '@mui/material/styles/zIndex';
 import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
 
 const rankToColor = d3.scaleLinear()
-  .domain([1, 33])  // Input: Rank ranges from 1 to 33
-  .range(['hsl(120, 100%, 25%)', 'hsl(120, 100%, 60%)']);  // Output: Corresponding lightness from 25% to 60%
-
-
-
+  .domain([1, 66])  // Input: Rank ranges from 1 to 66
+  .range(['hsl(120, 100%, 60%)', 'hsl(120, 100%, 25%)']);  // Output: Corresponding lightness from 60% to 25% (light to dark)
 
 const levels = Array.from({length: 11}, (_, i) => {
   const value = i / 10;
-  const rank = value * 33;  // Map value from 0-1 to rank 1-33
+  const rank = value * 66;  // Map value from 0-1 to rank 1-66
   return {
     color: rankToColor(rank),
     value: value,
   };
 });
-
 const Legend = () => { 
-  const [width, setWidth] = useState(60); 
-  const [height, setHeight] = useState(100);
+  const [width, setWidth] = useState(100);  // Adjust the initial width
+  const [height, setHeight] = useState(60);  // Adjust the initial height
   const [svg, setSvg] = useState(null);
 
   useEffect(() => {
@@ -41,8 +35,8 @@ const Legend = () => {
         .attr('id', 'linear-gradient')
         .attr('x1', '0%')
         .attr('y1', '0%')
-        .attr('x2', '0%')
-        .attr('y2', '100%');
+        .attr('x2', '100%')  // Make gradient horizontal
+        .attr('y2', '0%');
   
       linearGradient
         .selectAll('stop')  
@@ -54,37 +48,34 @@ const Legend = () => {
   
       svg
         .append('rect')
-        .attr('width', 20)
-        .attr('height', height)
+        .attr('width', width)  // Adjust rectangle's width and height
+        .attr('height', 20)
         .style('fill', 'url(#linear-gradient)');
   
       svg.append('text')
-        .attr('x', 30)
-        .attr('y', 10)
-        .style('fill', 'white')
-        .text('1');
-      
-      svg.append('text')
-        .attr('x', 30)
-        .attr('y', height)
+        .attr('x', 0)  // Adjust text's position
+        .attr('y', height - 5)
         .style('fill', 'white')
         .text('0');
 
-
-        svg.append('text')
-        .attr('x', 30)
-        .attr('y', height/2)
+      svg.append('text')
+        .attr('x', width / 2)
+        .attr('y', height - 5)
         .style('fill', 'white')
         .text('0.5');
-    }
 
-    
+      svg.append('text')
+        .attr('x', width - 10)
+        .attr('y', height - 5)
+        .style('fill', 'white')
+        .text('1');
+    }
   }, [svg, width, height]);
   
   return (
     <div className="legend">
       <h4>Busyness</h4>
-      <svg id="legend-svg" width="50" height="100" />
+      <svg id="legend-svg" width="180" height="50" />  
     </div>
   );
 };
