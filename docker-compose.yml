@@ -1,9 +1,10 @@
 version: '3'
 services:
   frontend:
-    build:
-      context: ./coffee-compass
-      dockerfile: Dockerfile
+    image: coliwoli/thefront1
+   # build:
+    #  context: ./coffee-compass
+     # dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
@@ -11,9 +12,10 @@ services:
 
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile 
+   # build:
+    #  context: ./backend
+     # dockerfile: Dockerfile 
+    image: coliwoli/theback1
 
     ports: 
       - "8000:8000"
