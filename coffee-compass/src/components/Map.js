@@ -778,13 +778,13 @@ useEffect(() => {
         setZoneCombinedRank(zoneCombinedRank);
         setZoneTransportRank(zoneTransportRank);
 
-        const lngLat = {
-          lng: e.lngLat.lng,
-          lat: e.lngLat.lat
-        };
-        setTimeout(() => {
-          map.current.flyTo({ center: lngLat, zoom: 14 });
-        }, 1000); // Delay in milliseconds
+        // const lngLat = {
+        //   lng: e.lngLat.lng,
+        //   lat: e.lngLat.lat
+        // };
+        // setTimeout(() => {
+        //   map.current.flyTo({ center: lngLat, zoom: 14 });
+        // }, 1000); // Delay in milliseconds
     });
       let currentZone = null; // Holds the current zone
 
@@ -1072,7 +1072,7 @@ useEffect(() => {
 
       {/* <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/> */}
             {/* Map container */}
-      {mapIsCurrent && chartFlag === true && currentObjectId !== null && <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {busyness} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} />}
+      {mapIsCurrent && chartFlag === true && currentObjectId !== null && <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {picklePredictions} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} />}
 
       <div ref={mapContainer} className="map-container"/> {/*the useRef is being used to render the map */}
       {/* {isButton5Active && (<Legend/>)} Render the legend if the button is active */}
