@@ -18,63 +18,70 @@ const getMonth = () => {
 
 //useStates are out of sync with each other
 //This causes the slider to be jumpy when switchign between timeframes
-//when day is selected a second time it returns the incorrect hour (switches to am instead of pm)
   
-const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, hour, setHour}) => {
-
+const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, activeIndex, setActiveIndex}) => {
+    
     const [activeHour, setActiveHour] = useState(getHour());
     const [activeDay, setActiveDay] = useState(getDay);
     const [activeMonth, setActiveMonth] = useState(getMonth);
-    const [activeIndex, setActiveIndex] = useState(getHour());
+    // const [activeIndex, setActiveIndex] = useState(getHour());
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
-    useEffect(() => {
-        switch(selectedTimeFrame) {
-            case 'day':
-                setActiveIndex(hour);
-                setHour(hour);
-                break;
-            case 'week':
-                setActiveIndex(getDay());
-                setHour(getDay());
-                break;
-            case 'year':
-                setActiveIndex(getMonth());
-                setHour(getMonth())
-                break;
-            default:
-                setActiveIndex(hour);
-                setHour(hour)
-        }
-    }, [selectedTimeFrame, hour]);
+    // useEffect(() => {
+    //     switch(selectedTimeFrame) {
+    //         case 'day':
+    //             setActiveIndex(getHour());
+    //             break;
+    //         case 'week':
+    //             setActiveIndex(getDay());
+    //             break;
+    //         case 'year':
+    //             setActiveIndex(getMonth());
+    //             break;
+    //         default:
+    //             setActiveIndex(getHour());
+    //     }
+    // }, [selectedTimeFrame]);
 
     useEffect(() => {
-        const ampm = hour >= 12 ? 'PM' : 'AM';
-        const hour12 = hour % 12 === 0 ? 12 : hour % 12;
+        setActiveIndex(0);
+    }, [selectedTimeFrame]);
+
+
+    useEffect(() => {
+        let maxIndex;
+        switch(selectedTimeFrame) {
+            case 'day':
+                maxIndex = 23;
+                break;
+            case 'week':
+                maxIndex = 6;
+                break;
+            case 'year':
+                maxIndex = 11;
+                break;
+            default:
+                maxIndex = 23;
+        }
+        setActiveIndex(prevIndex => Math.min(prevIndex, maxIndex));
+    }, [selectedTimeFrame]);
+    
+    
+
+    useEffect(() => {
+        const ampm = activeIndex >= 12 ? 'PM' : 'AM';
+        const hour12 = activeIndex % 12 === 0 ? 12 : activeIndex % 12;
         setActiveHour(`${hour12} ${ampm}`);
-        setActiveDay(days[getDay()]);
-        setActiveMonth(months[getMonth()]);
-    }, [hour]);
+        setActiveDay(days[activeIndex]);
+        setActiveMonth(months[activeIndex]);
+        console.log(activeIndex)
+    }, [activeIndex]);
 
-    const handleSliderChange = (event) => {
-        const index = parseInt(event.target.value);
-        setActiveIndex(index);
-        switch(selectedTimeFrame) {
-            case 'day':
-                setHour(index);
-                break;
-            case 'week':
-                setHour(index);
-                break;
-            case 'year':
-                setHour(index);
-                break;
-            default:
-                setHour(index);
-        }
-    }
-
+const handleSliderChange = (event) => {
+    const index = parseInt(event.target.value);
+    setActiveIndex(index);
+}
     const handleTimeframeChange = (event) => {
         setSelectedTimeFrame(event.target.value);
     }
@@ -82,7 +89,7 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, hour, setHour}
     let displayTimeframe = 'Hour';
     let displayValue = activeHour;
     let maxRange = 23;
-    let inputValue = hour;
+    let inputValue = activeIndex;
 
     if (selectedTimeFrame === 'day') {
         displayTimeframe = 'Hour';
@@ -122,6 +129,4 @@ return (
     </div>
     );
 }
-
-
 export default BusynessSlider;

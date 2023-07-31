@@ -66,6 +66,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [isMouseOverPopup, setIsMouseOverPopup] = useState(false);
   const [helpBox, setHelpBox] = useState(false);
   const [mouseOverPopup, setPopup] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(getHour());
 //takes in the json objects for busyness prices and crime
 //returns a json object with the objectid as the key and the rank as the value
 //assigns rank to each feature and creates a combined rank and current rank
@@ -100,7 +101,7 @@ function Map({ selectedIndex, onCafeSelection }) {
       console.log("This is busynessData as it switches!: ", busynessData);
       console.log("This is prices: ", prices);
   
-      let sortedKeysBusyness = Object.keys(busynessData).sort((a, b) => busynessData[b][hour] - busynessData[a][hour]);
+      let sortedKeysBusyness = Object.keys(busynessData).sort((a, b) => busynessData[b][activeIndex] - busynessData[a][activeIndex]);
       let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[b] - prices[a]);
       let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[b] - crimeData[a]); //sort so that zone with lowest crime is first
       let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
@@ -192,7 +193,7 @@ function Map({ selectedIndex, onCafeSelection }) {
       setRankedData(rankedData);
     }
   
-  }, [selectedTimeFrame, prices, crimeData, activeMaps, hour]);
+  }, [selectedTimeFrame, prices, crimeData, activeMaps, activeIndex]);
  
  //takes in a rank and returns a color 
 function getColorFromRank(rank) {
@@ -1078,7 +1079,7 @@ useEffect(() => {
 
        <div className = "heatmap-analytics">
 
-       <BusynessSlider selectedTimeFrame = {selectedTimeFrame} setSelectedTimeFrame = {setSelectedTimeFrame} hour = {hour} setHour = {setHour} />
+       <BusynessSlider selectedTimeFrame = {selectedTimeFrame} setSelectedTimeFrame = {setSelectedTimeFrame} activeIndex = {activeIndex} setActiveIndex = {setActiveIndex} />
 
        <Legend/>
 
