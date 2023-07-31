@@ -97,29 +97,29 @@ function Store({ children, selectedCafeId }) {
     .then(data => {
       console.log('API data', data);
   
-      // Initiate an empty hashmap
-      const hashmap = {};
+      // // Initiate an empty hashmap
+      // const hashmap = {};
   
-      // Iterate through all keys (hours) in the data object
-      Object.keys(data).forEach(hourKey => {
-        const hourData = data[hourKey];
+      // // Iterate through all keys (hours) in the data object
+      // Object.keys(data).forEach(hourKey => {
+      //   const hourData = data[hourKey];
   
-        // For each hour, iterate through all keys (models)
-        Object.keys(hourData).forEach(modelKey => {
-          // If the model does not exist in the hashmap, create an empty array
-          if (!hashmap[modelKey]) {
-            hashmap[modelKey] = [];
-          }
+      //   // For each hour, iterate through all keys (models)
+      //   Object.keys(hourData).forEach(modelKey => {
+      //     // If the model does not exist in the hashmap, create an empty array
+      //     if (!hashmap[modelKey]) {
+      //       hashmap[modelKey] = [];
+      //     }
   
-          // Push the model value into the corresponding array
-          hashmap[modelKey].push(hourData[modelKey]);
-        });
-      });
+      //     // Push the model value into the corresponding array
+      //     hashmap[modelKey].push(hourData[modelKey]);
+      //   });
+      // });
   
-      console.log("store keys", Object.keys(data));
-      console.log("testing hashmap for model_4:", hashmap["model_4"]);
-      console.log("hashmap:", hashmap);
-      setPicklePredictions(hashmap);
+      // console.log("store keys", Object.keys(data));
+      // console.log("testing hashmap for model_4:", hashmap["model_4"]);
+      // console.log("hashmap:", hashmap);
+      setPicklePredictions(data);
     })
     .catch(error => {
       console.error('Error:', error);

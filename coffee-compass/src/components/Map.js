@@ -82,11 +82,12 @@ function Map({ selectedIndex, onCafeSelection }) {
         "combined": {},
         "current": {},
       };
+      console.log("This is the selected time frame: ", selectedTimeFrame);
       //depending on the value of busyness Data we will switch the data that we use to rank busyness
       let busynessData;
       switch(selectedTimeFrame) {
         case 'day':
-          busynessData = busyness;
+          busynessData = picklePredictions;
           break;
         case 'week':
           busynessData = weekRankData;
@@ -95,9 +96,10 @@ function Map({ selectedIndex, onCafeSelection }) {
           busynessData = yearRankData;
           break;
         default:
-          busynessData = busyness;
+          busynessData = picklePredictions;
       }
       console.log("This is busynessData as it switches!: ", busynessData);
+      console.log("This is prices: ", prices);
   
       let sortedKeysBusyness = Object.keys(busynessData).sort((a, b) => busynessData[b][hour] - busynessData[a][hour]);
       let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[b] - prices[a]);
@@ -105,10 +107,13 @@ function Map({ selectedIndex, onCafeSelection }) {
       let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
       let combined = {};
       let current = {};
+
+      console.log("sortedKeysBusyness", sortedKeysBusyness);
+      console.log("sortedKeysPrices", sortedKeysPrices);
   
       for (let rank = 0; rank < sortedKeysBusyness.length; rank++) {
         let objectid = sortedKeysBusyness[rank];
-        rankedData.busyness[objectid] = { score: busyness[objectid], rank: rank + 1 };
+        rankedData.busyness[objectid] = { score: busynessData[objectid], rank: rank + 1 };
   
         // Initialize combined rank with busyness rank
         combined[objectid] = { rank: rank + 1 };
@@ -315,20 +320,20 @@ useEffect(() => {
   //called everytime the picklePredictions changes (when the predictions are updated)
   useEffect(() => {
     if (picklePredictions && yearData && weekData) {
-      const predictions = Object.fromEntries(
-        Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
-      );
+      // const predictions = Object.fromEntries(
+      //   Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
+      // );
       const weekPredictions = Object.fromEntries(
         Object.entries(weekData).map(([key, value]) => [key.replace("model_", ""), value])
       );
       const yearPredictions = Object.fromEntries(
         Object.entries(yearData).map(([key, value]) => [key.replace("model_", ""), value])
       );
-
-      console.log("Predictions is not empty:", predictions);
+      console.log("pickle predictions:", picklePredictions);
+      // console.log("Predictions is not empty:", predictions);
       console.log("Week Predictions", weekPredictions);
       console.log("year predictions", yearPredictions);
-      setBusynessData(predictions);
+      // setBusynessData(predictions);
       setWeekRankData(weekPredictions);
       setYearRankData(yearPredictions);
       // setYearData(yearPredictions);
