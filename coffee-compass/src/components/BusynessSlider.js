@@ -68,7 +68,7 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, activeIndex, s
             displayTimeframe = 'Hour';
     }
 
-    // const displayTimeframe = selectedTimeFrame.charAt(0).toUpperCase() + selectedTimeFrame.slice(1);
+    //if selectedTimeFrame is day, display hours, if week, display days, if year, display months
     const displayValue = selectedTimeFrame === 'day' ? hours[activeIndex] : selectedTimeFrame === 'week' ? days[activeIndex] : months[activeIndex]
     const maxRange = selectedTimeFrame === 'day' ? 23 : selectedTimeFrame === 'week' ? 6 : 11;
 

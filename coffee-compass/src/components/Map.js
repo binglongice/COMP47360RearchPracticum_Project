@@ -167,7 +167,7 @@ function Map({ selectedIndex, onCafeSelection }) {
               // while the rank is less than the amount of objects in the source, add the rank to the objectid
               for (let rank = 0; rank < sources[source].length; rank++) {
                 let objectid = sources[source][rank];
-                rankedData[source][objectid] = { score: eval(source)[objectid], rank: rank + 1 };
+                rankedData[source][objectid] = { score: sources[source][objectid], rank: rank + 1 };
       
                 // If the objectid already exists in current, add to its rank; otherwise, initialize it
                 if (current[objectid]) {
