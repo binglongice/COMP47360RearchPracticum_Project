@@ -603,14 +603,16 @@ useEffect(() => {
 
       map.current.flyTo({
         center: [lng, lat], // offset the center
-        zoom: 12.063698237457222,
+        // zoom: 12.063698237457222,
+        zoom: 12.2,
         minZoom: zoom,
-        pitch: 57.418875067604525,
+        // pitch: 57.418875067604525,
+        pitch: 45,
         bearing: 0,
         curve: 0.19, // Default value
         speed: 0.1, // Make the flying slow
-        duration: 8000,
-        easing: easeInCubic,
+        duration: 4000,
+        // easing: easeInCubic,
         essential: true,
     });
 
@@ -1051,7 +1053,7 @@ useEffect(() => {
   console.log("This is our chart object id", currentObjectId);
 }, [chartFlag, currentObjectId]);
 
-  
+
   const lnglat =  {lng: -73.9712, lat:40.7831};
   const handleReset = () => {
     map.current.flyTo({ center: lnglat, zoom: 11.75 }); // 
