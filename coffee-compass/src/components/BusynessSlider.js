@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const getHour = () => {
     const today = new Date();
     return today.getHours();
-  }
+}
   
 const getDay = () => {
 const today = new Date();
@@ -15,100 +15,64 @@ const getMonth = () => {
     return today.getMonth();
 }
   
-
-//useStates are out of sync with each other
-//This causes the slider to be jumpy when switchign between timeframes
-  
 const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, activeIndex, setActiveIndex}) => {
-    
-    const [activeHour, setActiveHour] = useState(getHour());
-    const [activeDay, setActiveDay] = useState(getDay);
-    const [activeMonth, setActiveMonth] = useState(getMonth);
-    // const [activeIndex, setActiveIndex] = useState(getHour());
+    //hours = 0-23
+    const hours = ["12AM", "1AM", "2AM", "3AM", "4AM", "5AM", "6AM", "7AM", "8AM", "9AM", "10AM", "11AM", "12PM", "1PM","2PM", "3PM", "4PM", "5PM", "6PM", "7PM", "8PM", "9PM","10PM", "11PM"]
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
-    // useEffect(() => {
-    //     switch(selectedTimeFrame) {
-    //         case 'day':
-    //             setActiveIndex(getHour());
-    //             break;
-    //         case 'week':
-    //             setActiveIndex(getDay());
-    //             break;
-    //         case 'year':
-    //             setActiveIndex(getMonth());
-    //             break;
-    //         default:
-    //             setActiveIndex(getHour());
-    //     }
-    // }, [selectedTimeFrame]);
-
-    useEffect(() => {
-        setActiveIndex(0);
-    }, [selectedTimeFrame]);
-
-
     useEffect(() => {
         let maxIndex;
+        let newActiveIndex;
         switch(selectedTimeFrame) {
             case 'day':
+                newActiveIndex = getHour();
                 maxIndex = 23;
                 break;
             case 'week':
+                newActiveIndex = getDay();
                 maxIndex = 6;
                 break;
             case 'year':
+                newActiveIndex = getMonth();
                 maxIndex = 11;
                 break;
             default:
+                newActiveIndex = getHour();
                 maxIndex = 23;
         }
-        setActiveIndex(prevIndex => Math.min(prevIndex, maxIndex));
-    }, [selectedTimeFrame]);
-    
-    
+        setActiveIndex(Math.min(newActiveIndex, maxIndex));
+    }, [selectedTimeFrame, setActiveIndex]);
 
-    useEffect(() => {
-        const ampm = activeIndex >= 12 ? 'PM' : 'AM';
-        const hour12 = activeIndex % 12 === 0 ? 12 : activeIndex % 12;
-        setActiveHour(`${hour12} ${ampm}`);
-        setActiveDay(days[activeIndex]);
-        setActiveMonth(months[activeIndex]);
-        console.log(activeIndex)
-    }, [activeIndex]);
+    const handleSliderChange = (event) => {
+        const index = parseInt(event.target.value);
+        setActiveIndex(index);
+    }
 
-const handleSliderChange = (event) => {
-    const index = parseInt(event.target.value);
-    setActiveIndex(index);
-}
     const handleTimeframeChange = (event) => {
         setSelectedTimeFrame(event.target.value);
     }
 
-    let displayTimeframe = 'Hour';
-    let displayValue = activeHour;
-    let maxRange = 23;
-    let inputValue = activeIndex;
-
-    if (selectedTimeFrame === 'day') {
-        displayTimeframe = 'Hour';
-        displayValue = activeHour;
-        inputValue = activeIndex;
-        maxRange = 23;
-    } else if (selectedTimeFrame === 'week') {
-        displayTimeframe = 'Day';
-        displayValue = activeDay;
-        inputValue = activeIndex;
-        maxRange = 6;
-    } else if (selectedTimeFrame === 'year') {
-        displayTimeframe = 'Month';
-        displayValue = activeMonth;
-        inputValue = activeIndex;
-        maxRange = 11;
+    let displayTimeframe;
+    switch(selectedTimeFrame) {
+        case 'day':
+            displayTimeframe = 'Hour';
+            break;
+        case 'week':
+            displayTimeframe = 'Day';
+            break;
+        case 'year':
+            displayTimeframe = 'Month';
+            break;
+        default:
+            displayTimeframe = 'Hour';
     }
 
-return (
+    // const displayTimeframe = selectedTimeFrame.charAt(0).toUpperCase() + selectedTimeFrame.slice(1);
+    const displayValue = selectedTimeFrame === 'day' ? hours[activeIndex] : selectedTimeFrame === 'week' ? days[activeIndex] : months[activeIndex]
+    const maxRange = selectedTimeFrame === 'day' ? 23 : selectedTimeFrame === 'week' ? 6 : 11;
+
+    return (
     <div className="BusynessSliderBox">
         <h3>Busyness Slider</h3>
         <div className='session'>
