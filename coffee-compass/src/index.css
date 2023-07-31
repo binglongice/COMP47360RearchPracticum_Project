@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,7 +14,8 @@ code {
 }
 
 .map-container {
-  height: 90vh;
+  width: 100vw;
+  height: 100vh;
   }
 
 .nav-bar {
@@ -42,6 +44,7 @@ nav li {
   position: relative;
   text-align: center;
   list-style-type: none; /*Hide bullets*/
+  padding: 5px;
 }
 
 nav li a {
@@ -52,7 +55,8 @@ nav li a {
   border-radius: 50%;
   overflow: hidden; /* Ensure the image stays within the circular shape */
   border: 2px solid transparent; /* Set an initial transparent border */
-  transition: border-color 0.1s; /* Add transition for the border color change */  
+  transition: border-color 0.1s; /* Add transition for the border color change */ 
+  background-color: #1f1f1f; 
 }
 
 nav li a img {
@@ -61,14 +65,14 @@ nav li a img {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  border: 2px solid #20826c; /* Add the border property with the desired color */
+  /* border: 2px solid #20826c; Add the border property with the desired color */
   border-radius: 50%;
   width: 25px;
   height: 25px;
 
 }
 nav li a:hover {
-  border-color: #20826c; /* Change the border color on hover */
+  border-color: #00FF00; /* Change the border color on hover */
 }
 nav li a .inner {
   position: absolute;
@@ -77,7 +81,7 @@ nav li a .inner {
   width: 0;
   height: 0;
   margin: 0;
-  background-color: #20826c;
+  background-color: #00FF00;
   border-radius: 50%;
   transition: all 0.1s;
 }
@@ -100,7 +104,7 @@ nav li a:hover .inner {
 }
 
 nav li a.active {
-  border-color: #20826c;
+  border-color: #00FF00;
 }
 
 nav li a.active .inner {
@@ -110,18 +114,17 @@ nav li a.active .inner {
 }
 
 .legend {
-  background-color: black;
+  background-color: #1f1f1f;
+  color: #F2F4F3;
   border-radius: 3px;
-  bottom: 30px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
-  position: absolute;
-  right: 10px;
-  bottom: 40px;
+  /* position: absolute;
+  left: 10vh;  
+  bottom: 35vh;   */
   z-index: 1;
-  }
-
+}
 .legend h4 {
   margin: 0 0 10px;
   text-align: center;
@@ -139,19 +142,32 @@ nav li a.active .inner {
   display: inline-block;
   height: 30px;
   margin-right: 5px;
-  width: 10px;
+  width: 10vh;
   }
 
+  .heatmap-analytics {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
+    position: absolute;
+    top: 15%;  
+    left: 10%; 
+    z-index: 1;
+    gap: 20px;
+  }
+  
 .HeatMapBox {
-  background-color: white;
+  background-color: #1f1f1f;
+  color: #F2F4F3;
   border-radius: 3px;
   bottom: 30px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
-  position: absolute;
-  left: 10px;
-  bottom: 40px;
+  /* position: absolute; */
+  /* left: 12.5vh; */
+  /* bottom: 8vh; */
   z-index: 1;
   }
 
@@ -161,15 +177,16 @@ nav li a.active .inner {
 }
 
 .takeout-box-container {
-  background-color: white;
+  background-color: #1f1f1f;
+  color: #F2F4F3;
   border-radius: 3px;
   bottom: 30px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
   position: absolute;
-  right: 10px;
-  bottom: 40px;
+  right: 40vh;
+  bottom: 5vh;
   z-index: 1;
 }
 /* I want the radio buttons to be next to each other in the same line */
@@ -267,3 +284,346 @@ nav li a.active .inner {
       box-sizing: border-box;
       text-align: right;
     }
+
+
+    .BusynessSliderBox {
+      background-color: #1f1f1f;
+      border-radius: 3px;
+      bottom: 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      /* position: absolute;
+      left: 10vh;
+      bottom: 52vh; */
+      z-index: 1;
+      color: #F2F4F3;
+    }
+
+    .BusynessSliderBox h2 {
+      font-size: 14px;
+      line-height: 20px;
+      margin-bottom: 10px;
+    }
+
+
+/* browsers except firefox
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: #00FF00;
+    }
+    input[type="range"]::-moz-range-track {
+      background: #20826c;
+      height: 0.5rem;
+    }
+ */
+
+/* chart container */
+
+
+.chart-container {
+  background-color: #1f1f1f; /* Lighter Green */
+  color: #F2F4F3; /* Darker Text */
+  /* border-radius: 3px; */
+  /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); */
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  bottom: 0vh;
+  z-index: 10;
+  /* width: calc(100% - 20px); Subtract padding from width */
+  max-width: calc(285px - 20px); /* Set max-width to match .sidebar-content width (subtracting the padding) */
+}
+
+/* side bar */
+
+.sidebar {
+  max-height: 94vh; /* or any other value that suits your needs */
+  overflow-y: auto;
+  border-radius: 10px; 
+  top: 3vh;
+  bottom: 3vh;
+  /* add a shadow*/
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  background-color: #1f1f1f; /* Dark Teal Primary Color */
+  color: #F2F4F3; /* Off-White Text */
+
+
+}
+
+.rounded-rect {
+  background: #1f1f1f; /* Starbucks Green */
+  color: #F2F4F3; /* White */
+  border-radius: 10px;
+  /* box-shadow: 0 0 50px -25px black; */
+}
+
+.flex-center {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center.left {
+  left: 0px;
+}
+
+.flex-center.right {
+  right: 0px;
+}
+
+.sidebar-content {
+  position: relative;
+  width: 95%;
+  height: 95%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 32px;
+  color: #F2F4F3; /* White */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align elements to the top */
+  align-items: center; /* Center horizontally */
+}   
+.sidebar-toggle {
+  position: absolute;
+  width: 1.3em;
+  height: 1.3em;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #F2F4F3; /* White */
+}
+   
+.sidebar-toggle.left {
+  right: -1.5em;
+}
+   
+.sidebar-toggle.right {
+  position: absolute;
+  top: -2vh; /* adjust this value to move up/down */
+  right: 30vh; /* adjust this value to move left/right */
+}
+   
+.sidebar-toggle:hover {
+  color: #0aa1cf;
+  cursor: pointer;
+}
+   
+.sidebar {
+  transition: transform 1s;
+  z-index: 1;
+  width: 300px;
+  height: 100%;
+  background-color: #1f1f1f; /* Starbucks Green */
+  color: #F2F4F3; /* White */
+}
+   
+.left.collapsed {
+  transform: translateX(-295px);
+}
+   
+.right.collapsed {
+  transform: translateX(295px);
+}
+
+.collapsed {
+  width: 0;
+  overflow: hidden;
+}
+
+.mapboxgl-popup {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+  
+.mapboxgl-popup-content {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.my-custom-popup {
+  max-width: 200px;
+  padding: 10px;
+  background-color: #1f1f1f; /* Starbucks Green */
+  color: #ffffff; /* White */
+  font: 14px/20px 'Arial', sans-serif;
+  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.my-custom-popup .large-text {
+  color: #ffffff; /* White */
+  font-size: 16px;
+}
+
+.my-custom-popup .small-text {
+  color: #ffffff; /* White */
+  font-size: 12px;
+}
+
+.sidebar-header {
+  font-size: 2.5rem; /* Adjust as needed */
+  color: #F2F4F3; /* Adjust as needed */
+  text-align: center;
+  padding-bottom: 1rem; /* Space below the header */
+}
+
+.rank-info {
+  font-size: 0.8rem; /* Adjust as needed */
+  color: #B6B8B9; /* Adjust as needed */
+  text-align: center;
+}
+
+.HeatMapButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  /* position: absolute;
+  left: 15vh;  
+  bottom: 28vh;   */
+  z-index: 1;
+  
+}
+
+.HeatMapButton:hover {
+  background-color: #393939;
+}
+
+
+.buttonSuggestion {
+  background-color: #292929;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+}
+
+.buttonSuggestion:hover {
+  background-color: #393939;
+}
+
+.submit-button {
+  background-color: #292929;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+
+.submit-button:hover {
+  background-color: #393939;
+}
+
+.takeOutButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 1;
+  position: absolute;
+  right: 47vh;
+  bottom: 50vh;
+}
+
+.takeOutButton:hover {
+  background-color: #393939;
+
+}
+
+/* style my helpButton so its at the top right of the page */
+
+
+
+.helpButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 10%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 20;
+  position: fixed;
+  left: 5vh;
+  top: 0vh;
+}
+
+.helpButton:hover {
+  background-color: #393939;
+}
+.HelpBoxContainer {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 10%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 500;
+  text-align: center;
+
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 499;
+}
+
+.ExitButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 10%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 500;
+  position: absolute;
+  left: 550%;
+}
+
+.ExitButton:hover {
+  background-color: #393939;
+}
