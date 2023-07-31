@@ -10,12 +10,27 @@ import Legend from './Legend';
 import HeatMapBox from './HeatMapBox';
 import TakeOutBox from './TakeOutBox';
 import MapContext from '../context/MapContext';
-
+import BusynessSlider from './BusynessSlider';
+import LineChart from './LineChart';
+import Drawer from './Drawer';
+import centroid from '@turf/centroid';
+import HeatMapButton from './HeatMapButton';
+import TakeOutButton from './TakeOutButton';
+import HelpButton from './HelpButton';
+import HelpBox from './HelpBox';
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
 function Map({ selectedIndex, onCafeSelection }) {
+
+  const getHour = () => {
+    const today = new Date();
+    return today.getHours();
+  }
+
+
+
   const [selectedCafeId, setSelectedCafeId] = useState(null);
-  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions] = useContext(ApiContext);  
+  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData] = useContext(ApiContext);  
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [mapIsCurrent, setmapIsCurrent] = useState(false);
@@ -34,14 +49,31 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [activeMaps, setActiveMaps] = useState(null);
   const[newGeoJson, setNewGeoJson] = useState(null);
   const [transportData, setTransportData] = useState(null);
-
+  const [hour, setHour] = useState(getHour());
+  const [weekRankData, setWeekRankData] = useState(null);
+  const [yearRankData, setYearRankData] = useState(null);
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState('day');
+  const [chartFlag, setChartFlag] = useState(false);
+  const [currentObjectId, setCurrentObjectId] = useState(null);
+  const [rightSidebar, setRightSidebar] = useState(false);
+  const [sideBarName, setSideBarName] = useState(null);
+  const [zoneBusynessRank, setZoneBusynessRank ] = useState(null);
+  const [zonePropertyRank, setZonePropertyRank ] = useState(null);
+  const [zoneCrimeRank, setZoneCrimeRank ] = useState(null);
+  const [zoneTransportRank, setZoneTransportRank ] = useState(null);
+  const [zoneCombinedRank, setZoneCombinedRank ] = useState(null);
+  const [heatMap, setHeatMap] = useState(1); // 1 to render on page load
+  const [takeOut, setTakeOut] = useState(false); // true to render on page load
+  const [isMouseOverPopup, setIsMouseOverPopup] = useState(false);
+  const [helpBox, setHelpBox] = useState(false);
+  const [mouseOverPopup, setPopup] = useState(null);
 //takes in the json objects for busyness prices and crime
 //returns a json object with the objectid as the key and the rank as the value
 //assigns rank to each feature and creates a combined rank and current rank
 //the current rank is updated after each filter is applied via activeMaps
 //combined rank is updated if busyness data is changed
   useEffect(() => {
-    if (busyness && prices && crimeData && transportData) {
+    if (selectedTimeFrame && prices && crimeData && transportData) {
       let rankedData = {
         "busyness": {},
         "prices": {},
@@ -50,17 +82,38 @@ function Map({ selectedIndex, onCafeSelection }) {
         "combined": {},
         "current": {},
       };
+      console.log("This is the selected time frame: ", selectedTimeFrame);
+      //depending on the value of busyness Data we will switch the data that we use to rank busyness
+      let busynessData;
+      switch(selectedTimeFrame) {
+        case 'day':
+          busynessData = picklePredictions;
+          break;
+        case 'week':
+          busynessData = weekRankData;
+          break;
+        case 'year':
+          busynessData = yearRankData;
+          break;
+        default:
+          busynessData = picklePredictions;
+      }
+      console.log("This is busynessData as it switches!: ", busynessData);
+      console.log("This is prices: ", prices);
   
-      let sortedKeysBusyness = Object.keys(busyness).sort((a, b) => busyness[b] - busyness[a]);
+      let sortedKeysBusyness = Object.keys(busynessData).sort((a, b) => busynessData[b][hour] - busynessData[a][hour]);
       let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[b] - prices[a]);
       let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[b] - crimeData[a]); //sort so that zone with lowest crime is first
       let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
       let combined = {};
       let current = {};
+
+      console.log("sortedKeysBusyness", sortedKeysBusyness);
+      console.log("sortedKeysPrices", sortedKeysPrices);
   
       for (let rank = 0; rank < sortedKeysBusyness.length; rank++) {
         let objectid = sortedKeysBusyness[rank];
-        rankedData.busyness[objectid] = { score: busyness[objectid], rank: rank + 1 };
+        rankedData.busyness[objectid] = { score: busynessData[objectid], rank: rank + 1 };
   
         // Initialize combined rank with busyness rank
         combined[objectid] = { rank: rank + 1 };
@@ -140,7 +193,7 @@ function Map({ selectedIndex, onCafeSelection }) {
       setRankedData(rankedData);
     }
   
-  }, [busyness, prices, crimeData, activeMaps]);
+  }, [selectedTimeFrame, prices, crimeData, activeMaps, hour]);
  
  //takes in a rank and returns a color 
 function getColorFromRank(rank) {
@@ -203,6 +256,11 @@ const createHeatMapGeo = async (rankedData) => {
           console.log(`objectid ${objectid} not found in rankedData.crimeData.`);
         }
 
+        if (rankedData.combined.hasOwnProperty(objectid)) {
+          let combinedRank = rankedData.combined[objectid].rank;
+          feature.properties.combined_rank = combinedRank;
+        }
+
         //count of activeMaps
         if (activeMaps) {
         let activeCount = Object.values(activeMaps).filter(val => val).length;
@@ -257,20 +315,32 @@ useEffect(() => {
   generateGeoJson();
 }, [mapIsCurrent, rankedData, activeMaps]);
 
-
+  //should be deleted and done in the backend 
   //cleans up busyness data and sets it to a state variable
   //called everytime the picklePredictions changes (when the predictions are updated)
   useEffect(() => {
-    if (picklePredictions) {
-      const predictions = Object.fromEntries(
-        Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
+    if (picklePredictions && yearData && weekData) {
+      // const predictions = Object.fromEntries(
+      //   Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
+      // );
+      const weekPredictions = Object.fromEntries(
+        Object.entries(weekData).map(([key, value]) => [key.replace("model_", ""), value])
       );
-      console.log("Predictions is not empty:", predictions);
-      console.log("Pickle predictions", picklePredictions);
-      setBusynessData(predictions);
+      const yearPredictions = Object.fromEntries(
+        Object.entries(yearData).map(([key, value]) => [key.replace("model_", ""), value])
+      );
+      console.log("pickle predictions:", picklePredictions);
+      // console.log("Predictions is not empty:", predictions);
+      console.log("Week Predictions", weekPredictions);
+      console.log("year predictions", yearPredictions);
+      // setBusynessData(predictions);
+      setWeekRankData(weekPredictions);
+      setYearRankData(yearPredictions);
+      // setYearData(yearPredictions);
+      // setWeekData(weekPredictions);
 
       }
-  }, [mapIsCurrent, picklePredictions]);
+  }, [mapIsCurrent, picklePredictions, yearData, weekData]);  // Re-run effect whenever mapIsCurrent changes
 
 //cleans up market data and sets it to a state variable
 //triggered upon when the map is loaded in
@@ -371,11 +441,17 @@ useEffect(() => {
   const [zonename, setName] = useState('');
   const [zonebusyness, setBusyness] = useState('');
 
-  const easingFunctions = {
-    easeInCubic: function (t) {
-      return t * t;
-     }
-  };
+  // const easingFunctions = {
+  //   easeInCubic: function (t) {
+  //     return t * t;
+  //    }
+  // };
+
+  // wewrite the above function as one function
+
+  const easeInCubic = (t) => {
+    return t * t * t;
+  }
   // TAKEAWAY RADIUS
   // for our takeaway radius
   const [takeoutLng, setTakeoutLng] = useState(null);
@@ -462,7 +538,7 @@ useEffect(() => {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
+      style: 'mapbox://styles/max1738/clkjsvxxp00ed01pg1pdq577i/draft',
       center: [lng, lat],
       zoom: 11.5,
       // minZoom: zoom,
@@ -474,6 +550,7 @@ useEffect(() => {
 
     // setmapIsCurrent(true);
     // console.log("set map is current == TRUE");
+    // console.log("map.current: ", map.current);
 
     map.current.on('style.load', () => {
 
@@ -531,10 +608,10 @@ useEffect(() => {
         minZoom: zoom,
         pitch: 57.418875067604525,
         bearing: 0,
-        curve: 1.42, // Default value
+        curve: 0.19, // Default value
         speed: 0.1, // Make the flying slow
-        duration: 6000,
-        easing: easingFunctions.easeInCubic,
+        duration: 8000,
+        easing: easeInCubic,
         essential: true,
     });
 
@@ -581,7 +658,8 @@ useEffect(() => {
 
 });
 
-        
+            
+
     // Create a popup
     const popup = new mapboxgl.Popup({
       closeButton: false,
@@ -671,7 +749,7 @@ useEffect(() => {
 
         // Update the name state with the zone name and zoneBusyness
         setName(zoneName);
-        setBusyness(zoneBusyness);
+        setBusyness(hoveredZone);
       });
 
       // Add mouseleave event listener to reset zone opacity when not hovering
@@ -682,50 +760,85 @@ useEffect(() => {
       });
 
       map.current.on('click', 'taxi_zones_fill_map', (e) => {
-        const lngLat = {
-          lng: e.lngLat.lng,
-          lat: e.lngLat.lat
+        const objectid = e.features[0].properties.objectid;
+        const zoneName = e.features[0].properties.zone;
+        const zoneBusynessRank = e.features[0].properties.busyness_rank;
+        const zoneCrimeRank = e.features[0].properties.crime_rank;
+        const zonePropertyRank  = e.features[0].properties.prices_rank;
+        const zoneCombinedRank = e.features[0].properties.combined_rank;
+        const zoneTransportRank = e.features[0].properties.transport_rank;
+
+        setChartFlag(true);
+        setCurrentObjectId(objectid);
+        setRightSidebar(true)
+        setSideBarName(zoneName);
+        setZoneBusynessRank(zoneBusynessRank);
+        setZoneCrimeRank(zoneCrimeRank);
+        setZonePropertyRank(zonePropertyRank);
+        setZoneCombinedRank(zoneCombinedRank);
+        setZoneTransportRank(zoneTransportRank);
+
+        // const lngLat = {
+        //   lng: e.lngLat.lng,
+        //   lat: e.lngLat.lat
+        // };
+        // setTimeout(() => {
+        //   map.current.flyTo({ center: lngLat, zoom: 14 });
+        // }, 1000); // Delay in milliseconds
+    });
+      let currentZone = null; // Holds the current zone
+
+      map.current.on('mousemove', 'taxi_zones_fill_map', (e) => {
+        const zoneName = e.features[0].properties.zone;
+
+        // If the mouse has moved to a new zone
+        if (zoneName !== currentZone) {
+          // Update the current zone
+          currentZone = zoneName;
+          setName(zoneName);
+  
+
+          // If a popup already exists, remove it
+          if (popup) {
+            popup.remove();
+          }
+
+          // Create a new popup with the current zoneName
+        var offset = {
+            'right': [500],
         };
-        map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
-      });    
-////////////
-///////////
-////////////
-// THIS IS FOR PRICE HEATMAP 
-    // Add mouseenter event listener to change zone opacity on hover
-    map.current.on('mousemove', 'taxi_zones_price_map', (e) => {
-      const hoveredZone = e.features[0].properties.objectid; // Get the ID of the hovered zone
-      const zoneName = e.features[0].properties.zone;
-      const zoneBusyness = e.features[0].properties.price;
-      // Change fill opacity only for the hovered zone
-      map.current.setPaintProperty('taxi_zones_price_map', 'fill-opacity', [
-        'match',
-        ['get', 'objectid'],
-        hoveredZone,
-        0.8, // Increase opacity for the hovered zone
-        0.5  // Default opacity for other zones
-      ]);
 
-      // Update the name state with the zone name and zoneBusyness
-      setName(zoneName);
-      setBusyness(zoneBusyness);
-    });
+        popup.setLngLat(e.lngLat, { offset: offset['right'] });          
+        popup.setHTML(`
 
-    // Add mouseleave event listener to reset zone opacity when not hovering
-    map.current.on('mouseleave', 'taxi_zones_price_map', () => {
-      map.current.setPaintProperty('taxi_zones_price_map', 'fill-opacity', 0.5); // Reset fill opacity for last zone
-      setName(''); // Clear the name state
-      setBusyness(''); // Clear the busyness state
-    });
-
-    map.current.on('click', 'taxi_zones_price_map', (e) => {
-      const lngLat = {
-        lng: e.lngLat.lng,
-        lat: e.lngLat.lat
-      };
-      map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
-    });    
-
+          <div class="my-custom-popup">
+          
+          <strong class = "large-text">${zoneName}</strong> <br>
+          <strong class = "small-text">Busyness Rank:</strong> ${e.features[0].properties.busyness_rank} <br>
+          <strong class = "small-text">Suitability Rank:</strong> ${e.features[0].properties.combined_rank} <br>
+          </div>
+          `);
+          
+          popup.addTo(map.current);
+        }
+      });
+      
+      
+      
+      map.current.on('mouseleave', 'taxi_zones_fill_map', () => {
+        if (popup ) {
+          popup.remove();
+        }
+        currentZone = null; // Reset the current zone when the mouse leaves the layer
+      });
+      
+      
+      // const lngLat = {
+        //   lng: e.lngLat.lng,
+        //   lat: e.lngLat.lat
+        // };
+        // map.current.flyTo({ center: lngLat, zoom: 14 }); // Zoom in to the clicked point
+      // });    
 
 
     // cafe marker click function
@@ -747,7 +860,10 @@ useEffect(() => {
   };
   }, [isLoading, data, lng, lat, bounds]); //This is the useEffect dependency array
   //When any of the variables or states listed in the dependency array above change, the effect will run again.
-  
+  useEffect(() => {
+    console.log("POPUP", mouseOverPopup)
+  }, [mouseOverPopup])
+
 
 //Pass in active buttons from FilterNav to affect the layers
 
@@ -930,28 +1046,57 @@ useEffect(() => {
     handleHeatMap(activeMaps);
   }
 }, [newGeoJson]);
+
+useEffect(() => {
+  console.log("This is our chart flag ", chartFlag);
+  console.log("This is our chart object id", currentObjectId);
+}, [chartFlag, currentObjectId]);
+
   
   const lnglat =  {lng: -73.9712, lat:40.7831};
   const handleReset = () => {
     map.current.flyTo({ center: lnglat, zoom: 11.75 }); // 
   };
+  
+  //this returns map.current and allows us to use it in other components
+  //this is used in the Drawer component
+  //this helps with avoiding common pitfalls of useState asynchronous behavior
+  const getMap = () => map.current;
+
 
   return (
     <MapContext.Provider value={map.current}>
     <div>
       {/* Render the name element */}
-      <Navbar name = {zonename} busyness = {zonebusyness} />
-      <button onClick={handleReset}>Reset</button>
-      <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/>
+      {/* <Navbar name = {zonename} busyness = {zonebusyness} /> */}
+
+      {/* <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/> */}
             {/* Map container */}
-      <div ref={mapContainer} className="map-container"> {/*the useRef is being used to render the map */}
+      {mapIsCurrent && chartFlag === true && currentObjectId !== null && <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {picklePredictions} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} />}
+
+      <div ref={mapContainer} className="map-container"/> {/*the useRef is being used to render the map */}
       {/* {isButton5Active && (<Legend/>)} Render the legend if the button is active */}
+
+       <div className = "heatmap-analytics">
+
+       <BusynessSlider selectedTimeFrame = {selectedTimeFrame} setSelectedTimeFrame = {setSelectedTimeFrame} hour = {hour} setHour = {setHour} />
+
+       <Legend/>
+
+       <HeatMapButton heatMap = {heatMap} setHeatMap = {setHeatMap} />
+
+       {mapIsCurrent && <div style={{ visibility: heatMap === 1 ? "hidden" : "visible" }}> <HeatMapBox handleHeatMap = {handleHeatMap} /> </div>} 
+
       </div>
-      <HeatMapBox handleHeatMap = {handleHeatMap} />
-      <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng}/>
+      <TakeOutButton takeOut = {takeOut} setTakeOut = {setTakeOut} />
+      {takeOut && <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng}/> }
       <div className="filter-nav-container">
       <FilterNav handleLayerChange={handleLayerChange} />
+
+      <HelpButton helpBox = {helpBox} setHelpBox = {setHelpBox} />
+      {helpBox && <HelpBox setHelpBox = {setHelpBox}/>}
     </div>
+    {/* {chartFlag === true && currentObjectId !== null &&  <LineChart dayData = {busyness} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId}/>} */}
     </div>
     </MapContext.Provider>
   );
