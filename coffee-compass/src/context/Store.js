@@ -132,28 +132,28 @@ function Store({ children, selectedCafeId }) {
         .then(data => {
           console.log('Month data', data);
     
-          // Create the new data structure
-          let newData = {};
+          // // Create the new data structure
+          // let newData = {};
     
-          // Order the months
-          const orderedMonths = Object.keys(data).sort((a, b) => parseInt(a.split('_')[1]) - parseInt(b.split('_')[1]));
+          // // Order the months
+          // const orderedMonths = Object.keys(data).sort((a, b) => parseInt(a.split('_')[1]) - parseInt(b.split('_')[1]));
     
-          // Iterate over each month in orderedMonths
-          for(let month of orderedMonths) {
-            // Iterate over each model in that month
-            for(let model in data[month]) {
-              // If the model doesn't exist in newData, create an empty array for it
-              if(!newData[model]) {
-                newData[model] = [];
-              }
+          // // Iterate over each month in orderedMonths
+          // for(let month of orderedMonths) {
+          //   // Iterate over each model in that month
+          //   for(let model in data[month]) {
+          //     // If the model doesn't exist in newData, create an empty array for it
+          //     if(!newData[model]) {
+          //       newData[model] = [];
+          //     }
     
-              // Add the model data to the corresponding model array in newData
-              newData[model].push(data[month][model]);
-            }
-          }
+          //     // Add the model data to the corresponding model array in newData
+          //     newData[model].push(data[month][model]);
+          //   }
+          // }
     
-          console.log('New data', newData);
-          setYearData(newData);
+          // console.log('New data', newData);
+          setYearData(data);
         });
     }, []);
     
@@ -166,23 +166,23 @@ function Store({ children, selectedCafeId }) {
     .then(response => response.json())
     .then(data => {
       console.log('Week data', data);
-      let newData = {};
-      const orderedWeeks = Object.keys(data).sort((a, b) => parseInt(a.split('_')[1]) - parseInt(b.split('_')[1]));
+      // let newData = {};
+      // const orderedWeeks = Object.keys(data).sort((a, b) => parseInt(a.split('_')[1]) - parseInt(b.split('_')[1]));
 
-      //iterate over each week in orderedWeeks
-      for(let week of orderedWeeks) {
-        //iterate over each model in that week
-        for(let model in data[week]) {
-          //if the model doesn't exist in newData, create an empty array for it
-          if(!newData[model]) {
-            newData[model] = [];
-          }
-          //add the model data to the corresponding model array in newData
-          newData[model].push(data[week][model]);
-        }
-      }
-      console.log('New week data', newData);
-      setWeekData(newData);
+      // //iterate over each week in orderedWeeks
+      // for(let week of orderedWeeks) {
+      //   //iterate over each model in that week
+      //   for(let model in data[week]) {
+      //     //if the model doesn't exist in newData, create an empty array for it
+      //     if(!newData[model]) {
+      //       newData[model] = [];
+      //     }
+      //     //add the model data to the corresponding model array in newData
+      //     newData[model].push(data[week][model]);
+      //   }
+      // }
+      // console.log('New week data', newData);
+      setWeekData(data);
   })
 }, []);
   

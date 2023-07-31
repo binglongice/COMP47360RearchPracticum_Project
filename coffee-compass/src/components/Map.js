@@ -13,7 +13,6 @@ import MapContext from '../context/MapContext';
 import BusynessSlider from './BusynessSlider';
 import LineChart from './LineChart';
 import Drawer from './Drawer';
-import centroid from '@turf/centroid';
 import HeatMapButton from './HeatMapButton';
 import TakeOutButton from './TakeOutButton';
 import HelpButton from './HelpButton';
@@ -90,10 +89,10 @@ function Map({ selectedIndex, onCafeSelection }) {
           busynessData = picklePredictions;
           break;
         case 'week':
-          busynessData = weekRankData;
+          busynessData = weekData;
           break;
         case 'year':
-          busynessData = yearRankData;
+          busynessData = yearData;
           break;
         default:
           busynessData = picklePredictions;
@@ -318,29 +317,29 @@ useEffect(() => {
   //should be deleted and done in the backend 
   //cleans up busyness data and sets it to a state variable
   //called everytime the picklePredictions changes (when the predictions are updated)
-  useEffect(() => {
-    if (picklePredictions && yearData && weekData) {
-      // const predictions = Object.fromEntries(
-      //   Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
-      // );
-      const weekPredictions = Object.fromEntries(
-        Object.entries(weekData).map(([key, value]) => [key.replace("model_", ""), value])
-      );
-      const yearPredictions = Object.fromEntries(
-        Object.entries(yearData).map(([key, value]) => [key.replace("model_", ""), value])
-      );
-      console.log("pickle predictions:", picklePredictions);
-      // console.log("Predictions is not empty:", predictions);
-      console.log("Week Predictions", weekPredictions);
-      console.log("year predictions", yearPredictions);
-      // setBusynessData(predictions);
-      setWeekRankData(weekPredictions);
-      setYearRankData(yearPredictions);
-      // setYearData(yearPredictions);
-      // setWeekData(weekPredictions);
+  // useEffect(() => {
+  //   if (picklePredictions && yearData && weekData) {
+  //     // const predictions = Object.fromEntries(
+  //     //   Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
+  //     // );
+  //     const weekPredictions = Object.fromEntries(
+  //       Object.entries(weekData).map(([key, value]) => [key.replace("model_", ""), value])
+  //     );
+  //     const yearPredictions = Object.fromEntries(
+  //       Object.entries(yearData).map(([key, value]) => [key.replace("model_", ""), value])
+  //     );
+  //     console.log("pickle predictions:", picklePredictions);
+  //     // console.log("Predictions is not empty:", predictions);
+  //     console.log("Week Predictions", weekPredictions);
+  //     console.log("year predictions", yearPredictions);
+  //     // setBusynessData(predictions);
+  //     setWeekRankData(weekPredictions);
+  //     setYearRankData(yearPredictions);
+  //     // setYearData(yearPredictions);
+  //     // setWeekData(weekPredictions);
 
-      }
-  }, [mapIsCurrent, picklePredictions, yearData, weekData]);  // Re-run effect whenever mapIsCurrent changes
+  //     }
+  // }, [mapIsCurrent, picklePredictions, yearData, weekData]);  // Re-run effect whenever mapIsCurrent changes
 
 //cleans up market data and sets it to a state variable
 //triggered upon when the map is loaded in
@@ -1072,7 +1071,7 @@ useEffect(() => {
 
       {/* <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/> */}
             {/* Map container */}
-      {mapIsCurrent && chartFlag === true && currentObjectId !== null && <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {picklePredictions} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} />}
+      {mapIsCurrent && chartFlag === true && currentObjectId !== null && <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {picklePredictions} weekData = {weekData} yearData = {yearData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} />}
 
       <div ref={mapContainer} className="map-container"/> {/*the useRef is being used to render the map */}
       {/* {isButton5Active && (<Legend/>)} Render the legend if the button is active */}
