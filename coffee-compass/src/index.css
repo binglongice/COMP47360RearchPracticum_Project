@@ -578,7 +578,6 @@ nav li a.active .inner {
 .helpButton:hover {
   background-color: #393939;
 }
-/* Make the helpbox container centered in the bage and a rectangle */
 .HelpBoxContainer {
   position: fixed;
   left: 50%;
