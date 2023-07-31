@@ -92,12 +92,20 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "cafes_manhattan",
         "USER": "postgres",
-        "PASSWORD": "q767Mannheim$",
+        "PASSWORD": "",
         "HOST": "localhost",
         "PORT": "5432",
+    },
 
-   
-}
+    #adding in a test database
+    'TEST': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'test_db ',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
 }
 
 # Password validation

@@ -109,13 +109,10 @@ def model_output_api(request, day, month, week_of_year):
     return JsonResponse(all_model_predictions)
 
 
-
-
 @api_view(['GET'])
 def weekly_aggregation_api(request, week_of_year):
     # Retrieve data from the AggregatedPredictions model based on the provided parameters
     predictions_data = AggregatedPredictions.objects.filter(
-       # month=month,
         week_of_year=week_of_year,
     )
 
@@ -125,15 +122,11 @@ def weekly_aggregation_api(request, week_of_year):
 
     # Calculate the global min and max values for normalization
     all_predictions = [prediction.average_prediction for prediction in predictions_data]
-
     prediction_min = min(all_predictions)
     prediction_max = max(all_predictions)
 
     # Prepare the output data
     all_model_predictions = {}
-
-    # Prepare the inputs
-    inputs = [ week_of_year]
 
     try:
         # Attempt to connect to Redis
@@ -150,40 +143,27 @@ def weekly_aggregation_api(request, week_of_year):
             all_model_predictions = json.loads(cached_predictions)
             print("Cache was used for predictions.")
         else:
-            # If the predictions are not cached, unpickle the models and calculate predictions
+            # If the predictions are not cached, calculate predictions
             for prediction in predictions_data:
-
                 location_id = prediction.location_id
-                week_of_year= prediction.week_of_year
-                day       = prediction.day
+                week_of_year = prediction.week_of_year
+                day = prediction.day
                 prediction_value = prediction.average_prediction
-
-                #prediction_min = min(prediction.average_prediction for prediction in predictions_data)
-                #prediction_max = max(prediction.average_prediction for prediction in predictions_data)
                 normalized_prediction = (prediction_value - prediction_min) / (prediction_max - prediction_min)
 
-                week_of_year = f"week_{week_of_year}"
-                day_key    =f"day_{day}"
-                location_key = f"model_{location_id}"
-                
+                # Create day_key and location_key without any prefixes
+                day_key = str(day)
+                location_key = str(location_id)
 
+                # Check if the location_key exists in the dictionary, if not, create an empty dictionary for that model
+                if location_key not in all_model_predictions:
+                    all_model_predictions[location_key] = {}
 
+                all_model_predictions[location_key][day_key] = normalized_prediction
 
-                # Check if the location_id exists in the dictionary, if not, create an empty dictionary for that location_id
-                if day_key not in all_model_predictions:
-                    all_model_predictions[day_key] = {}
-
-                # Modify the day_key to start with 'day_0' instead of 'day_1'
-                day_key.format(day_key)
-
-                
-                all_model_predictions[day_key][location_key] = normalized_prediction
-                
-
-                
             # Store all the predictions as one large JSON object in Redis
             redis_client.set(redis_key, json.dumps(all_model_predictions))
-            print("Cache was not used for predictions. Unpickled models instead")
+            print("Cache was not used for predictions. Calculated predictions instead")
 
     except redis.ConnectionError:
         # Handle Redis connection error gracefully
@@ -191,43 +171,238 @@ def weekly_aggregation_api(request, week_of_year):
         # If Redis connection fails, directly calculate the predictions without using Redis
         for prediction in predictions_data:
             location_id = prediction.location_id
-            week_of_year= prediction.week_of_year
-            day       = prediction.day
+            week_of_year = prediction.week_of_year
+            day = prediction.day
             prediction_value = prediction.average_prediction
-            #prediction_min = min(prediction.average_prediction for prediction in predictions_data)
-            #prediction_max = max(prediction.average_prediction for prediction in predictions_data)
-            normalized_prediction = (prediction.average_prediction - prediction_min) / (prediction_max - prediction_min)
+            normalized_prediction = (prediction_value - prediction_min) / (prediction_max - prediction_min)
 
-            week_of_year = f"week_{week_of_year}"
-            day_key    =f"day_{day}"
-            location_key = f"model_{location_id}"
-                
+            # Create day_key and location_key without any prefixes
+            day_key = str(day)
+            location_key = str(location_id)
 
+            # Check if the location_key exists in the dictionary, if not, create an empty dictionary for that model
+            if location_key not in all_model_predictions:
+                all_model_predictions[location_key] = {}
 
+            all_model_predictions[location_key][day_key] = normalized_prediction
 
-            # Check if the location_id exists in the dictionary, if not, create an empty dictionary for that location_id
-            if day_key not in all_model_predictions:
-                    all_model_predictions[day_key] = {}
-
-                # Modify the day_key to start with 'day_0' instead of 'day_1'
-            day_key.format(day_key)
-
-                
-            all_model_predictions[day_key][location_key] = normalized_prediction
-
-
- 
-            
-
-            print("Normalization has occurred for predictions. Unpickled models instead")
+        print("Normalization has occurred for predictions. Calculated predictions instead")
 
     # Return the predictions as a JSON response
     return JsonResponse(all_model_predictions, safe=False)
 
 
 
-@api_view(['GET'])
 
+# @api_view(['GET'])
+# def weekly_aggregation_api(request, week_of_year):
+#     # Retrieve data from the AggregatedPredictions model based on the provided parameters
+#     predictions_data = AggregatedPredictions.objects.filter(
+#        # month=month,
+#         week_of_year=week_of_year,
+#     )
+
+#     # Check if any predictions are found, return a 404 response if not found
+#     if not predictions_data.exists():
+#         return Response({'error': 'Data not found.'}, status=404)
+
+#     # Calculate the global min and max values for normalization
+#     all_predictions = [prediction.average_prediction for prediction in predictions_data]
+
+#     prediction_min = min(all_predictions)
+#     prediction_max = max(all_predictions)
+
+#     # Prepare the output data
+#     all_model_predictions = {}
+
+#     # Prepare the inputs
+#     inputs = [ week_of_year]
+
+#     try:
+#         # Attempt to connect to Redis
+#         redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+
+#         # Generate the Redis key using the input parameters
+#         redis_key = f"Weekly_Predictions:-{week_of_year}"
+
+#         # Check if the predictions are already cached in Redis
+#         cached_predictions = redis_client.get(redis_key)
+
+#         if cached_predictions is not None:
+#             # If the predictions are already cached, use the cached data
+#             all_model_predictions = json.loads(cached_predictions)
+#             print("Cache was used for predictions.")
+#         else:
+#             # If the predictions are not cached, unpickle the models and calculate predictions
+#             for prediction in predictions_data:
+
+#                 location_id = prediction.location_id
+#                 week_of_year= prediction.week_of_year
+#                 day = prediction.day
+#                 prediction_value = prediction.average_prediction
+
+#                 #prediction_min = min(prediction.average_prediction for prediction in predictions_data)
+#                 #prediction_max = max(prediction.average_prediction for prediction in predictions_data)
+#                 normalized_prediction = (prediction_value - prediction_min) / (prediction_max - prediction_min)
+
+#                 week_of_year = f"week_{week_of_year}"
+#                 day_key    =f"day_{day}"
+#                 location_key = f"model_{location_id}"
+                
+
+
+
+#                 # Check if the location_id exists in the dictionary, if not, create an empty dictionary for that location_id
+#                 if day_key not in all_model_predictions:
+#                     all_model_predictions[day_key] = {}
+
+#                 # Modify the day_key to start with 'day_0' instead of 'day_1'
+#                 day_key.format(day_key)
+
+                
+#                 all_model_predictions[day_key][location_key] = normalized_prediction
+                
+
+                
+#             # Store all the predictions as one large JSON object in Redis
+#             redis_client.set(redis_key, json.dumps(all_model_predictions))
+#             print("Cache was not used for predictions. Unpickled models instead")
+
+#     except redis.ConnectionError:
+#         # Handle Redis connection error gracefully
+#         print("Error: Unable to connect to the Redis cache for predictions.")
+#         # If Redis connection fails, directly calculate the predictions without using Redis
+#         for prediction in predictions_data:
+#             location_id = prediction.location_id
+#             week_of_year= prediction.week_of_year
+#             day       = prediction.day
+#             prediction_value = prediction.average_prediction
+#             #prediction_min = min(prediction.average_prediction for prediction in predictions_data)
+#             #prediction_max = max(prediction.average_prediction for prediction in predictions_data)
+#             normalized_prediction = (prediction.average_prediction - prediction_min) / (prediction_max - prediction_min)
+
+#             week_of_year = f"week_{week_of_year}"
+#             day_key    =f"day_{day}"
+#             location_key = f"model_{location_id}"
+                
+
+
+
+#             # Check if the location_id exists in the dictionary, if not, create an empty dictionary for that location_id
+#             if day_key not in all_model_predictions:
+#                     all_model_predictions[day_key] = {}
+
+#                 # Modify the day_key to start with 'day_0' instead of 'day_1'
+#             day_key.format(day_key)
+
+                
+#             all_model_predictions[day_key][location_key] = normalized_prediction
+
+
+ 
+            
+
+#             print("Normalization has occurred for predictions. Unpickled models instead")
+
+#     # Return the predictions as a JSON response
+#     return JsonResponse(all_model_predictions, safe=False)
+
+
+
+# @api_view(['GET'])
+# def monthly_aggregation_api(request):
+#     # Retrieve data from the AggregatedPredictions model based on the provided parameters
+#     predictions_data = MonthlyPredictions.objects.all()
+    
+#     # Check if any predictions are found, return a 404 response if not found
+#     if not predictions_data.exists():
+#         return Response({'error': 'Data not found.'}, status=404)
+    
+#     # Calculate the global min and max values for normalization
+#     all_predictions = [prediction.monthly_prediction for prediction in predictions_data]
+
+#     prediction_min = min(all_predictions)
+#     prediction_max = max(all_predictions)
+
+#     # Prepare the output data
+#     all_model_predictions = {}
+
+#     try:
+#         # Attempt to connect to Redis
+#         redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+
+#         # Generate the Redis key using the input parameters
+#         redis_key = f"MonthlyPrediction"
+
+#         # Check if the predictions are already cached in Redis
+#         cached_predictions = redis_client.get(redis_key)
+
+#         if cached_predictions is not None:
+#             # If the predictions are already cached, use the cached data
+#             all_model_predictions = json.loads(cached_predictions)
+#             print("Cache was used for predictions.")
+#         else:
+#             # If the predictions are not cached, unpickle the models and calculate predictions
+#             for prediction in predictions_data:
+#                 location_id = prediction.location_id
+#                 prediction_value = prediction.monthly_prediction
+#                 #prediction_min = min(prediction.average_prediction for prediction in predictions_data)
+#                 #prediction_max = max(prediction.average_prediction for prediction in predictions_data)
+#                 normalized_prediction = (prediction_value - prediction_min) / (prediction_max - prediction_min)
+                
+#                 month_key = f"month_{prediction.month}"
+#                 location_key = f"model_{location_id}"
+                
+#                 # Check if the location_id exists in the dictionary, if not, create an empty dictionary for that location_id
+#                 if month_key not in all_model_predictions:
+#                     all_model_predictions[month_key] = {}
+
+                
+#                 all_model_predictions[month_key][location_key] = normalized_prediction
+#                 #all_model_predictions.append({
+#                 #f"month_{prediction.month}": {f"model_{prediction.location_id}": normalized_prediction} } )
+       
+#             # Store all the predictions as one large JSON object in Redis
+#             redis_client.set(redis_key, json.dumps(all_model_predictions))
+#             print("Cache was not used for predictions. Unpickled models instead")
+
+                
+
+
+
+
+
+#     except redis.ConnectionError:
+#         # Handle Redis connection error gracefully
+#         print("Error: Unable to connect to the Redis cache for predictions.")
+#         # If Redis connection fails, directly calculate the predictions without using Redis
+#         for prediction in predictions_data:
+#             location_id = prediction.location_id
+#             prediction_value = prediction.monthly_prediction
+#             #prediction_min = min(prediction.average_prediction for prediction in predictions_data)
+#             #prediction_max = max(prediction.average_prediction for prediction in predictions_data)
+#             normalized_prediction = (prediction.monthly_prediction - prediction_min) / (prediction_max - prediction_min)
+#             #all_model_predictions.append({
+#               #      f"month_{prediction.month}": {f"model_{prediction.location_id}": normalized_prediction} } )
+            
+#             month_key = f"month_{prediction.month}"
+#             location_key = f"model_{location_id}"
+                
+#             # Check if the location_id exists in the dictionary, if not, create an empty dictionary for that location_id
+#             if month_key not in all_model_predictions:
+#                     all_model_predictions[month_key] = {}
+
+                
+#             all_model_predictions[month_key][location_key] = normalized_prediction
+
+#         print("Normalization has occurred for predictions. Unpickled models instead")
+
+#     # Return the predictions as a JSON response
+#     return JsonResponse(all_model_predictions, safe=False)
+
+
+
+@api_view(['GET'])
 def monthly_aggregation_api(request):
     # Retrieve data from the AggregatedPredictions model based on the provided parameters
     predictions_data = MonthlyPredictions.objects.all()
@@ -238,7 +413,6 @@ def monthly_aggregation_api(request):
     
     # Calculate the global min and max values for normalization
     all_predictions = [prediction.monthly_prediction for prediction in predictions_data]
-
     prediction_min = min(all_predictions)
     prediction_max = max(all_predictions)
 
@@ -260,35 +434,26 @@ def monthly_aggregation_api(request):
             all_model_predictions = json.loads(cached_predictions)
             print("Cache was used for predictions.")
         else:
-            # If the predictions are not cached, unpickle the models and calculate predictions
+            # If the predictions are not cached, calculate predictions
             for prediction in predictions_data:
                 location_id = prediction.location_id
+                month = prediction.month
                 prediction_value = prediction.monthly_prediction
-                #prediction_min = min(prediction.average_prediction for prediction in predictions_data)
-                #prediction_max = max(prediction.average_prediction for prediction in predictions_data)
                 normalized_prediction = (prediction_value - prediction_min) / (prediction_max - prediction_min)
-                
-                month_key = f"month_{prediction.month}"
-                location_key = f"model_{location_id}"
-                
-                # Check if the location_id exists in the dictionary, if not, create an empty dictionary for that location_id
-                if month_key not in all_model_predictions:
-                    all_model_predictions[month_key] = {}
 
-                
-                all_model_predictions[month_key][location_key] = normalized_prediction
-                #all_model_predictions.append({
-                #f"month_{prediction.month}": {f"model_{prediction.location_id}": normalized_prediction} } )
-       
+                # Create month_key and location_key without any prefixes
+                month_key = str(month)
+                location_key = str(location_id)
+
+                # Check if the location_key exists in the dictionary, if not, create an empty dictionary for that model
+                if location_key not in all_model_predictions:
+                    all_model_predictions[location_key] = {}
+
+                all_model_predictions[location_key][month_key] = normalized_prediction
+
             # Store all the predictions as one large JSON object in Redis
             redis_client.set(redis_key, json.dumps(all_model_predictions))
-            print("Cache was not used for predictions. Unpickled models instead")
-
-                
-
-
-
-
+            print("Cache was not used for predictions. Calculated predictions instead")
 
     except redis.ConnectionError:
         # Handle Redis connection error gracefully
@@ -296,33 +461,24 @@ def monthly_aggregation_api(request):
         # If Redis connection fails, directly calculate the predictions without using Redis
         for prediction in predictions_data:
             location_id = prediction.location_id
+            month = prediction.month
             prediction_value = prediction.monthly_prediction
-            #prediction_min = min(prediction.average_prediction for prediction in predictions_data)
-            #prediction_max = max(prediction.average_prediction for prediction in predictions_data)
-            normalized_prediction = (prediction.monthly_prediction - prediction_min) / (prediction_max - prediction_min)
-            #all_model_predictions.append({
-              #      f"month_{prediction.month}": {f"model_{prediction.location_id}": normalized_prediction} } )
-            
-            month_key = f"month_{prediction.month}"
-            location_key = f"model_{location_id}"
-                
-            # Check if the location_id exists in the dictionary, if not, create an empty dictionary for that location_id
-            if month_key not in all_model_predictions:
-                    all_model_predictions[month_key] = {}
+            normalized_prediction = (prediction_value - prediction_min) / (prediction_max - prediction_min)
 
-                
-            all_model_predictions[month_key][location_key] = normalized_prediction
+            # Create month_key and location_key without any prefixes
+            month_key = str(month)
+            location_key = str(location_id)
 
-        print("Normalization has occurred for predictions. Unpickled models instead")
+            # Check if the location_key exists in the dictionary, if not, create an empty dictionary for that model
+            if location_key not in all_model_predictions:
+                all_model_predictions[location_key] = {}
+
+            all_model_predictions[location_key][month_key] = normalized_prediction
+
+        print("Normalization has occurred for predictions. Calculated predictions instead")
 
     # Return the predictions as a JSON response
     return JsonResponse(all_model_predictions, safe=False)
-
-
-
-
-
-
 
 
 
