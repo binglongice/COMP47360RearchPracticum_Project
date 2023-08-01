@@ -29,7 +29,7 @@ function Map({ selectedIndex, onCafeSelection }) {
 
 
   const [selectedCafeId, setSelectedCafeId] = useState(null);
-  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity] = useContext(ApiContext);  
+  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity, prices] = useContext(ApiContext);  
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [mapIsCurrent, setmapIsCurrent] = useState(false);
@@ -38,7 +38,7 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [geojsonData, setGeojsonData] = useState(null); //we need to store the geoJson data in state so that we can use it outside where its defined 
   const [predictionsData, setPredictions] = useState(null); //we need to store the predictions ... 
   const [isButton5Active, setIsButton5Active] = useState(true); //render the heatmap legend or not
-  const [prices, setPrices] = useState(null); //we need to store the prices ...
+  // const [prices, setPrices] = useState(null); //we need to store the prices ...
   const [priceGeoJsonData, setPriceGeoJsonData] = useState(null); //we need to store the prices ...
   const [busyness, setBusynessData] = useState(null); 
   const [crimeData, setCrimeData] = useState(null);
@@ -333,55 +333,6 @@ useEffect(() => {
   
   generateGeoJson();
 }, [mapIsCurrent, rankedData, activeMaps]);
-
-
-//cleans up market data and sets it to a state variable
-//triggered upon when the map is loaded in
-  useEffect(() => {
-  // Load the market data
-  fetch('/market.json')
-    .then(response => response.json())
-    .then(marketData => {
-      // Now we have the market data
-      console.log("Original Market data: ", marketData);
-
-      // Format the data as a key-value pair object
-      let formattedData = marketData.reduce((accumulator, current) => {
-        accumulator[current.TLC] = current.normalized_price;
-        return accumulator;
-      }, {});
-
-      console.log("Formatted Market data: ", formattedData);
-
-      if (mapIsCurrent) {
-        console.log("if map.current");
-
-        // Load GeoJSON data
-        fetch('/filtered_geojson_file.geojson')
-          .then(response => response.json())
-          .then(data => {
-            // Now we have the GeoJSON data
-            // console.log("GeoJSON data: ", data);
-
-            data.features.forEach(feature => {
-              let objectid = feature.properties.objectid;
-              let objectstring = objectid.toString();
-              let normalizedPrice = formattedData[objectstring];
-
-              // if (normalizedPrice) {
-              //   // console.log("PRICE: ", normalizedPrice)
-              //   feature.properties.color = getColorFromScore(normalizedPrice);
-              //   feature.properties.price = normalizedPrice;
-              // }
-
-            });
-            setPrices(formattedData);
-            // setPriceGeoJsonData(data);
-          });
-      }
-    });
-}, [mapIsCurrent]);  // Re-run effect whenever mapIsCurrent changes
-
 
   //clean crime data and set it to state
   useEffect(() => {

@@ -1,8 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import LineChart from './LineChart';
+import { ApiContext } from '../context/ApiContext';
+
 function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, yearData, objectID, name, busynessRank, crimeRank, propertyRank, transitRank, combinedRank}) {
     const sidebarRef = useRef(null);
+    const [sortedCafes] = useContext(ApiContext);  
+    const [selectedCafes, setSelectedCafes] = useState([]);
 
+    //function that handles cafe selection
+    //takes in the objectID of the cafe that was selected
+    //creates a list of cafes with that objectID
+    const handleCafeSelection = (objectID) => {
+      let selectedCafe = [];
+      sortedCafes.forEach(cafe => {
+        if(cafe.objectid === objectID) {
+          selectedCafe.push(cafe);
+        }
+      })
+      //sort cafes by rating and assign to selectedCafe
+      selectedCafe.sort((a,b) => {
+        return b.rating - a.rating;
+      })  
+      setSelectedCafes(selectedCafe);
+    }
+
+    useEffect(() => {
+      handleCafeSelection(objectID)
+    }, [objectID])
+
+    useEffect(() => {
+      console.log('test test test', selectedCafes);
+    }, [selectedCafes])
 
     useEffect(() => {
         const map = getMap();

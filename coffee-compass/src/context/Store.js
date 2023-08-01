@@ -43,18 +43,16 @@ function Store({ children, selectedCafeId }) {
   const [sortedCafes, setSortedCafes] = useState([]);
   const [cafeDensity, setCafeDensity] = useState([]);
   const [taxiGeoJson, setTaxiGeoJson] = useState([]);
-  const [objectIds] = [
-    '4', '24', '12', '13', '41', '45', '42', '43', '48', '50', 
-    '68', '79', '74', '75', '87', '88', '90', '125', '100', '107', 
-    '113', '114', '116', '120', '127', '128', '151', '140', '137', 
-    '141', '142', '152', '143', '144', '148', '153', '158', '161', 
-    '162', '163', '164', '170', '166', '186', '194', '202', '209', 
-    '211', '224', '229', '230', '231', '239', '232', '233', '234', 
-    '236', '237', '238', '263', '243', '244', '246', '249', '261', 
-    '262'];
-
-
-
+  const objectIDs = [
+    4, 24, 12, 13, 41, 45, 42, 43, 48, 50,
+    68, 79, 74, 75, 87, 88, 90, 125, 100, 107,
+    113, 114, 116, 120, 127, 128, 151, 140, 137,
+    141, 142, 152, 143, 144, 148, 153, 158, 161,
+    162, 163, 164, 170, 166, 186, 194, 202, 209,
+    211, 224, 229, 230, 231, 239, 232, 233, 234,
+    236, 237, 238, 263, 243, 244, 246, 249, 261,
+    262];
+    const [prices,setPrices] = useState([]);
   //API fetch request via axios
   //Used to interact with Django endpoint - using GET request
   //this returns our cafe data
@@ -204,10 +202,10 @@ const filterCafeDensity = (sortedCafes) => {
   const cafeDensity = {};
 
     // convert the string to an array
-    const objectIdArray = objectIds.split(', ').map(id => id.trim());
+    // const objectIdArray = objectIds.split(', ').map(id => id.trim());
   
   // initialize all objectIds in cafeDensity to 0
-  objectIdArray.forEach(objectId => {
+  objectIDs.forEach(objectId => {
     cafeDensity[objectId] = 0;
   });
 
@@ -240,8 +238,42 @@ useEffect(() => {
       console.log('cafe density', cafeDensity);
       }, [cafeDensity])
 
+
+      useEffect(() => {
+        // Load the market data
+        fetch('/market.json')
+          .then(response => response.json())
+          .then(marketData => {
+            // Now we have the market data
+            console.log("Original Market data: ", marketData);
+      
+            // Format the data as a key-value pair object
+            let formattedData = marketData.reduce((accumulator, current) => {
+              accumulator[current.TLC] = current.normalized_price;
+              return accumulator;
+            }, {});
+      
+            // Add missing objectIds with a value of 0
+            objectIDs.forEach(objectId => {
+              let objectString = objectId.toString();
+              if (!formattedData.hasOwnProperty(objectString)) {
+                formattedData[objectString] = 0;
+              }
+            });
+      
+            console.log("Formatted Market data: ", formattedData);
+      
+            
+            setPrices(formattedData);
+                  // setPriceGeoJsonData(data);
+              
+            
+          });
+      }, []);  
+      
+
   return (
-    <ApiContext.Provider value={[data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity]}>
+    <ApiContext.Provider value={[data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity, prices]}>
       {children}
     </ApiContext.Provider>
   );
