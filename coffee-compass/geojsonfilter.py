@@ -57,23 +57,47 @@ import json
 
 
 # Read the JSON file
-with open('/Users/maxgirt/coffee-compass-project/coffee-compass/public/crimerate.json') as file:
+# with open('/Users/maxgirt/coffee-compass-project/coffee-compass/public/crimerate.json') as file:
+#     data = json.load(file)
+
+# # Extract neighborhoods
+# neighborhoods = [item[10] for item in data['data']]
+
+# # Count crimes in each neighborhood
+# crime_count = {}
+# for neighborhood in neighborhoods:
+#     if neighborhood not in crime_count:
+#         crime_count[neighborhood] = 1
+#     else:
+#         crime_count[neighborhood] += 1
+
+# # Print crime count in each neighborhood
+# for neighborhood, count in crime_count.items():
+#     print(f"Neighborhood: {neighborhood}, Crime Count: {count}")
+
+
+# # Max code to filter GeoJSON files
+
+# with open('/Users/maxgirt/Documents/GitHub/COMP47360RearchPracticum_Project/coffee-compass/public/filtered_geojson_file.geojson') as file:
+#     data = json.load(file)
+
+
+# # Then filter the features
+#     filtered_features = [feature for feature in data['features'] if feature['properties']['objectid'] not in ['103', '104', '105']]
+
+
+# # And put the filtered features back into the data
+#     data['features'] = filtered_features
+
+# # Then write the data back out to the file
+#     with open('/Users/maxgirt/Documents/GitHub/COMP47360RearchPracticum_Project/coffee-compass/public/filtered_geojson_file.geojson', 'w') as file:
+#         json.dump(data, file)
+
+#print a list of all the objectids in manhattan
+
+with open('/Users/maxgirt/Documents/GitHub/COMP47360RearchPracticum_Project/coffee-compass/public/filtered_geojson_file.geojson') as file:
     data = json.load(file)
 
-# Extract neighborhoods
-neighborhoods = [item[10] for item in data['data']]
-
-# Count crimes in each neighborhood
-crime_count = {}
-for neighborhood in neighborhoods:
-    if neighborhood not in crime_count:
-        crime_count[neighborhood] = 1
-    else:
-        crime_count[neighborhood] += 1
-
-# Print crime count in each neighborhood
-for neighborhood, count in crime_count.items():
-    print(f"Neighborhood: {neighborhood}, Crime Count: {count}")
-
-
-# Max code to filter GeoJSON files
+objectids = [feature['properties']['objectid'] for feature in data['features']]
+print(objectids)
+print(len(objectids))

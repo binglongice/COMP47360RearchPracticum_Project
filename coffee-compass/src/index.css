@@ -402,6 +402,7 @@ nav li a.active .inner {
   position: absolute;
   top: -2vh; /* adjust this value to move up/down */
   right: 30vh; /* adjust this value to move left/right */
+  color: red;
 }
    
 .sidebar-toggle:hover {

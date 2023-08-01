@@ -29,7 +29,7 @@ function Map({ selectedIndex, onCafeSelection }) {
 
 
   const [selectedCafeId, setSelectedCafeId] = useState(null);
-  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData] = useContext(ApiContext);  
+  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity] = useContext(ApiContext);  
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [mapIsCurrent, setmapIsCurrent] = useState(false);
@@ -73,12 +73,13 @@ function Map({ selectedIndex, onCafeSelection }) {
 //the current rank is updated after each filter is applied via activeMaps
 //combined rank is updated if busyness data is changed
   useEffect(() => {
-    if (selectedTimeFrame && prices && crimeData && transportData) {
+    if (selectedTimeFrame && prices && crimeData && transportData && cafeDensity) {
       let rankedData = {
         "busyness": {},
         "prices": {},
         "crimeData": {},
         "transportData": {},
+        "cafeDensity": {},
         "combined": {},
         "current": {},
       };
@@ -105,6 +106,7 @@ function Map({ selectedIndex, onCafeSelection }) {
       let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[b] - prices[a]);
       let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[b] - crimeData[a]); //sort so that zone with lowest crime is first
       let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
+      let sortedKeysCafes = Object.keys(cafeDensity).sort((a, b) => cafeDensity[b] - cafeDensity[a]);
       let combined = {};
       let current = {};
 
@@ -142,6 +144,14 @@ function Map({ selectedIndex, onCafeSelection }) {
         // Add transport rank to combined rank
         combined[objectid].rank += rank + 1;
       }
+
+      for (let rank = 0; rank < sortedKeysCafes.length; rank++) {
+        let objectid = sortedKeysCafes[rank];
+        rankedData.cafeDensity[objectid] = { score: cafeDensity[objectid], rank: rank + 1 };
+  
+        // Add cafe rank to combined rank
+        combined[objectid].rank += rank + 1;
+      }
   
       // Sort combined data and assign ranks
       // The ranks are all added together, so the lowest combined rank is the best
@@ -157,7 +167,7 @@ function Map({ selectedIndex, onCafeSelection }) {
         if (activeCount > 1) {
           // Initialize current
           rankedData.current = {};
-          const sources = { busyness: sortedKeysBusyness, prices: sortedKeysPrices, crimeData: sortedKeysCrime, transportData: sortedKeysTransport };
+          const sources = { busyness: sortedKeysBusyness, prices: sortedKeysPrices, crimeData: sortedKeysCrime, transportData: sortedKeysTransport, cafeDensity: sortedKeysCafes };
       
           // Loop over each data source
           for (let source in sources) {
@@ -255,6 +265,15 @@ const createHeatMapGeo = async (rankedData) => {
         } else {
           console.log(`objectid ${objectid} not found in rankedData.crimeData.`);
         }
+        if (rankedData.cafeDensity.hasOwnProperty(objectid)) {
+          let cafeRank = rankedData.cafeDensity[objectid].rank;
+          let cafeColor = getColorFromRank(cafeRank);
+          feature.properties.cafe_color = cafeColor;
+          feature.properties.cafe_rank = cafeRank;
+        }
+        else {
+          console.log(`objectid ${objectid} not found in rankedData.cafeDensity.`);
+        }
 
         if (rankedData.combined.hasOwnProperty(objectid)) {
           let combinedRank = rankedData.combined[objectid].rank;
@@ -315,32 +334,6 @@ useEffect(() => {
   generateGeoJson();
 }, [mapIsCurrent, rankedData, activeMaps]);
 
-  //should be deleted and done in the backend 
-  //cleans up busyness data and sets it to a state variable
-  //called everytime the picklePredictions changes (when the predictions are updated)
-  // useEffect(() => {
-  //   if (picklePredictions && yearData && weekData) {
-  //     // const predictions = Object.fromEntries(
-  //     //   Object.entries(picklePredictions).map(([key, value]) => [key.replace("model_", ""), value])
-  //     // );
-  //     const weekPredictions = Object.fromEntries(
-  //       Object.entries(weekData).map(([key, value]) => [key.replace("model_", ""), value])
-  //     );
-  //     const yearPredictions = Object.fromEntries(
-  //       Object.entries(yearData).map(([key, value]) => [key.replace("model_", ""), value])
-  //     );
-  //     console.log("pickle predictions:", picklePredictions);
-  //     // console.log("Predictions is not empty:", predictions);
-  //     console.log("Week Predictions", weekPredictions);
-  //     console.log("year predictions", yearPredictions);
-  //     // setBusynessData(predictions);
-  //     setWeekRankData(weekPredictions);
-  //     setYearRankData(yearPredictions);
-  //     // setYearData(yearPredictions);
-  //     // setWeekData(weekPredictions);
-
-  //     }
-  // }, [mapIsCurrent, picklePredictions, yearData, weekData]);  // Re-run effect whenever mapIsCurrent changes
 
 //cleans up market data and sets it to a state variable
 //triggered upon when the map is loaded in
@@ -388,6 +381,7 @@ useEffect(() => {
       }
     });
 }, [mapIsCurrent]);  // Re-run effect whenever mapIsCurrent changes
+
 
   //clean crime data and set it to state
   useEffect(() => {
@@ -524,11 +518,13 @@ useEffect(() => {
   //sets the IsLoading state to false when the cafe data is loaded
   //updates every time the cafe data changes (should not change after initial load)
   useEffect(() => {
-    console.log('Test to see if my data is correct:', data);
-    if (data.length > 0) {
+    console.log('Test to see if my cafe data is correct:', data);
+    if (sortedCafes.length > 0) {
       setIsLoading(false);
     }
-  }, [data]);
+  }, [sortedCafes]);
+
+
 
 
   //this code actually creates our map and sets the bounds
@@ -628,11 +624,12 @@ useEffect(() => {
       });
 
     // Add the cafes data as a GeoJSON source
+    // data variable is all our cafes
     map.current.addSource('cafes', {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: data.map((cafe) => ({
+        features: sortedCafes.map((cafe) => ({
           type: 'Feature',
           geometry: {
             type: 'Point',
@@ -1034,6 +1031,13 @@ useEffect(() => {
 } else {
     console.log('Transport is unchecked');
 }
+  if (activeMaps.cafeDensity) {
+    console.log('Cafe Density is checked');
+    // add heatmap 
+    if (mapIsCurrent && rankedGeoJson) {
+      createHeatMap(newGeoJson, "cafe_color");
+    }
+  }
 }
     }
   };

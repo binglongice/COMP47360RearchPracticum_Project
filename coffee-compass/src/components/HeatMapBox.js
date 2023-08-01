@@ -12,6 +12,7 @@ const HeatMapBox = ({handleHeatMap}) => {
         crimeData: false,
         prices: false,
         transportData: false,
+        cafeDensity: false,
     });
 
     //function to handle when a checkbox is checked or unchecked
@@ -85,6 +86,21 @@ const HeatMapBox = ({handleHeatMap}) => {
                     }
                     label={<span style={{ fontSize: '12px' }}>Transport Links</span>}
                 />
+
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={checked.cafeDensity}
+                            onChange={handleCheckChange}
+                            name="cafeDensity"
+                            style={{ color: '#00FF00', padding: '3px' }}
+                            size="small"
+                        />
+                    }
+                    label={<span style={{ fontSize: '12px' }}>Cafe Density</span>}
+                />
+
+
 
             </FormGroup>
          <button className = "buttonSuggestion">Find Your Location</button>
