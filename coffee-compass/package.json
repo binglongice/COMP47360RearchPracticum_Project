@@ -6,6 +6,7 @@
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@mui/material": "^5.14.0",
     "axios": "^1.4.0",
     "chroma-js": "^2.4.2",
@@ -13,7 +14,9 @@
     "d3fc": "^15.2.6",
     "framer-motion": "^4.1.17",
     "mapbox-gl": "^2.14.1",
+    "papaparse": "^5.4.1",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0"
   },

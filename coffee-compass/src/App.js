@@ -1,24 +1,38 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import Map from './components/Map';
 import Store from '../src/context/Store';
+import Header from '../src/components/Header'
+import BackgroundPicture from "./components/BackgroundPicture";
+import Organization from "./components/Organization";
+import Legal from "./components/Legal";
+import Property from "./components/Property";
+import FeedBack from "./components/FeedBack";
+import Service from "./components/Service";
+import SideContent from "./components/SideContent";
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
-
-// add components to website
-
-//wrapping map in store allows map to access that context
-
-// Put store in function App means we'll perform the actions in Store.js on page load (call Django API)
-
 function App() {
-  const [selectedCafeId, setSelectedCafeId] = useState(null);
-  console.log('selectedCafeId:', selectedCafeId);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenuClick = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div>
-      <Store selectedCafeId={selectedCafeId}>
-        <Map onCafeSelection={setSelectedCafeId} />
-      </Store>
+      <Header isMenuOpen={isMenuOpen} onMenuClick={handleMenuClick} />
+      <BackgroundPicture />
+        <Service/>
+        <SideContent/>
+      <Organization/>
+        <Legal/>
+        <Property/>
+
+        <FeedBack/>
     </div>
   );
-}export default App;
+}
+
+export default App;
+
