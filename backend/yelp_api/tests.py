@@ -6,6 +6,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 import json
 from django.core.exceptions import ObjectDoesNotExist
+from yelp_api.serializers import PredictionsSerializer, AggregatedPredictionsSerializer
+
 
 
 # Testing functions in api module of yelp_api
@@ -261,3 +263,52 @@ class MonthlyAggregationAPITestCase(TestCase):
 
         # Check if the normalized value is approximately equal to the expected normalized value
         self.assertAlmostEqual(expected_normalized_prediction, response_data['4']['7'], places=2)
+
+class PredictionsSerializerTestCase(TestCase):
+    def test_serialization(self):
+        # Create a sample Predictions instance with required attributes
+        prediction_data = {
+            'location_id': 4,
+            'hour': 12,
+            'day': 6,
+            'month': 7,
+            'week_of_year': 31,
+            'prediction': 111,  # Replace with the actual value
+        }
+        serializer = PredictionsSerializer(data=prediction_data)
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+
+        # Check if the serializer can create an instance from the data
+        instance = serializer.save()
+
+        # Check if the serialized data matches the original data
+        self.assertEqual(serializer.data, prediction_data)
+
+        # Check if the instance is properly saved to the database
+        saved_instance = Predictions.objects.get(pk=instance.pk)
+        self.assertEqual(saved_instance.location_id, 4)
+        # Add more assertions for other fields as needed
+
+class AggregatedPredictionsSerializerTestCase(TestCase):
+    def test_serialization(self):
+        # Create a sample AggregatedPredictions instance with required attributes
+        aggregated_prediction_data = {
+            'location_id': 1,
+            'day': 1,
+            'month': 7,
+            'week_of_year': 30,
+            'average_prediction': 100,  # Replace with the actual value
+        }
+        serializer = AggregatedPredictionsSerializer(data=aggregated_prediction_data)
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+
+        # Check if the serializer can create an instance from the data
+        instance = serializer.save()
+
+        # Check if the serialized data matches the original data
+        self.assertEqual(serializer.data, aggregated_prediction_data)
+
+        # Check if the instance is properly saved to the database
+        saved_instance = AggregatedPredictions.objects.get(pk=instance.pk)
+        self.assertEqual(saved_instance.location_id, 1)
+        # Add more assertions for other fields as needed
