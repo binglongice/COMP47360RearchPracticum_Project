@@ -24,8 +24,6 @@ def search_cafes(location, offset=0):
     data = response.json()
     return data
 
-import requests
-
 def get_reviews(id):
     url = f'https://api.yelp.com/v3/businesses/{id}/reviews'
     headers = {

@@ -130,8 +130,6 @@ def cafes_api(request, location):
             return Response({"error": "Unable to connect to the cache and database"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
-
 @api_view(['GET'])
 def review_api(requests, id):
     data = get_reviews(id)

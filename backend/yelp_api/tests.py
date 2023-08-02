@@ -7,12 +7,21 @@ from django.urls import reverse
 import json
 from django.core.exceptions import ObjectDoesNotExist
 from yelp_api.serializers import PredictionsSerializer, AggregatedPredictionsSerializer
+from django.test import SimpleTestCase
+from django.urls import reverse, resolve
+from yelp_api.views import cafes_api, predictions_api, review_api
+from yelp_api.pickle_views import model_output_api, weekly_aggregation_api, monthly_aggregation_api
+from rest_framework import status
+from rest_framework.test import APIClient, APITestCase
+from collections import OrderedDict
 
 
-
-# Testing functions in api module of yelp_api
+# Testing functions in api module #
 
 class YelpApiTestCase(TestCase):
+
+    # testing the search_cafes function in api
+
     @patch('yelp_api.api.requests.get')
     def test_search_cafes(self, mock_requests_get):
         # Simulate the response rather than make an actual API call
@@ -35,6 +44,7 @@ class YelpApiTestCase(TestCase):
         self.assertIsInstance(response_data["businesses"], list)
         self.assertIsInstance(response_data["total"], int)
 
+    # testing the get_reviews function in api
 
     @patch('yelp_api.api.requests.get')
     def test_get_reviews(self, mock_requests_get):
@@ -54,9 +64,10 @@ class YelpApiTestCase(TestCase):
         # Test if the response contains reviews as a list
         self.assertIsInstance(response_data["reviews"], list)
 
-# Testing the functions of models.py
-# tests.py
 
+# Testing the functions in models module # 
+
+# Testing class cafe and associated functions in models
 class CafeModelTestCase(TestCase):
     def setUp(self):
         # Create a sample Cafe instance for testing
@@ -88,6 +99,7 @@ class CafeModelTestCase(TestCase):
         self.assertEqual(self.cafe._meta.get_field("image_url").max_length, 255)
 
 
+# Testing class predictions in models
 class PredictionsModelTestCase(TestCase):
     def setUp(self):
         # Create a sample Predictions instance for testing
@@ -113,6 +125,7 @@ class PredictionsModelTestCase(TestCase):
         self.assertIsInstance(self.predictions.datetime, str)
 
 
+# Testing class aggregated predictions in models
 class AggregatedPredictionsModelTestCase(TestCase):
     def setUp(self):
         # Create a sample AggregatedPredictions instance for testing
@@ -133,6 +146,7 @@ class AggregatedPredictionsModelTestCase(TestCase):
         self.assertIsInstance(self.aggregated_predictions.average_prediction, int)
 
 
+# Testing class monthly predictions in models
 class MonthlyPredictionsModelTestCase(TestCase):
     def setUp(self):
         # Create a sample MonthlyPredictions instance for testing
@@ -149,13 +163,15 @@ class MonthlyPredictionsModelTestCase(TestCase):
         self.assertIsInstance(self.monthly_predictions.monthly_prediction, int)
 
 
+# Testing functions in pickle_views module #
+
+# Testing model_output_api in pickle_views
 class ModelOutputAPITestCase(TestCase):
     def test_model_output_api(self):
         client = Client()
 
         # Make a GET request to the model_output_api endpoint with specific day, month, and week_of_year values
         url = reverse('model-output-api', args=[1, 7, 30])
-        print(f"24 hour url", url)
         response = client.get(url)
 
         # Assert that the response status code is 200 (OK)
@@ -168,6 +184,7 @@ class ModelOutputAPITestCase(TestCase):
         self.assertIsInstance(response_data, dict)
 
         # Add specific assertions for the JSON format, grouping by model and then by hour (0-23)
+        # Checking that the response contains each of the hours
         for model_number, hour_predictions in response_data.items():
             self.assertIsInstance(hour_predictions, dict)
             for hour, prediction in hour_predictions.items():
@@ -177,11 +194,12 @@ class ModelOutputAPITestCase(TestCase):
                 self.assertIsInstance(prediction, float)
 
 
+# Testing weekly_aggregation_api in pickle_views
 class WeeklyAggregationAPITestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Create test data for the WeeklyAggregationAPI
-        # For example, create a sample AggregatedPredictions object in the test database
+       # This is the same as in the actual db
         week_of_year = 30
         location_id = 4
         day = 1
@@ -189,7 +207,7 @@ class WeeklyAggregationAPITestCase(TestCase):
         average_prediction = 115
         AggregatedPredictions.objects.create(
             week_of_year=week_of_year,
-            month=month,  # Set the correct month value
+            month=month,  
             location_id=location_id,
             day=day,
             average_prediction=average_prediction
@@ -198,9 +216,9 @@ class WeeklyAggregationAPITestCase(TestCase):
     def test_weekly_aggregation_api(self):
         # Make a GET request to the weekly_aggregation_api endpoint with specific week_of_year value
         url = reverse('weekly-aggregation-api', args=[30])
-        print("weekly url", url)
+        # print("weekly url", url)
         response = self.client.get(url)
-        print("weekly response", response)
+        # print("weekly response", response)
         self.assertEqual(response.status_code, 200)
 
         # Convert the JSON response to a Python dictionary
@@ -216,9 +234,10 @@ class WeeklyAggregationAPITestCase(TestCase):
         try:
             prediction = AggregatedPredictions.objects.get(week_of_year=30, location_id=4, day=1)
             expected_prediction = prediction.average_prediction
-            print("expected prediction", expected_prediction)
+            # print("expected prediction", expected_prediction)
 
             # Perform normalization
+            # Had to find actual min and max from the db so the normalisation would be the same
             prediction_min = 4
             prediction_max = 7674
             normalized_expected_prediction = (expected_prediction - prediction_min) / (prediction_max - prediction_min)
@@ -229,13 +248,15 @@ class WeeklyAggregationAPITestCase(TestCase):
         except ObjectDoesNotExist:
             self.fail('Test data not found in the database.')
 
+# For weekly_aggregation_api provided actual data same as in db to ensure we could normalise and
+# return the same data as returned in the JSON response
 
-
+# Testing monthly_aggregation_api in pickle_views
 class MonthlyAggregationAPITestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Create test data for the MonthlyAggregationAPI
-        # For example, create a sample MonthlyPredictions object in the test database
+        # Again actual data to ensure normalisation works correctly
         location_id = 4
         month = 7
         monthly_prediction = 111
@@ -259,11 +280,17 @@ class MonthlyAggregationAPITestCase(TestCase):
         self.assertIsInstance(response_data, dict)
 
         # Expected normalized value (manually calculated)
-        expected_normalized_prediction = (111 - 1) / (6718 - 111)  # Replace 111 with actual prediction_min and prediction_max if available
+        # Had to find actual max and min in same manner as weekly
+        expected_normalized_prediction = (111 - 1) / (6718 - 111)  
 
         # Check if the normalized value is approximately equal to the expected normalized value
         self.assertAlmostEqual(expected_normalized_prediction, response_data['4']['7'], places=2)
 
+# Again sample data is an actual row in db and had to perform normalisation in same way as in db
+
+# Testing functions in serialisers # 
+
+# Testing predictionsserialiser in serialisers
 class PredictionsSerializerTestCase(TestCase):
     def test_serialization(self):
         # Create a sample Predictions instance with required attributes
@@ -273,7 +300,7 @@ class PredictionsSerializerTestCase(TestCase):
             'day': 6,
             'month': 7,
             'week_of_year': 31,
-            'prediction': 111,  # Replace with the actual value
+            'prediction': 111, 
         }
         serializer = PredictionsSerializer(data=prediction_data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
@@ -287,8 +314,8 @@ class PredictionsSerializerTestCase(TestCase):
         # Check if the instance is properly saved to the database
         saved_instance = Predictions.objects.get(pk=instance.pk)
         self.assertEqual(saved_instance.location_id, 4)
-        # Add more assertions for other fields as needed
 
+# Testing aggregate predictions in serialisers
 class AggregatedPredictionsSerializerTestCase(TestCase):
     def test_serialization(self):
         # Create a sample AggregatedPredictions instance with required attributes
@@ -297,7 +324,7 @@ class AggregatedPredictionsSerializerTestCase(TestCase):
             'day': 1,
             'month': 7,
             'week_of_year': 30,
-            'average_prediction': 100,  # Replace with the actual value
+            'average_prediction': 100, 
         }
         serializer = AggregatedPredictionsSerializer(data=aggregated_prediction_data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
@@ -311,4 +338,114 @@ class AggregatedPredictionsSerializerTestCase(TestCase):
         # Check if the instance is properly saved to the database
         saved_instance = AggregatedPredictions.objects.get(pk=instance.pk)
         self.assertEqual(saved_instance.location_id, 1)
-        # Add more assertions for other fields as needed
+
+# Testing functions in urls #
+
+class TestUrls(SimpleTestCase):
+    def test_cafes_api_url_resolves(self):
+        url = reverse('cafes_api', args=['location'])
+        self.assertEqual(resolve(url).func, cafes_api)
+
+    def test_predictions_api_url_resolves(self):
+        url = reverse('predictions_api', args=['location'])
+        self.assertEqual(resolve(url).func, predictions_api)
+
+    def test_review_api_url_resolves(self):
+        url = reverse('review-api', args=['id'])
+        self.assertEqual(resolve(url).func, review_api)
+
+    def test_model_output_api_url_resolves(self):
+        url = reverse('model-output-api', args=[1, 2, 3]) 
+        self.assertEqual(resolve(url).func, model_output_api)
+
+    def test_weekly_aggregation_api_url_resolves(self):
+        url = reverse('weekly-aggregation-api', args=[30])
+        self.assertEqual(resolve(url).func, weekly_aggregation_api)
+
+    def test_monthly_aggregation_api_url_resolves(self):
+        url = reverse('monthly-aggregation-api')
+        self.assertEqual(resolve(url).func, monthly_aggregation_api)
+
+
+# Testing functions views.py
+
+# Testing cafes_api in views
+class CafeAPITest(APITestCase):
+    def test_cafes_api(self):
+
+        # actual cafe data
+        cafes_data = [
+            {
+                'id': 'lXGCo-K7eftxRT_6E59-Iw',
+                'name': 'Union Square Cafe',
+                'address': '101 E 19th St',
+                'rating': '4.0',
+                'longitude': -73.987876,
+                'latitude': 40.737772,
+                'image_url': 'https://s3-media1.fl.yelpcdn.com/bphoto/F2lCykdOrnAb_c7xQsYHIw/o.jpg',
+            },
+            {
+                'id': 'gISZs8okQgFIpd-yz9aC4w',
+                'name': 'Café Henri',
+                'address': '1010 50th Ave',
+                'rating': '4.0',
+                'longitude': -73.953697,
+                'latitude': 40.742559,
+                'image_url': 'https://s3-media2.fl.yelpcdn.com/bphoto/5x1y2Bdpw5lTxrDG2tBJxA/o.jpg',
+            },
+        ]
+        for data in cafes_data:
+            Cafe.objects.create(**data)
+
+        url = reverse('cafes_api', kwargs={'location': 'Manhattan'})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Convert the response data to a list of dictionaries
+        response_data_list = [dict(item) for item in response.data]
+
+        # Check if sample (actual) data is present in JSON response
+        for cafe_data in cafes_data:
+            self.assertIn(cafe_data, response_data_list)
+
+
+# Testing predictions_api in views
+
+# Predictions not being used?
+class PredictionsAPITest(APITestCase):
+    def test_predictions_api(self):
+        predictions_data = [
+            # Add some prediction data
+        ]
+        for data in predictions_data:
+            Predictions.objects.create(**data)
+
+        url = reverse('predictions_api', kwargs={'location': 'your-location'})
+        response = self.client.get(url)
+        # print("predictions response", response.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('results' in response.data)
+        self.assertEqual(len(response.data['results']), len(predictions_data))
+# Outline should we use predictions, but not being used? f
+
+# Testing review api in views
+class ReviewAPITestCase(TestCase):
+    def setUp(self):
+        # Create a test client for making API requests
+        self.client = APIClient()
+
+    def test_review_api(self):
+        business_id = 'lXGCo-K7eftxRT_6E59-Iw'
+        url = reverse('review-api', args=[business_id])
+        print("review api test case url", url)
+        # Make a GET request to the review_api endpoint
+        response = self.client.get(url)
+        
+        # Assert that the response status code is 200 (OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Assert that the response data is a dictionary (parsed JSON)
+        self.assertIsInstance(response.data, dict)
+        
