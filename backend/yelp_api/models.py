@@ -9,9 +9,11 @@ class Cafe(models.Model):
     longitude = models.FloatField()
     image_url = models.CharField(max_length=255, null=True)
 
-
     class Meta:
        db_table = 'cafe'
+
+    def __str__(self):
+        return self.name
 
 class Predictions(models.Model):
     location_id = models.BigIntegerField(primary_key=True)
@@ -47,11 +49,3 @@ class MonthlyPredictions(models.Model):
     class Meta:
         db_table = 'monthly_predictions'
 
-
-
-
-
-
-
-def __str__(self):
-        return self.name

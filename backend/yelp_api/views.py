@@ -49,8 +49,8 @@ def cafes_api(request, location):
     try:
         redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
-        # Create a key with Yelp API and current date
-        redis_key = f"Yelp_API:{date.today()}:{location}"
+        # Create a key with Yelp API and location
+        redis_key = f"Yelp_API:{location}"
 
         # Check if the data is already cached in Redis
         cached_data = redis_client.get(redis_key)
@@ -128,8 +128,6 @@ def cafes_api(request, location):
             # Handle database connection error gracefully
             print("Error: Unable to connect to the database - - when trying to get cafe info")
             return Response({"error": "Unable to connect to the cache and database"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 
 
 @api_view(['GET'])

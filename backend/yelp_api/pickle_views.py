@@ -164,6 +164,9 @@ def weekly_aggregation_api(request, week_of_year):
             # Store all the predictions as one large JSON object in Redis
             redis_client.set(redis_key, json.dumps(all_model_predictions))
             print("Cache was not used for predictions. Calculated predictions instead")
+            redis_client.expire(redis_key, 169 * 60 * 60)
+            print("7 day expiry set")
+
 
     except redis.ConnectionError:
         # Handle Redis connection error gracefully

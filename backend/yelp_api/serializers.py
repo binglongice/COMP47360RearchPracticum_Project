@@ -36,10 +36,9 @@ class Cafe_DB_Serializer(serializers.ModelSerializer):
 
 #this is new 
 class PredictionsSerializer(serializers.ModelSerializer):
-
     class Meta: 
         model = Predictions
-        fields = ['location_id', 'hour', 'day','month', 'week_of_month', 'normalized_prediction']
+        fields = ['location_id', 'hour', 'day','month', 'week_of_year', 'prediction']
 
 class AggregatedPredictionsSerializer(serializers.ModelSerializer):
     class Meta:
