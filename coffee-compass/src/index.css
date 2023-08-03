@@ -473,8 +473,8 @@ nav li a.active .inner {
 }
 
 .rank-info {
-  font-size: 0.8rem; /* Adjust as needed */
-  color: #B6B8B9; /* Adjust as needed */
+  font-size: 0.8rem; 
+  color: #B6B8B9; 
   text-align: center;
 }
 
@@ -627,4 +627,10 @@ nav li a.active .inner {
 
 .ExitButton:hover {
   background-color: #393939;
+}
+
+.cafe-info {
+  font-size: 0.8rem; /* Adjust as needed */
+  color: #B6B8B9; /* Adjust as needed */
+  text-align: center;
 }

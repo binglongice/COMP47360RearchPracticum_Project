@@ -12,12 +12,10 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpd
 // Put store in function App means we'll perform the actions in Store.js on page load (call Django API)
 
 function App() {
-  const [selectedCafeId, setSelectedCafeId] = useState(null);
-  console.log('selectedCafeId:', selectedCafeId);
   return (
     <div>
-      <Store selectedCafeId={selectedCafeId}>
-        <Map onCafeSelection={setSelectedCafeId} />
+      <Store>
+        <Map/>
       </Store>
     </div>
   );

@@ -8,9 +8,9 @@ import { point, polygon, booleanPointInPolygon } from '@turf/turf';
 // Need to pass in current date
 const getFormattedDate = () => {
   const today = new Date();
-  const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+  let dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
   const month = today.getMonth() + 1; // 1 (January) to 12 (December)
-
+  dayOfWeek = dayOfWeek === 0 ? 6 : dayOfWeek - 1; 
   // Calculate the week_of_year based on the date
   const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
   const pastDaysOfYear = (today - firstDayOfYear) / 86400000;
@@ -33,7 +33,7 @@ const getWeek = () => {
 
 
 
-function Store({ children, selectedCafeId }) {
+function Store({ children }) {
   const [data, setData] = useState([]); //cafe data
   const [reviews, setReviews] = useState([]); //yelp reviews 
   const [picklePredictions, setPicklePredictions] = useState([]); //busyness predictions
@@ -53,6 +53,9 @@ function Store({ children, selectedCafeId }) {
     236, 237, 238, 263, 243, 244, 246, 249, 261,
     262];
     const [prices,setPrices] = useState([]);
+    const [averageRating, setAverageRating] = useState([]);
+    const [selectedCafeId, setSelectedCafeId] = useState(null);
+
   //API fetch request via axios
   //Used to interact with Django endpoint - using GET request
   //this returns our cafe data
@@ -238,7 +241,7 @@ useEffect(() => {
       console.log('cafe density', cafeDensity);
       }, [cafeDensity])
 
-
+// market data for heat map 
       useEffect(() => {
         // Load the market data
         fetch('/market.json')
@@ -271,9 +274,37 @@ useEffect(() => {
           });
       }, []);  
       
+  //this function gets the average rating of cafes in a given tlc zone
+  //it takes in the sortedCafes array and the cafeDensity object
+  //it returns an object with the average rating for each tlc zone
+  const getAverageRating = (sortedCafes, cafeDensity) => {
+    let averageRating = {};
+    sortedCafes.forEach(cafe => {
+      if (averageRating.hasOwnProperty(cafe.objectid)) {
+        averageRating[cafe.objectid] += Number(cafe.rating);
+      } else {
+        averageRating[cafe.objectid] = Number(cafe.rating);
+      }
+    });    //divide the total rating by the number of cafes in each tlc zone
+    for (const [key, value] of Object.entries(averageRating)) {
+      console.log("This is the test key", key, value)
+      averageRating[key] = value / cafeDensity[key];
+    }
+    console.log("sploosh", averageRating) 
+    setAverageRating(averageRating);
+  } 
+
+  useEffect(() => {
+    if (sortedCafes.length > 65 && cafeDensity !== {}) {
+      console.log("I hate this", sortedCafes, cafeDensity)
+
+      getAverageRating(sortedCafes, cafeDensity);
+    }
+  }, [sortedCafes, cafeDensity])
+
 
   return (
-    <ApiContext.Provider value={[data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity, prices]}>
+    <ApiContext.Provider value={{data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity, prices, selectedCafeId, setSelectedCafeId, fetchReviews}}>
       {children}
     </ApiContext.Provider>
   );

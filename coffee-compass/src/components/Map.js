@@ -19,7 +19,7 @@ import HelpButton from './HelpButton';
 import HelpBox from './HelpBox';
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
-function Map({ selectedIndex, onCafeSelection }) {
+function Map({ selectedIndex }) {
 
   const getHour = () => {
     const today = new Date();
@@ -28,8 +28,8 @@ function Map({ selectedIndex, onCafeSelection }) {
 
 
 
-  const [selectedCafeId, setSelectedCafeId] = useState(null);
-  const [data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity, prices] = useContext(ApiContext);  
+  // const [selectedCafeId, setSelectedCafeId] = useState(null);
+  const {data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity, prices, setSelectedCafeId, fetchReviews} = useContext(ApiContext);  
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [mapIsCurrent, setmapIsCurrent] = useState(false);
@@ -67,6 +67,19 @@ function Map({ selectedIndex, onCafeSelection }) {
   const [helpBox, setHelpBox] = useState(false);
   const [mouseOverPopup, setPopup] = useState(null);
   const [activeIndex, setActiveIndex] = useState(getHour());
+  const [cafeDensityRank, setCafeDensity] = useState(null);
+  const [cafeClick, setCafeClick] = useState(false);
+  const [busynessRank, setBusynessRank] = useState(null);
+  const [crimeRank, setCrimeRank] = useState(null);
+  const [propertyRank, setPropertyRank] = useState(null);
+  const [transportRank, setTransportRank] = useState(null);
+  const [combinedRank, setCombinedRank] = useState(null);
+  const [cafeRank, setCafeRank] = useState(null);
+  const [currentRank, setCurrentRank] = useState(null);
+  const [suggestionFlag, setSuggestionFlag] = useState(false); //allows us to find a suggestion
+  const [findSuggestionButton, setFindSuggestionButton] = useState(false); //triggers the find suggestion button
+  const [suggestedZoneInfo, setSuggestedZoneInfo] = useState(null); //stores the suggested zone info
+  const [zoneFlag, setZoneFlag] = useState(false); //renders zone sidebar if true
 //takes in the json objects for busyness prices and crime
 //returns a json object with the objectid as the key and the rank as the value
 //assigns rank to each feature and creates a combined rank and current rank
@@ -109,10 +122,18 @@ function Map({ selectedIndex, onCafeSelection }) {
       let sortedKeysCafes = Object.keys(cafeDensity).sort((a, b) => cafeDensity[b] - cafeDensity[a]);
       let combined = {};
       let current = {};
+      
+      setBusynessRank(sortedKeysBusyness);
+      setPropertyRank(sortedKeysPrices);
+      setCrimeRank(sortedKeysCrime);
+      setTransportRank(sortedKeysTransport);
+      setCafeRank(sortedKeysCafes);
 
       console.log("sortedKeysBusyness", sortedKeysBusyness);
       console.log("sortedKeysPrices", sortedKeysPrices);
   
+      //rank is our index in the sorted array (to go through the entire array we need to add 1 to the index)
+      //
       for (let rank = 0; rank < sortedKeysBusyness.length; rank++) {
         let objectid = sortedKeysBusyness[rank];
         rankedData.busyness[objectid] = { score: busynessData[objectid], rank: rank + 1 };
@@ -125,17 +146,27 @@ function Map({ selectedIndex, onCafeSelection }) {
         let objectid = sortedKeysPrices[rank];
         rankedData.prices[objectid] = { score: prices[objectid], rank: rank + 1 };
   
-        // Add prices rank to combined rank
-        combined[objectid].rank += rank + 1;
-      }
-  
+          // Check if combined[objectid] exists before trying to add to its rank
+          if (!combined[objectid]) {
+            combined[objectid] = { rank: rank + 1 };
+          } else {
+            combined[objectid].rank += rank + 1;
+          }
+        }  
+
       for (let rank = 0; rank < sortedKeysCrime.length; rank++) {
         let objectid = sortedKeysCrime[rank];
         rankedData.crimeData[objectid] = { score: crimeData[objectid], rank: rank + 1 };
   
         // Add crimeData rank to combined rank
-        combined[objectid].rank += rank + 1;
-      }
+
+          // Check if combined[objectid] exists before trying to add to its rank
+          if (!combined[objectid]) {
+            combined[objectid] = { rank: rank + 1 };
+          } else {
+            combined[objectid].rank += rank + 1;
+          }
+        }  
 
       for (let rank = 0; rank < sortedKeysTransport.length; rank++) {
         let objectid = sortedKeysTransport[rank];
@@ -150,8 +181,13 @@ function Map({ selectedIndex, onCafeSelection }) {
         rankedData.cafeDensity[objectid] = { score: cafeDensity[objectid], rank: rank + 1 };
   
         // Add cafe rank to combined rank
-        combined[objectid].rank += rank + 1;
-      }
+          // Check if combined[objectid] exists before trying to add to its rank
+          if (!combined[objectid]) {
+            combined[objectid] = { rank: rank + 1 };
+          } else {
+            combined[objectid].rank += rank + 1;
+          }
+        }  
   
       // Sort combined data and assign ranks
       // The ranks are all added together, so the lowest combined rank is the best
@@ -195,13 +231,18 @@ function Map({ selectedIndex, onCafeSelection }) {
             let [objectid] = sortedCurrent[rank];
             rankedData.current[objectid] = { rank: rank + 1 };
           }
+          setCurrentRank(sortedCurrent);
         }
       }
 
       console.log("ranked data object: ", rankedData);
       console.log("active maps: ", activeMaps);
       setRankedData(rankedData);
+      setCombinedRank(combined);
+      setSuggestionFlag(true);
+
     }
+
   
   }, [selectedTimeFrame, prices, crimeData, activeMaps, activeIndex]);
  
@@ -214,6 +255,10 @@ function getColorFromRank(rank) {
   let lightness = ((rank - 1) / 32.5) * 35 + 25; 
   return `hsl(120, 100%, ${lightness}%)`;
 }
+
+useEffect(() => {
+  console.log("PREDICTION DATA: ", picklePredictions);
+}, [picklePredictions]);
 
 //creates the geojson for the heatmap
 //adds rank and color to each feature and score
@@ -715,16 +760,19 @@ useEffect(() => {
         const zonePropertyRank  = e.features[0].properties.prices_rank;
         const zoneCombinedRank = e.features[0].properties.combined_rank;
         const zoneTransportRank = e.features[0].properties.transport_rank;
-
+        const cafeDensityRank = e.features[0].properties.cafe_rank;
         setChartFlag(true);
         setCurrentObjectId(objectid);
-        setRightSidebar(true)
+        setCafeClick(false);
         setSideBarName(zoneName);
         setZoneBusynessRank(zoneBusynessRank);
         setZoneCrimeRank(zoneCrimeRank);
         setZonePropertyRank(zonePropertyRank);
         setZoneCombinedRank(zoneCombinedRank);
         setZoneTransportRank(zoneTransportRank);
+        setCafeDensity(cafeDensityRank);
+        setZoneFlag(true);
+        setRightSidebar(true);
 
         // const lngLat = {
         //   lng: e.lngLat.lng,
@@ -790,18 +838,26 @@ useEffect(() => {
 
 
     // cafe marker click function
-
     map.current.on('click', 'cafe_markers', (e) => {
       const cafe_id = e.features[0].properties.id;
       const cafe_url = e.features[0].properties.image_url;
       const cafe_name = e.features[0].properties.name;
       const cafe_rating = e.features[0].properties.rating
-      console.log(cafe_id);
+      const objectid = e.features[0].properties.objectid;
+      // console.log(cafe_id);
       setSelectedCafeId(cafe_id);
       setSelectedImage(cafe_url)
       setSelectedName(cafe_name)
       setSelectedRating(cafe_rating)
-      onCafeSelection(cafe_id);
+      // onCafeSelection(cafe_id);
+      setCafeClick(true); //passed into drawer component to open drawer with detailed cafe info
+      // setChartFlag(true);
+      setCurrentObjectId(objectid);
+      fetchReviews(cafe_id);
+      setRightSidebar(true);
+
+
+
     });
 
   
@@ -1019,6 +1075,57 @@ useEffect(() => {
   const getMap = () => map.current;
 
 
+      //function that returns the top rated zone based on the selected heatmap (checked)
+    //this is used to suggest a zone to the user
+    //it returns the zone with the highest current rank
+    const suggestZone = (activeMaps) => {
+      //if a single checkbox is checked, return the zone with the highest rank for that heatmap
+      if (activeMaps.busyness && !activeMaps.cafeDensity && !activeMaps.crimeData && !activeMaps.prices && !activeMaps.transportData) {
+        let foundZone = [busynessRank[0], busynessRank[1], busynessRank[2]]
+        return foundZone;
+      }
+      else if (!activeMaps.busyness && activeMaps.cafeDensity && !activeMaps.crimeData && !activeMaps.prices && !activeMaps.transportData) {
+        let foundZone = [cafeRank[0], cafeRank[1], cafeRank[2]]
+        return foundZone;
+      }
+      else if (!activeMaps.busyness && !activeMaps.cafeDensity && activeMaps.crimeData && !activeMaps.prices && !activeMaps.transportData) {
+        let foundZone = [crimeRank[0], crimeRank[1], crimeRank[2]]
+        return foundZone;
+      }
+      else if (!activeMaps.busyness && !activeMaps.cafeDensity && !activeMaps.crimeData && activeMaps.prices && !activeMaps.transportData) {
+        let foundZone = [propertyRank[0], propertyRank[1], propertyRank[2]]
+        return foundZone;
+      }
+      else if (!activeMaps.busyness && !activeMaps.cafeDensity && !activeMaps.crimeData && !activeMaps.prices && activeMaps.transportData) {
+        let foundZone = [transportRank[0], transportRank[1], transportRank[2]]
+        return foundZone;
+      }
+      else {
+        //if more than one checkbox is checked, return the zone with the highest rank for the combined heatmap
+        let foundZone = [currentRank[0][0], currentRank[1][0], currentRank[2][0]]
+        return foundZone;
+      }
+    }
+    useEffect(() => {
+      //if the 
+    if (findSuggestionButton === true && activeMaps && suggestionFlag === true) {
+    // console.log("TESTING findsuggestion return button", suggestZone(activeMaps));
+
+    let objectIDs = suggestZone(activeMaps);
+    let zoneInfo = rankedGeoJson.features.filter((feature) => objectIDs.includes(feature.properties.objectid));
+    console.log("Zone Info", zoneInfo);
+    setSuggestedZoneInfo(zoneInfo);
+    setSuggestionFlag(false);
+    setFindSuggestionButton(false);
+    setCafeClick(false);
+    setZoneFlag(false);
+    setRightSidebar(false); 
+    setSuggestionFlag(true);
+    setRightSidebar(true); 
+
+    }
+  }, [suggestionFlag, activeMaps, findSuggestionButton]);
+
   return (
     <MapContext.Provider value={map.current}>
     <div>
@@ -1027,7 +1134,7 @@ useEffect(() => {
 
       {/* <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/> */}
             {/* Map container */}
-      {mapIsCurrent && chartFlag === true && currentObjectId !== null && <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {picklePredictions} weekData = {weekData} yearData = {yearData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} />}
+      {mapIsCurrent && rightSidebar === true &&  <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {picklePredictions} weekData = {weekData} yearData = {yearData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} cafeRank = {cafeDensityRank} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating} cafeClick = {cafeClick} setCafeClick = {setCafeClick} zoneInfo = {suggestedZoneInfo} zoneFlag = {zoneFlag} setZoneFlag ={setZoneFlag} suggestionFlag = {suggestionFlag} />}
 
       <div ref={mapContainer} className="map-container"/> {/*the useRef is being used to render the map */}
       {/* {isButton5Active && (<Legend/>)} Render the legend if the button is active */}
@@ -1040,7 +1147,7 @@ useEffect(() => {
 
        <HeatMapButton heatMap = {heatMap} setHeatMap = {setHeatMap} />
 
-       {mapIsCurrent && <div style={{ visibility: heatMap === 1 ? "hidden" : "visible" }}> <HeatMapBox handleHeatMap = {handleHeatMap} /> </div>} 
+       {mapIsCurrent && <div style={{ visibility: heatMap === 1 ? "hidden" : "visible" }}> <HeatMapBox handleHeatMap = {handleHeatMap} setFindSuggestionButton = {setFindSuggestionButton} /> </div>} 
 
       </div>
       <TakeOutButton takeOut = {takeOut} setTakeOut = {setTakeOut} />
