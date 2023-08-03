@@ -2,7 +2,7 @@ import React from 'react';
 
 const Legal = () => {
   return (
-      <div className="content_1">
+      <div className="content_1" id="Legal">
     <div className="Legal">
       <h2>Legal</h2>
       <p>

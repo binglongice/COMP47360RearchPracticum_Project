@@ -10,6 +10,7 @@ import Property from "./components/Property";
 import FeedBack from "./components/FeedBack";
 import Service from "./components/Service";
 import SideContent from "./components/SideContent";
+import OrganizationPicture from "./components/OrganizationPicture";
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
 function App() {
@@ -25,10 +26,11 @@ function App() {
       <BackgroundPicture />
         <Service/>
         <SideContent/>
-      <Organization/>
+
         <Legal/>
         <Property/>
-
+        <Organization/>
+        <OrganizationPicture/>
         <FeedBack/>
     </div>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Service = () => {
   return (
-    <div className="content">
+    <div className="content" id="Service">
       <div className="welcome">
         <h3>Welcome to Our <br /><span>Service</span></h3>
         <p><span>Our application aims to answer two main questions. </span></p>

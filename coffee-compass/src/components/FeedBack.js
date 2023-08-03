@@ -2,7 +2,7 @@ import React from 'react';
 
 const FeedBack = () => {
   return (
-    <div className="wrap">
+    <div className="wrap" id="Feedback">
       <div className="content">
         <div className="contact_desc">
           <div className="contact-form">

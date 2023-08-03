@@ -2,7 +2,7 @@ import React from 'react';
 
 const Organization = () => {
   return (
-    <div className="Organization">
+    <div className="Organization" id="Organization">
       <h2>Organizations</h2>
       <ul>
         <li>

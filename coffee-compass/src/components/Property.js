@@ -2,7 +2,7 @@ import React from 'react';
 
 const Property = () => {
   return (
-      <div className="content_2">
+      <div className="content_2" id="#Property">
     <div className="Property">
       <h2>Property</h2>
       <p>
