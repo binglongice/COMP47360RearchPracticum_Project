@@ -627,3 +627,226 @@ nav li a.active .inner {
 .ExitButton:hover {
   background-color: #393939;
 }
+
+
+/*New from Nick*/
+.takeout-box-container{
+  background-color: blue;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: auto;
+  height: 60px;
+  width: 200px;
+  border: 5px solid aqua;
+  border-top: none;
+  border-left: none;
+  border-bottom-right-radius: 20px;
+
+}
+
+#params{
+  position: absolute;
+  top: 0px;
+  left: 40px;
+  right: 40px;
+  height: 100%;
+  border-left: 5px solid aqua;
+}
+
+.mode-selection-header, .duration-selection-header{
+  display: none;
+}
+
+.mode-selection-options{
+  height: 40px;
+  border-bottom: 5px solid aqua;
+}
+
+.mode-option{
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+.takeout-box-container label {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  width: 40px;
+  border-right: 5px solid aqua;
+  }
+
+ .takeout-box-container input {
+  margin: 0px;
+ }
+ 
+
+#right {
+  position: absolute;
+  bottom: 0px;
+  height: 300px;
+  top: auto;
+  left: 5px;
+  right: 5px;
+  width: auto;
+  background-color: #0aa1cf;
+  border-radius: 0px;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;  
+}
+
+
+.heatmap-analytics{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: auto;
+  width: 200px;
+  bottom: 300px;
+}
+
+h3{
+  display: none;
+}
+
+.BusynessSliderBox{
+  background-color: blue;
+  border-bottom-left-radius: 20px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 100%;
+  height: 60px;
+  left: auto; 
+  bottom: auto;
+  border: 5px solid aqua;
+  border-top: none;
+  border-right: none;
+
+}
+
+.session{
+  position: absolute;
+  top: auto;
+  height: 25px;
+  bottom: 0px;
+  right: 45px;
+  left: 0px ;
+  border: 5px solid aqua;
+  margin: 0px;
+  border-bottom: none;
+  border-left: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.session h2{
+  position: absolute;
+  bottom: auto;
+  height: 30px;
+  margin: 0px;
+  right: 0px;
+  width: 40px;
+  left: auto;
+  top: auto;
+}
+
+.row{
+  position: absolute;
+  bottom: 0px;
+  height: 30px;
+  top: auto;
+  left: 5px;
+  right: 45px;
+  width: auto;
+}
+
+.filter_row{
+  border-right: 5px solid aqua;
+  position: absolute;
+  left: 0px;
+  right: 45px;
+  font-size: small;
+  top: 0px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.filter_row h2{
+  display: none;
+}
+
+.filter-nav-container{
+  background-color:yellow;
+  top: 100px;
+  width: 80px;
+  height: 325px;
+  left: 0px;
+}
+
+.filter-nav{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  right: 0px;
+  z-index: 20;
+}
+
+ul{
+  margin:  0px;
+  padding: 0px;
+  list-style-type: none;
+}
+
+li{
+  margin: 0px;
+  background-color: blue;
+  border: 5px solid aqua;
+  border-left: none;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+nav li{
+  margin: 0px;
+  margin-bottom: 5px;
+  width: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav li a{
+  background-color: transparent;
+}
+
+
+
+
+.legend, .HeatMapButton, .helpButton{
+  display: none;
+}
+
+/*comment out .session h2 display TimeFrame*/
+
+
+/*
+PERSONAL
+Try get takeaway working without text, just icons
+Get lists working with just css no js 
+*/
+
+/*
+NEED FROM MAX
+Heatmap mirroring POI list on RHS
+Clear buttons each for POIs and heatmaps
+Help buttons for the takeaway and calendar div
+clear takeaway button for calendar div
+Have takeaway div there by default not waiting on button click
+*/

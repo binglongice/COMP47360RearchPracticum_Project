@@ -76,7 +76,11 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, activeIndex, s
     <div className="BusynessSliderBox">
         <h3>Busyness Slider</h3>
         <div className='session'>
-            <h2>{displayTimeframe}: {" "}
+            <h2>
+                
+                {/*{displayTimeframe}: {" "}*/}
+
+
             <label>{displayValue}</label>
             </h2> 
             <input className='row' type='range' min='0' max={maxRange} step='1' value={activeIndex} onChange={handleSliderChange} />
