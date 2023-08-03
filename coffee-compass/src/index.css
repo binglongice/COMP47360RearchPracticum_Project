@@ -402,6 +402,7 @@ nav li a.active .inner {
   position: absolute;
   top: -2vh; /* adjust this value to move up/down */
   right: 30vh; /* adjust this value to move left/right */
+  color: red;
 }
    
 .sidebar-toggle:hover {
@@ -472,8 +473,8 @@ nav li a.active .inner {
 }
 
 .rank-info {
-  font-size: 0.8rem; /* Adjust as needed */
-  color: #B6B8B9; /* Adjust as needed */
+  font-size: 0.8rem; 
+  color: #B6B8B9; 
   text-align: center;
 }
 
@@ -626,4 +627,10 @@ nav li a.active .inner {
 
 .ExitButton:hover {
   background-color: #393939;
+}
+
+.cafe-info {
+  font-size: 0.8rem; /* Adjust as needed */
+  color: #B6B8B9; /* Adjust as needed */
+  text-align: center;
 }

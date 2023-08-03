@@ -3,7 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-const HeatMapBox = ({handleHeatMap}) => {
+const HeatMapBox = ({handleHeatMap, setFindSuggestionButton}) => {
     // const [header, setHeader] = useState('Busyness');
     //state variable to keep track of which checkboxes are checked
     //this is used to determine which layers to display on the map
@@ -12,6 +12,7 @@ const HeatMapBox = ({handleHeatMap}) => {
         crimeData: false,
         prices: false,
         transportData: false,
+        cafeDensity: false,
     });
 
     //function to handle when a checkbox is checked or unchecked
@@ -32,6 +33,10 @@ const HeatMapBox = ({handleHeatMap}) => {
         useEffect(() => {
             handleHeatMap(checked);
         }, []);  // passing an empty dependency array to ensure this effect runs only once, on mount
+
+            //function that returns the top rated zone based on the selected heatmap (checked)
+            //this is used to suggest a zone to the user
+            //it returns the zone with the highest current rank
 
     return (
         <div className="HeatMapBox">
@@ -86,8 +91,23 @@ const HeatMapBox = ({handleHeatMap}) => {
                     label={<span style={{ fontSize: '12px' }}>Transport Links</span>}
                 />
 
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={checked.cafeDensity}
+                            onChange={handleCheckChange}
+                            name="cafeDensity"
+                            style={{ color: '#00FF00', padding: '3px' }}
+                            size="small"
+                        />
+                    }
+                    label={<span style={{ fontSize: '12px' }}>Cafe Density</span>}
+                />
+
+
+
             </FormGroup>
-         <button className = "buttonSuggestion">Find Your Location</button>
+         <button className = "buttonSuggestion" onClick={() => setFindSuggestionButton(true)}>Find Your Location</button>
     </div>
     );
 };
