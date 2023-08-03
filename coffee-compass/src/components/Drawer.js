@@ -39,7 +39,8 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
     useEffect(() => {
       if (zoneInfo) {
 
-      console.log("zone info: ", zoneInfo)
+      console.log("zone info: ", zoneInfo[0], zoneInfo[1])
+
       }
     }, [zoneInfo])
   
@@ -144,7 +145,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
               
               
                           </div>
-            <LineChart dayData={dayData} weekData={weekData} yearData={yearData} objectID={objectID} sidebarIsOpen={rightSidebar}/>
+             {zoneFlag && <LineChart dayData={dayData} weekData={weekData} yearData={yearData} objectID={objectID} sidebarIsOpen={rightSidebar}/>}
           </div>
         </div>
         ) : cafeClick ? (
@@ -174,11 +175,26 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
           //suggestion info
           <div ref={sidebarRef} id="right" className={`sidebar flex-center right ${rightSidebar ? '' : 'collapsed'}`}>
           <div className="sidebar-content rounded-rect flex-center">
-          <h1 className="sidebar-header">Cafe Suggestions</h1>
+          <h1 className="sidebar-header">Zone Suggestions</h1>
           <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
             &rarr;
           </div>
-         
+          <div className="cafe-info">
+             
+              {zoneInfo.map((zone, index) => (
+                <div key={index}>
+                  <h2> {index + 1}. {zone.properties.zone}</h2>
+                  <p><b>Current Rank: {zone.properties.current_rank}</b></p>
+                  <p>Busyness Rank: {zone.properties.busyness_rank}</p>
+                  <p>Crime Rank: {zone.properties.crime_rank}</p>
+                  <p>Property Rank: {zone.properties.prices_rank}</p>
+                  <p>Transit Rank: {zone.properties.transport_rank}</p>
+                  <p>Cafe Density Rank: {zone.properties.cafe_rank}</p>
+          
+                </div>
+              ))
+            }
+          </div>
           </div>
           </div>
         ) : null

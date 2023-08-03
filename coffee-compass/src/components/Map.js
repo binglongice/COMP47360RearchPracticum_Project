@@ -850,11 +850,13 @@ useEffect(() => {
       setSelectedName(cafe_name)
       setSelectedRating(cafe_rating)
       // onCafeSelection(cafe_id);
-      setCafeClick(true); //passed into drawer component to open drawer with detailed cafe info
       // setChartFlag(true);
       setCurrentObjectId(objectid);
       fetchReviews(cafe_id);
       setRightSidebar(true);
+      setZoneFlag(false);
+      setCafeClick(true); //passed into drawer component to open drawer with detailed cafe info
+
 
 
 
@@ -1126,6 +1128,29 @@ useEffect(() => {
     }
   }, [suggestionFlag, activeMaps, findSuggestionButton]);
 
+
+  //function to remove all markers from the map if the user displays a heatmap 
+  //   useEffect(() => {
+  //     if (activeMaps) {
+  //     if(activeMaps.busyness || activeMaps.cafeDensity || activeMaps.crimeData || activeMaps.prices || activeMaps.transportData) {
+  //     map.current.getStyle().layers.forEach((layer) => {
+  //       if (
+  //         layer.id === 'bench_locations_markers' ||
+  //         layer.id === 'subway_markers' ||
+  //         layer.id === 'bus_markers' ||
+  //         layer.id === 'cafe_markers' ||
+  //         layer.id === 'taxi_zones_fill' ||
+  //         layer.id === 'taxi_zones_price_map' ||
+  //         layer.id === 'bike_locations'
+  //       ) {
+  //         map.current.removeLayer(layer.id);
+  //       }
+  //     })
+  //   }
+  // }
+  //     },[activeMaps]);
+      
+
   return (
     <MapContext.Provider value={map.current}>
     <div>
@@ -1158,7 +1183,6 @@ useEffect(() => {
       <HelpButton helpBox = {helpBox} setHelpBox = {setHelpBox} />
       {helpBox && <HelpBox setHelpBox = {setHelpBox}/>}
     </div>
-    {/* {chartFlag === true && currentObjectId !== null &&  <LineChart dayData = {busyness} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId}/>} */}
     </div>
     </MapContext.Provider>
   );
