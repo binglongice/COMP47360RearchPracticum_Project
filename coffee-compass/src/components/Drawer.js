@@ -3,6 +3,11 @@ import LineChart from './LineChart';
 import { ApiContext } from '../context/ApiContext';
 
 
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faShoePrints, faHandcuffs, faDollarSign, faBus, faCoffee } from '@fortawesome/free-solid-svg-icons';
+
+
 function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, yearData, objectID, name, busynessRank, crimeRank, propertyRank, transitRank, combinedRank, cafeRank, cafeId, cafe_url, cafe_name, cafe_rating, cafeClick, setCafeClick, zoneInfo, zoneFlag, setZoneFlag, suggestionFlag}) {
     const sidebarRef = useRef(null);
     const {sortedCafes, reviews} = useContext(ApiContext);  
@@ -58,13 +63,13 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
         }
     
         if (rightSidebar) {
-            const padding = { right: 300 };
+            const padding = { bottom: 300 };
             map.easeTo({
                 padding: padding,
                 duration: 1000
             });
         } else {
-            const padding = { right: 0 };
+            const padding = { bottom: 0 };
             map.easeTo({
                 padding: padding,
                 duration: 1000
@@ -120,8 +125,91 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
         <div ref={sidebarRef} id="right" className={`sidebar flex-center right ${rightSidebar ? '' : 'collapsed'}`}>
           <div className="sidebar-content rounded-rect flex-center">
             <h1 className="sidebar-header">{name}</h1>
+            <div className='sidebar-zone-rating'>
+            {/* <div id="overall-rating">
+                <p>
+                Rating:
+                </p>
+                <div id="score">
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </div> */}
+              <div id="busyness-rating">
+                <p>
+                Busy:
+                </p>
+                <div id="score">
+                  <FontAwesomeIcon icon={faShoePrints} />
+                  <FontAwesomeIcon icon={faShoePrints} />
+                  <FontAwesomeIcon icon={faShoePrints} />
+                  <FontAwesomeIcon icon={faShoePrints} />
+                  <FontAwesomeIcon icon={faShoePrints} />
+                </div>
+              </div>
+              {/*}
+              <div id="crime-rating">
+                <p>
+                Crime:
+                </p>
+                <div id="score">
+                  <FontAwesomeIcon icon={faHandcuffs} />
+                  <FontAwesomeIcon icon={faHandcuffs} />
+                  <FontAwesomeIcon icon={faHandcuffs} />
+                  <FontAwesomeIcon icon={faHandcuffs} />
+                  <FontAwesomeIcon icon={faHandcuffs} />
+                </div>
+              </div>
+              <div id="price-rating">
+                <p>
+                Price:
+                </p>
+                <div id="score">
+                  <FontAwesomeIcon icon={faDollarSign} />
+                  <FontAwesomeIcon icon={faDollarSign} />
+                  <FontAwesomeIcon icon={faDollarSign} />
+                  <FontAwesomeIcon icon={faDollarSign} />
+                  <FontAwesomeIcon icon={faDollarSign} />
+                </div>
+              </div>
+              <div id="transit-rating">
+                <p>
+                Transit:
+                </p>
+                <div id="score">
+                  <FontAwesomeIcon icon={faBus} />
+                  <FontAwesomeIcon icon={faBus} />
+                  <FontAwesomeIcon icon={faBus} />
+                  <FontAwesomeIcon icon={faBus} />
+                  <FontAwesomeIcon icon={faBus} />
+                </div>
+              </div>
+              <div id="cafe-density-rating">
+                <p>
+                Density:
+                </p>
+                <div id="score">
+                  <FontAwesomeIcon icon={faCoffee} />
+                  <FontAwesomeIcon icon={faCoffee} />
+                  <FontAwesomeIcon icon={faCoffee} />
+                  <FontAwesomeIcon icon={faCoffee} />
+                  <FontAwesomeIcon icon={faCoffee} />
+                </div>
+              </div> */}
+
+
+
+            </div>
+            <div className='sidebar-help-button'>?</div>
+            <div class="sidebar-toggle rounded-rect right">→
+            
+            
+            </div>
             <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
-              &rarr;
+              <p>^</p>
             </div>
             <p className="rank-info">
               Busyness Rank: {busynessRank}<br/>

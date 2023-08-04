@@ -8,7 +8,7 @@ const HelpButton = ({helpBox, setHelpBox}) => {
     }
 
     return (
-        <button className = "helpButton" onClick={handleHelpBox}>Help</button>
+        <button className = "helpButton" onClick={handleHelpBox}>?</button>
     )
 
 } 
