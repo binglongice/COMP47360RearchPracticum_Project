@@ -4,12 +4,11 @@ import axios from 'axios';
 
 
 
-// Need to pass in current date
 const getFormattedDate = () => {
   const today = new Date();
-  const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+  let dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
   const month = today.getMonth() + 1; // 1 (January) to 12 (December)
-
+  dayOfWeek = dayOfWeek === 0 ? 6 : dayOfWeek - 1; 
   // Calculate the week_of_year based on the date
   const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
   const pastDaysOfYear = (today - firstDayOfYear) / 86400000;

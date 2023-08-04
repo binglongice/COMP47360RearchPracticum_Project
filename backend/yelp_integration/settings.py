@@ -186,8 +186,20 @@ current_week_of_year = now.isocalendar()[1]
 CELERY_BEAT_SCHEDULE = {
     'calculate_and_cache_predictions_task': {
         'task': 'yelp_api.tasks.calculate_and_cache_predictions',
-        'schedule': crontab(hour=14, minute=50),
+        'schedule': crontab(hour=2, minute=0),
         'args': (current_day, current_month, current_week_of_year),
+    },
+
+    'weekly_predictions_task': {
+        'task': 'yelp_api.tasks.weekly_predictions',
+        'schedule': crontab(hour=2, minute=0),
+        'args': (current_week_of_year,),
+    },
+
+    'yelp_api': {
+        'task': 'yelp_api.tasks.cafes_api',
+        'schedule': crontab(hour=2, minute=0),
+        'args': (),
     },
 }
 
