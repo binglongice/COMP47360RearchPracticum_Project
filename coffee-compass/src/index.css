@@ -662,7 +662,7 @@ nav li a.active .inner {
 header{
   position: absolute;
   top: 0px;
-  height: 75px;
+  height: 275px;
   width: 100%;
   background-color: #555555;
   display: flex;
@@ -838,10 +838,10 @@ header{
 
 .filter_row{
   position: absolute;
-  top: 5px;
+  top: 0px;
   right: 0px;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   overflow: hidden;
   background-color: antiquewhite;
   border-radius: 50px;
@@ -866,7 +866,6 @@ header{
 
 }
 .filter_row input, .filter_row label{
-  display: none;
 }
 
 
@@ -908,7 +907,7 @@ header{
   }
 }
 .map-container{
-  top: 75px;
+  top: 275px;
   z-index: 1;
 }
 .filter-nav-container{
@@ -1028,7 +1027,13 @@ nav li a .inner {
   aspect-ratio: 1/1;
 }
 
-.legend, .takeOutButton{
+.takeOutButton, .takeout-box-container{
+  position: absolute;
+  left: 100px;
+  right: auto;
+  width: 200px;
+}
+.legend{
   display: none;
 }
 
