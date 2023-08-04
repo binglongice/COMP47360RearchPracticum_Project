@@ -5,7 +5,6 @@ import { point, polygon, booleanPointInPolygon } from '@turf/turf';
 
 
 
-// Need to pass in current date
 const getFormattedDate = () => {
   const today = new Date();
   let dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)

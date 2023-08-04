@@ -49,8 +49,8 @@ def cafes_api(request, location):
     try:
         redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
-        # Create a key with Yelp API and location
-        redis_key = f"Yelp_API:{location}"
+        # Create a key with Yelp API and current date - 24 hour caching as per Yelp Requirements
+        redis_key = f"Yelp_API:{date.today()}:{location}"
 
         # Check if the data is already cached in Redis
         cached_data = redis_client.get(redis_key)
@@ -69,6 +69,8 @@ def cafes_api(request, location):
             # Store the data in Redis with the specified key for future use
             redis_client.set(redis_key, json.dumps(serializer.data))
             print("Yelp API Data stored in Redis from the database.")
+            #24 hour expiry as using today as the key
+            redis_client.expire(redis_key, 24 * 60 * 60)
             return Response(serializer.data)
 
         print("Making Yelp API call to fetch the data.")
