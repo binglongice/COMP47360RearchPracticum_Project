@@ -1067,6 +1067,8 @@ useEffect(() => {
   return (
     <MapContext.Provider value={map.current}>
     <div>
+    <HelpButton helpBox = {helpBox} setHelpBox = {setHelpBox} />
+
       {/* Render the name element */}
       {/* <Navbar name = {zonename} busyness = {zonebusyness} /> */}
 
@@ -1093,9 +1095,13 @@ useEffect(() => {
       <div className="filter-nav-container">
       <FilterNav handleLayerChange={handleLayerChange} />
 
-      <HelpButton helpBox = {helpBox} setHelpBox = {setHelpBox} />
-      {helpBox && <HelpBox setHelpBox = {setHelpBox}/>}
     </div>
+    <div className="filter-heatmap-container">
+      <FilterNav handleLayerChange={handleLayerChange} />
+
+    </div>
+    {helpBox && <HelpBox setHelpBox = {setHelpBox}/>}
+
     {/* {chartFlag === true && currentObjectId !== null &&  <LineChart dayData = {busyness} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId}/>} */}
     </div>
     </MapContext.Provider>

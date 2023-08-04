@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { faTaxi, faBus, faSubway, faChair, faCoffee, faBicycle } from '@fortawesome/free-solid-svg-icons';
+
+
+
+
 //every button has an index number associated with it
 // handle click button checks to see if 4 is in array, if not it will add it, if it is already there it will remove it
 // results in toggling buttons through the use of an array
@@ -31,7 +38,7 @@ function FilterNav({ handleLayerChange }) {
             className={activeButtons.includes(0) ? 'active' : ''} //causes hover to stick (for buttons) - via CSS
           >
             <span className="inner"></span>
-            <img src="./taxi.png" alt="Taxi" />
+            <FontAwesomeIcon icon={faTaxi} />
           </a>
         </li>
         <li>
@@ -41,7 +48,7 @@ function FilterNav({ handleLayerChange }) {
             className={activeButtons.includes(3) ? 'active' : ''}
           >
             <span className="inner"></span>
-            <img src="./bus_stop.png" alt="Bus Stop" />
+            <FontAwesomeIcon icon={faBus} />
           </a>
         </li>
         <li>
@@ -51,7 +58,7 @@ function FilterNav({ handleLayerChange }) {
             className={activeButtons.includes(2) ? 'active' : ''}
           >
             <span className="inner"></span>
-            <img src="./metro.png" alt="Metro" />
+            <FontAwesomeIcon icon={faSubway} />
           </a>
         </li>
         <li>
@@ -61,7 +68,7 @@ function FilterNav({ handleLayerChange }) {
             className={activeButtons.includes(1) ? 'active' : ''}
           >
             <span className="inner"></span>
-            <img src="./bench.png" alt="Bench" />
+            <FontAwesomeIcon icon={faChair} />
           </a>
         </li>
         <li>
@@ -71,7 +78,7 @@ function FilterNav({ handleLayerChange }) {
             className={activeButtons.includes(4) ? 'active' : ''}
           >
             <span className="inner"></span>
-            <img src="./coffee.png" alt="Cafe" />
+            <FontAwesomeIcon icon={faCoffee} />
           </a>
         </li>
         <li>
@@ -81,7 +88,7 @@ function FilterNav({ handleLayerChange }) {
             className={activeButtons.includes(5) ? 'active' : ''}
           >
             <span className="inner"></span>
-            <img src="./bike.png" alt="Cafe" />
+            <FontAwesomeIcon icon={faBicycle} />
           </a>
         </li>
       </ul>

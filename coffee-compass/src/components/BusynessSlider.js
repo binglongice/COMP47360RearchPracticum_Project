@@ -86,7 +86,8 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, activeIndex, s
             <input className='row' type='range' min='0' max={maxRange} step='1' value={activeIndex} onChange={handleSliderChange} />
         </div>
         <div className='filter_row'>
-            <h2>Time Scale</h2>
+            <h2>D</h2>
+            
             <input id = "day" type='radio' name='toggle' value='day' checked={selectedTimeFrame === 'day'} onChange={handleTimeframeChange}/>
             <label htmlFor='day'>Day</label>
             <input id = "week" type='radio' name='toggle' value='week' checked={selectedTimeFrame === 'week'} onChange={handleTimeframeChange}/>

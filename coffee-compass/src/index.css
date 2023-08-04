@@ -81,9 +81,17 @@ nav li a .inner {
   width: 0;
   height: 0;
   margin: 0;
-  background-color: #00FF00;
+  background-color: #555555;
+  color: antiquewhite;
   border-radius: 50%;
   transition: all 0.1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a .inner *{
+  color: antiquewhite;
 }
 
 nav li a:hover {
@@ -629,224 +637,619 @@ nav li a.active .inner {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*New from Nick*/
-.takeout-box-container{
-  background-color: blue;
+header{
   position: absolute;
   top: 0px;
-  left: 0px;
-  right: auto;
-  height: 60px;
-  width: 200px;
-  border: 5px solid aqua;
-  border-top: none;
-  border-left: none;
-  border-bottom-right-radius: 20px;
+  height: 75px;
+  width: 100%;
+  background-color: #555555;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
 }
-
-#params{
+#compass-btn, #page-toggle{
   position: absolute;
-  top: 0px;
-  left: 40px;
-  right: 40px;
-  height: 100%;
-  border-left: 5px solid aqua;
+  left: 10px;
+  width: 50px;
+  background-color: ;
+  aspect-ratio: 1/1;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease;
+  z-index: 10;
+  cursor: pointer;
 }
 
-.mode-selection-header, .duration-selection-header{
-  display: none;
+#compass-btn:hover, #page-toggle:hover{
+  transform: rotate(360deg);
 }
 
-.mode-selection-options{
-  height: 40px;
-  border-bottom: 5px solid aqua;
-}
-
-.mode-option{
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-}
-
-.takeout-box-container label {
-  display: inline-block;
-  margin: 0px;
-  padding: 0px;
-  text-align: center;
-  width: 40px;
-  border-right: 5px solid aqua;
+@keyframes shrinkAnimation {
+  0% {
+    transform: scale(1);
   }
+  100% {
+    transform: scale(0.5);
+  }
+}
 
- .takeout-box-container input {
-  margin: 0px;
- }
- 
+#compass-btn:active, #page-toggle:active{
+  animation: shrinkAnimation 0.5s;
+}
 
-#right {
+#compass-btn img, #page-toggle img{
+  width: 100%;
+  aspect-ratio: 1/1;
+}
+#title{
   position: absolute;
-  bottom: 0px;
-  height: 300px;
-  top: auto;
-  left: 5px;
-  right: 5px;
-  width: auto;
-  background-color: #0aa1cf;
-  border-radius: 0px;
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;  
+  left: 75px;
+  height: 50px;
+  width: 300px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-size: xx-large;
+  color: antiquewhite;
+
 }
 
 
 .heatmap-analytics{
   position: absolute;
-  top: 0px;
   right: 0px;
   left: auto;
-  width: 200px;
-  bottom: 300px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.BusynessSliderBox{
+  position: absolute;
+  top: 12.5px;
+  width: auto;
+  height: 50px;
+  padding: 0px;
+  left: 375px;
+
+  right: 120px;
+  background-color: transparent;
+  box-shadow: none;
+  min-width: 250px;
 }
 
-h3{
+@media only screen and (max-width: 760px) {
+  .BusynessSliderBox{
+    left: auto;
+  }
+
+
+}
+
+.BusynessSliderBox h3 {
   display: none;
 }
-
-.BusynessSliderBox{
-  background-color: blue;
-  border-bottom-left-radius: 20px;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  width: 100%;
-  height: 60px;
-  left: auto; 
-  bottom: auto;
-  border: 5px solid aqua;
-  border-top: none;
-  border-right: none;
-
-}
-
 .session{
   position: absolute;
-  top: auto;
-  height: 25px;
-  bottom: 0px;
-  right: 45px;
-  left: 0px ;
-  border: 5px solid aqua;
-  margin: 0px;
-  border-bottom: none;
-  border-left: none;
+  height: 50px;
+  width: auto;
+  top: 0px;
+  left: 0px;
+  right: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0px;
+  padding: 0px;
 }
+.row{
+  width: auto;
+  position: absolute;
+  left: 0px;
+  right: 50px;
+  color: antiquewhite;
+  background-color: antiquewhite;
+  /* Add rounded corners */
+  border-radius: 5px;
+  /* Remove the default styling on WebKit browsers (Chrome, Safari) */
+  -webkit-appearance: none;
+}
+.row::-webkit-slider-runnable-track {
+  background-color: antiquewhite; /* Green */
+  border-radius: 20px;
+  height: 10px;
+}
+.row::-webkit-slider-thumb {
+  /* Set the width and height to your preferred values */
+  width: 25px;
+  height: 25px;
+  position: relative;
+  top: -7.5px;
+  /* Change the color of the thumb */
+  background-color: #888888; /* Green */
+  /* Add a border and rounded corners for aesthetics */
+  border-radius: 50%;
+  /* Remove the default styling on WebKit browsers (Chrome, Safari) */
+  -webkit-appearance: none;
+  cursor: pointer;
+
+}
+
+.row::-webkit-slider-thumb:active, .row::-webkit-slider-thumb:hover  {
+    background-color: #333333;
+}
+/* Optionally, style the value indicator */
+.row::-moz-range-thumb {
+  /* For Firefox */
+  width: 20px;
+  height: 20px;
+  background-color: #4CAF50; /* Green */
+  border: 2px solid #4CAF50; /* Green */
+  border-radius: 50%;
+  /* Remove the default styling on Firefox */
+  -moz-appearance: none;
+}
+/* Optionally, style the value indicator */
+.row::-ms-thumb {
+  /* For Edge */
+  width: 20px;
+  height: 20px;
+  background-color: #4CAF50; /* Green */
+  border: 2px solid #4CAF50; /* Green */
+  border-radius: 50%;
+  /* Remove the default styling on Edge */
+  appearance: none;
+}
+
 
 .session h2{
   position: absolute;
-  bottom: auto;
-  height: 30px;
-  margin: 0px;
   right: 0px;
   width: 40px;
-  left: auto;
-  top: auto;
+  margin: 0px;
+  color: antiquewhite;
 }
 
-.row{
-  position: absolute;
-  bottom: 0px;
-  height: 30px;
-  top: auto;
-  left: 5px;
-  right: 45px;
-  width: auto;
-}
 
 .filter_row{
-  border-right: 5px solid aqua;
   position: absolute;
-  left: 0px;
-  right: 45px;
-  font-size: small;
-  top: 0px;
+  top: 5px;
+  right: 0px;
+  width: 40px;
   height: 40px;
+  overflow: hidden;
+  background-color: antiquewhite;
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #555555;
+  transition: 0.3s ease;
+  cursor: pointer;
 
 }
-
+.filter_row:hover{
+  background-color: #333333;
+}
+.filter_row:active{
+  animation: shrinkAnimation 0.3s;
+}
 .filter_row h2{
+  font-size: xx-large;
+  margin: 0px;
+  margin-bottom: 2px;
+
+}
+.filter_row input, .filter_row label{
   display: none;
 }
 
-.filter-nav-container{
-  background-color:yellow;
-  top: 100px;
-  width: 80px;
-  height: 325px;
-  left: 0px;
-}
 
-.filter-nav{
+.helpButton{
+  background-color: antiquewhite;
   position: absolute;
-  height: 100%;
-  width: 100%;
-  right: 0px;
-  z-index: 20;
+  top: 17.5px;
+  width: 40px;
+  height: 40px;
+  right: 70px;
+  left: auto;
+  border-radius: 40px;
+  color: #555555;
+  font-size: xx-large;
 }
 
-ul{
-  margin:  0px;
+.helpButton:active{
+  animation: shrinkAnimation 0.3s;
+}
+
+#page-toggle{
+  left: auto;
+  right: 10px;
+}
+
+@media only screen and (max-width: 725px) {
+  #title{
+    display: none;
+  }
+
+  .BusynessSliderBox{
+    left: 75px;
+  }
+}
+
+@media only screen and (max-width: 460px) {
+  .BusynessSliderBox{
+    min-width: 0px;
+  }
+}
+.map-container{
+  top: 75px;
+  z-index: 1;
+}
+.filter-nav-container{
+  position: absolute;
+  top: 75px;
+  bottom: 50px;
+  width: 50px;
+  left: 0px;
+  background-color:  transparent;
+  bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+.filter-nav{
+  display: flex;
+  justify-content: center;
+}
+.filter-nav ul{
   padding: 0px;
+  margin: 0px;
+  width: 50px;
   list-style-type: none;
 }
+nav li{
+  margin: 10px;
+  padding: 0px;
+  width: 40px;
+  height: 40px;
+}
+nav li{
+  font-size: medium;
+  line-height: normal;
+  cursor: pointer;
 
-li{
-  margin: 0px;
-  background-color: blue;
-  border: 5px solid aqua;
-  border-left: none;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+}
+nav li a{
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: antiquewhite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  transition: 0.3s ease;
 }
 
-nav li{
+
+.nav li a:hover{
+  background-color: #555555;
+}
+
+a .inner:active{
+  animation: shrinkAnimation 0.3s;
+
+}
+
+.nav li a:active{
+  animation: shrinkAnimation 0.3s;
+}
+
+
+nav li a .inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin: 0;
+  background-color: #555555;
+  color: antiquewhite;
+  border-radius: 50%;
+  transition: all 0.1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+.filter-heatmap-container{
+  position: absolute;
+  top: 75px;
+  bottom: 50px;
+  width: 50px;
+  right: 5px;
+  bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+}
+
+
+.HeatMapButton{
+  position: absolute;
+  left: 0%;
+  top: 50%;
+  display: none;
+}
+.HeatMapBox{
+  position: absolute;
+  right: 0px;
+  top: 75px;
+  bottom: 0px;
+  width: 50px;
+  padding: 0px;
+  background-color: transparent;
+  overflow: hidden;
+}
+.MuiFormControlLabel-root{
+  height: 50px;
+  aspect-ratio: 1/1;
+}
+
+.legend, .takeOutButton{
+  display: none;
+}
+
+#right{
+  position: absolute;
+  bottom: 0px;
+  top: auto;
+  right: 0px;
+  left: 0px;
+  width: auto;
+  height: 300px;
+  z-index: 11;
+  background-color: #555555;
+}
+
+.sidebar-content{
+  position: absolute;
+  width: auto;
+  height: auto;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: transparent;
+
+}
+.sidebar-header{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 10;
+  padding: 0px;
   margin: 0px;
-  margin-bottom: 5px;
-  width: 45px;
+  color: antiquewhite;
+}
+
+.sidebar-zone-rating{
+  color: #555555;
+  font-size: medium;
+  position: absolute;
+  height: 40px;
+  right: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: antiquewhite;
+  border-radius: 50px;
+  width: 175px;
+  top: 10px;
+}
+
+.sidebar-zone-rating p{
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  align-items: center;
+  height: 20px;
+  color: #555555;
+  position: absolute;
+  left: 15px;
+}
+
+.sidebar-zone-rating div{
+  margin-bottom: 15px;
+}
+
+#score{
+  position: absolute;
+  left: 70px;
+}
+
+
+
+
+.sidebar-toggle.right, .sidebar-help-button{
+  position: absolute;
+  right: 5px;
+  left: auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  top: 10px;
+  rotate: 180deg;
+  background-color: antiquewhite;
+  color: #555555;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-nav li a{
+.sidebar-help-button{
+  right: 55px;
+  rotate: none;
+}
+
+.sidebar-toggle.right p{
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  align-items: center;
+  height: 25px;
+  color: #555555;
+}
+
+.rank-info, .chart-container{
+  position: absolute;
+  left: 10px;
+  top: 60px;
+  bottom: 0px;
+  width: 30%;
+  text-align: left;
+}
+
+.rank-info{
+  display: none;
+}
+
+.chart-container{
+  left: 10px;
+  right: auto;
   background-color: transparent;
 }
 
-
-
-
-.legend, .HeatMapButton, .helpButton{
-  display: none;
+.chart-container canvas{
+  position: absolute;
+  top: 25px;
+  bottom: 0px;
+  height: auto;
+  width: 100%;
 }
 
-/*comment out .session h2 display TimeFrame*/
+
+
+
+
+footer{
+  position: absolute;
+  bottom: 0px;
+  height: 50px;
+  left: 0px;
+  right: 0px;
+  background-color: #555555;
+  z-index: 2;
+}
+
+#footer-name{
+  color: antiquewhite;
+  font-size: x-large;
+  position: absolute;
+  left: 75px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+#footer-rating{
+  color: antiquewhite;
+  font-size: xx-large;
+  position: absolute;
+  right: 75px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+#footer-button{
+    color: antiquewhite;
+    font-size: x-large;
+    position: absolute;
+    right: 25px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+
+
+/*comment out .session h2 display TimeFrame
+  in Map.js move Help Button out of filternav container
+added a footer and header in index html
+duplicate filter nav and put in separate container
+change help button text to a ?
+  */
+
+
+
+
 
 
 /*
+What I did:
+Restyled the webapge, making small changes to some JSX elems, the index html to add header
+Integrated font-awesome icons which are easier to adjust over images and will reduce storage reqs
+Made the two top custom buttons on procreate and ported them over
+Added animation events to everything in the header
+Fully styled the header, and made fully responsive and usable down to roughly 400px
+Came up with a design for the individual scores in the drawer 
+
+What I'm going to do: 
+Mobile version of header with slider below eveything else at < 400px, should get down to 250 ish hopefully, might have to shrink its width, text and button
+  Maybe flip header and footer positions, and move side buttons down
+Style the takeaway box 
+Make changes after learning from Max
+Merge my changes to NewDev
+Fix flashing of compass logo at start
+Shrink text in drawer because of long names
+Add color gradients to some of the elements 
+
+Obstacles: 
+My React is limited, the slider button and takeaway buttons are place holders, might need max to replace the radio buttons with a single toggle button each that I can style instead
+Need to understand how the Drawer is brought in and out, and how I can adjust to sit with lip out, and then to pull out fully.
+Can't style the side buttons animations as it stands I got the background colors grey, need to get the icon to change color inside, and a on click animation
+Need RHS buttons to replace the placeholders
+Having trouble styling the Chart
+Need cafe scroller in the zone drawer
+Need cafe drawer on its own after
+
+
+Bugs:
+Heatmaps shouldn't disappear adding first POIs?
+Should have cafe's selected by default
+
 PERSONAL
 Try get takeaway working without text, just icons
 Get lists working with just css no js 
+
 */
 
-/*
-NEED FROM MAX
-Heatmap mirroring POI list on RHS
-Clear buttons each for POIs and heatmaps
-Help buttons for the takeaway and calendar div
-clear takeaway button for calendar div
-Have takeaway div there by default not waiting on button click
-*/
