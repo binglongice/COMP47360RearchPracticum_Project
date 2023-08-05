@@ -686,7 +686,7 @@ header{
   position: absolute;
   left: 10px;
   width: 50px;
-  background-color: ;
+  /* background-color: ; */
   aspect-ratio: 1/1;
   border-radius: 50px;
   display: flex;
@@ -1184,9 +1184,9 @@ nav li a .inner {
   right: auto
 }
 
-.button-container button.{
+/* .button-container button.{
 
-}
+} */
 
 
 .legend{
