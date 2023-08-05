@@ -7,13 +7,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWalking, faBicycle, faCar } from '@fortawesome/free-solid-svg-icons';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
+// we might use a different mapbox api key so we don't go over
+
+// Import your custom marker image
+
+//https://docs.mapbox.com/help/tutorials/get-started-isochrone-api/
 
 const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng }) => {
     const map = useContext(MapContext); // Get the map instance
 
-    const [modeIndex, setModeIndex] = useState(0);
-    const [durationIndex, setDurationIndex] = useState(0);
-    const [mapClickActive, setMapClickActive] = useState(false);
+    const [modeIndex, setModeIndex] = useState(0); // Track the current index of the mode options
+    const [durationIndex, setDurationIndex] = useState(0); // Track the current index of the duration options
 
     const modeOptions = [
         { icon: faWalking, value: 'walking' },
@@ -23,58 +27,34 @@ const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng }) =>
 
     const durationOptions = ['10m', '20m', '30m'];
 
-    useEffect(() => {
-        setProfile(modeOptions[modeIndex].value);
-    }, [modeIndex]); // Set mode whenever modeIndex changes
-
-    useEffect(() => {
-        setMinutes(durationOptions[durationIndex]);
-    }, [durationIndex]); // Set duration whenever durationIndex changes
-
-    useEffect(() => {
-        if (mapClickActive) {
-            const onMapClick = (e) => {
-                const marker = document.querySelector('.mapboxgl-marker');
-                if (marker) {
-                    marker.remove();
-                }
-
-                const { lng, lat } = e.lngLat;
-
-                // Create a new marker and add it to the map
-                const customMarkerElement = document.createElement('img');
-                customMarkerElement.src = customMarkerImage;
-                customMarkerElement.classList.add('custom-marker');
-
-                new mapboxgl.Marker({ element: customMarkerElement })
-                    .setLngLat([lng, lat])
-                    .addTo(map);
-
-                setTakeoutLat(lat);
-                setTakeoutLng(lng);
-
-                setMapClickActive(false); // Deactivate map click after marker placement
-            };
-
-            map.on('click', onMapClick);
-
-            return () => {
-                // Cleanup on unmount: remove the event listener
-                map.off('click', onMapClick);
-            };
-        }
-    }, [mapClickActive]); // Run this effect whenever mapClickActive changes
-
     const handleModeChange = () => {
         setModeIndex((prevIndex) => (prevIndex + 1) % modeOptions.length);
+        const selectedMode = modeOptions[modeIndex].value;
+        setProfile(selectedMode);
     };
 
     const handleDurationChange = () => {
         setDurationIndex((prevIndex) => (prevIndex + 1) % durationOptions.length);
+        const selectedDuration = durationOptions[durationIndex];
+        setMinutes(selectedDuration);
+    };
+
+    useEffect(() => {
+        return () => {
+            // Cleanup on unmount: remove the event listener
+            if (map) map.off('click', onMapClick);
+        };
+    }, []);
+
+    const onMapClick = (e) => {
+        // ... (rest of your existing code for adding marker)
+
+        // After placing the marker, remove the event listener
+        map.off('click', onMapClick);
     };
 
     const createMarker = () => {
-        setMapClickActive(true); // Activate map click for marker placement
+        if (map) map.on('click', onMapClick);
     };
 
     return (
@@ -94,7 +74,7 @@ const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng }) =>
                 </div>
                 <div className='button-container'>
                     <button className='submit-button' type='button' onClick={createMarker}>
-                        Create a Marker
+                        +
                     </button>
                 </div>
             </form>

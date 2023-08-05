@@ -5,7 +5,7 @@ import { ApiContext } from '../context/ApiContext';
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faShoePrints, faHandcuffs, faDollarSign, faBus, faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faShoePrints, faHandcuffs, faDollarSign, faBus, faCoffee, faArrowDown, faQuestion } from '@fortawesome/free-solid-svg-icons';
 
 
 function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, yearData, objectID, name, busynessRank, crimeRank, propertyRank, transitRank, combinedRank, cafeRank, cafeId, cafe_url, cafe_name, cafe_rating, cafeClick, setCafeClick, zoneInfo, zoneFlag, setZoneFlag, suggestionFlag}) {
@@ -203,13 +203,15 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
 
 
             </div>
-            <div className='sidebar-help-button'>?</div>
-            <div class="sidebar-toggle rounded-rect right">→
-            
+            <div className='sidebar-help-button'>
+              <FontAwesomeIcon icon={faQuestion} />
+
+            </div>
+            <div class="sidebar-toggle rounded-rect right">
             
             </div>
             <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
-              <p>^</p>
+              <FontAwesomeIcon icon={faArrowDown} />
             </div>
             <p className="rank-info">
               Busyness Rank: {busynessRank}<br/>
@@ -220,16 +222,16 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
               Combined Rank: {combinedRank}
             </p>
             <div className="cafe-info">
-              <p><b>  Top Rated Cafes </b></p>
+              <p id="zone-cafe-title"><b> Cafés: 23 </b></p>
               {selectedCafes.length > 0 ? selectedCafes.slice(0, 3).map((cafe, index) => {
                 return (
-                  <div key={index}>
-                    <p>{cafe.name}: Rating: {cafe.rating}</p>
-                    {/* <img  src = {cafe.image_url} className = "cafe_image"></img> */}
+                  <div className='zone-cafe' key={index}>
+                    <p><b>{cafe.name} </b><br />Rating: {cafe.rating}</p>
+                    <img  src = {cafe.image_url} className = "cafe_image"></img>
                   </div>
                   )
                 }) : <p>No cafes in this area</p>}
-                <p>Average Cafe Rating: {averageCafe}</p>
+                <p id="av-cafe-rating">Avg Rating: {averageCafe}</p>
               
               
                           </div>
@@ -241,19 +243,18 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
         <div className="sidebar-content rounded-rect flex-center">
           <h1 className="sidebar-header">{cafe_name} {cafe_rating}</h1>
           <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
-            &rarr;
+          <FontAwesomeIcon icon={faArrowDown} />
           </div>
-          <h2>Reviews: </h2>
           {reviews && Array.isArray(reviews.reviews) && (
-          <ul className = "cafe-info">
+          <ul className = "cafe-info-ul">
             {reviews.reviews.map((review, index) => (
               <li key={index}>
-                <p>{review.text}</p>
+                <p>"{review.text}"</p>
               </li>
             ))}
           </ul>
         )}
-        <img src = {cafe_url} style={{width: 360, height: 360}} />
+        <img src = {cafe_url} />
           
           
           </div>
@@ -263,21 +264,21 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
           //suggestion info
           <div ref={sidebarRef} id="right" className={`sidebar flex-center right ${rightSidebar ? '' : 'collapsed'}`}>
           <div className="sidebar-content rounded-rect flex-center">
-          <h1 className="sidebar-header">Zone Suggestions</h1>
+          <h1 className="sidebar-header">Top Zone Rankings</h1>
           <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
-            &rarr;
+          <FontAwesomeIcon icon={faArrowDown} />
           </div>
-          <div className="cafe-info">
+          <div className="zone-info">
              
               {zoneInfo.map((zone, index) => (
                 <div key={index}>
-                  <h2> {index + 1}. {zone.properties.zone}</h2>
-                  <p><b>Current Rank: {zone.properties.current_rank}</b></p>
-                  <p>Busyness Rank: {zone.properties.busyness_rank}</p>
-                  <p>Crime Rank: {zone.properties.crime_rank}</p>
-                  <p>Property Rank: {zone.properties.prices_rank}</p>
-                  <p>Transit Rank: {zone.properties.transport_rank}</p>
-                  <p>Cafe Density Rank: {zone.properties.cafe_rank}</p>
+                  <h2> #{index + 1} {zone.properties.zone}</h2>
+                  <p><b>Selected: # {zone.properties.current_rank}</b></p>
+                  <p>Busyness: #{zone.properties.busyness_rank}</p>
+                  <p>Crime: #{zone.properties.crime_rank}</p>
+                  <p>Property: #{zone.properties.prices_rank}</p>
+                  <p>Transit: #{zone.properties.transport_rank}</p>
+                  <p>Cafe Density: #{zone.properties.cafe_rank}</p>
           
                 </div>
               ))

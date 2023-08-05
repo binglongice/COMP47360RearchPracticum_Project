@@ -7,6 +7,7 @@ const HeatMapButton = ({heatMap, setHeatMap}) => {
         setHeatMap(heatMap === 0 ? 1 : 0); // toggle between 0 and 1
     }
 
+
     return (
         <button className = "HeatMapButton" onClick={handleHeatMap}>Customize Heatmap</button>
     )

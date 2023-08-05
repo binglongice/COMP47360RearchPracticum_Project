@@ -1185,10 +1185,6 @@ useEffect(() => {
       <FilterNav handleLayerChange={handleLayerChange} />
 
     </div>
-    <div className="filter-heatmap-container">
-      <FilterNav handleLayerChange={handleLayerChange} />
-
-    </div>
     {helpBox && <HelpBox setHelpBox = {setHelpBox}/>}
 
     {/* {chartFlag === true && currentObjectId !== null &&  <LineChart dayData = {busyness} weekData = {weekRankData} yearData = {yearRankData} objectID = {currentObjectId}/>} */}

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faCoffee, faVanShuttle, faHandcuffs, faShoePrints, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
-const HeatMapBox = ({handleHeatMap, setFindSuggestionButton}) => {
-    // const [header, setHeader] = useState('Busyness');
-    //state variable to keep track of which checkboxes are checked
-    //this is used to determine which layers to display on the map
+const HeatMapBox = ({ handleHeatMap, setFindSuggestionButton }) => {
     const [checked, setChecked] = useState({
         busyness: true,
         crimeData: false,
@@ -15,28 +14,15 @@ const HeatMapBox = ({handleHeatMap, setFindSuggestionButton}) => {
         cafeDensity: false,
     });
 
-    //function to handle when a checkbox is checked or unchecked
-    //updates the state variable
-    //event.target.name is the name of the checkbox that was checked
-    //event.target.checked is whether the checkbox was checked or unchecked
     const handleCheckChange = (event) => {
-        // Calculate new state
         const newCheckedState = { ...checked, [event.target.name]: event.target.checked };
-
-        // Set state with new state
         setChecked(newCheckedState);
-
-        // Pass new state to parent component
         handleHeatMap(newCheckedState);
-        };
+    };
 
-        useEffect(() => {
-            handleHeatMap(checked);
-        }, []);  // passing an empty dependency array to ensure this effect runs only once, on mount
-
-            //function that returns the top rated zone based on the selected heatmap (checked)
-            //this is used to suggest a zone to the user
-            //it returns the zone with the highest current rank
+    useEffect(() => {
+        handleHeatMap(checked);
+    }, []);
 
     return (
         <div className="HeatMapBox">
@@ -45,71 +31,101 @@ const HeatMapBox = ({handleHeatMap, setFindSuggestionButton}) => {
                 <FormControlLabel
                     control={
                         <Checkbox
+                            icon={<FontAwesomeIcon icon={faShoePrints} style={{ fontSize: '18px', color: '#555555', transform: 'rotate(270deg)' }} />}
+                            checkedIcon={<FontAwesomeIcon icon={faShoePrints} style={{ fontSize: '18px', color: 'antiquewhite', transform: 'rotate(270deg)' }} />}
                             checked={checked.busyness}
                             onChange={handleCheckChange}
                             name="busyness"
-                            style={{ color: '#00FF00', padding: '3px' }}
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50px',
+                                backgroundColor: checked.busyness ? '#555555' : 'antiquewhite',
+                            }}
                             size="small"
                         />
                     }
-                    label={<span style={{ fontSize: '12px' }}>Busyness</span>}
                 />
                 <FormControlLabel
                     control={
                         <Checkbox
+                            icon={<FontAwesomeIcon icon={faHandcuffs} style={{ fontSize: '18px', color: '#555555' }} />}
+                            checkedIcon={<FontAwesomeIcon icon={faHandcuffs} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
                             checked={checked.crimeData}
                             onChange={handleCheckChange}
                             name="crimeData"
-                            style={{ color: '#00FF00', padding: '3px' }}
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50px',
+                                backgroundColor: checked.crimeData ? '#555555' : 'antiquewhite',
+                            }}
                             size="small"
                         />
                     }
-                    label={<span style={{ fontSize: '12px' }}>Crime-Rate</span>}
                 />
                 <FormControlLabel
                     control={
                         <Checkbox
+                            icon={<FontAwesomeIcon icon={faHome} style={{ fontSize: '18px', color: '#555555' }} />}
+                            checkedIcon={<FontAwesomeIcon icon={faHome} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
                             checked={checked.prices}
                             onChange={handleCheckChange}
                             name="prices"
-                            style={{ color: '#00FF00', padding: '3px' }}
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50px',
+                                backgroundColor: checked.prices ? '#555555' : 'antiquewhite',
+                            }}
                             size="small"
                         />
                     }
-                    label={<span style={{ fontSize: '12px' }}>Property Prices</span>}
                 />
                 <FormControlLabel
                     control={
                         <Checkbox
+                            icon={<FontAwesomeIcon icon={faVanShuttle} style={{ fontSize: '18px', color: '#555555' }} />}
+                            checkedIcon={<FontAwesomeIcon icon={faVanShuttle} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
                             checked={checked.transportData}
                             onChange={handleCheckChange}
                             name="transportData"
-                            style={{ color: '#00FF00', padding: '3px' }}
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50px',
+                                backgroundColor: checked.transportData ? '#555555' : 'antiquewhite',
+                            }}
                             size="small"
                         />
                     }
-                    label={<span style={{ fontSize: '12px' }}>Transport Links</span>}
                 />
-
                 <FormControlLabel
                     control={
                         <Checkbox
+                            icon={<FontAwesomeIcon icon={faCoffee} style={{ fontSize: '18px', color: '#555555' }} />}
+                            checkedIcon={<FontAwesomeIcon icon={faCoffee} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
                             checked={checked.cafeDensity}
                             onChange={handleCheckChange}
                             name="cafeDensity"
-                            style={{ color: '#00FF00', padding: '3px' }}
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50px',
+                                backgroundColor: checked.cafeDensity ? '#555555' : 'antiquewhite',
+                            }}
                             size="small"
                         />
                     }
-                    label={<span style={{ fontSize: '12px' }}>Cafe Density</span>}
                 />
-
-
-
             </FormGroup>
-         <button className = "buttonSuggestion" onClick={() => setFindSuggestionButton(true)}>Find Your Location</button>
-    </div>
+            <button className="buttonSuggestion" onClick={() => setFindSuggestionButton(true)}>
+                <span className="buttonText">Top Zone</span>
+                <FontAwesomeIcon icon={faLocationDot} />
+            </button>
+
+        </div>
     );
 };
-export default  HeatMapBox;
 
+export default HeatMapBox;

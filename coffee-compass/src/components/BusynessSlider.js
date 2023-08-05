@@ -90,7 +90,7 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, activeIndex, s
             <input className='row' type='range' min='0' max={maxRange} step='1' value={activeIndex} onChange={handleSliderChange} />
           </div>
           <div className='filter_row'>
-            <button onClick={handleTimeframeChange}>
+            <button onClick={handleTimeframeChange} style={{borderRadius: '50px'}}>
               {selectedTimeFrame === 'day' ? 'D' : selectedTimeFrame === 'week' ? 'W' : 'M'}
             </button>
           </div>
