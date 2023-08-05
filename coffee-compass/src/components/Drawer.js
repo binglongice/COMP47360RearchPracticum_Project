@@ -3,12 +3,12 @@ import LineChart from './LineChart';
 import { ApiContext } from '../context/ApiContext';
 
 
-function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, yearData, objectID, name, busynessRank, crimeRank, propertyRank, transitRank, combinedRank, cafeRank, cafeId, cafe_url, cafe_name, cafe_rating, cafeClick, setCafeClick, zoneInfo, zoneFlag, setZoneFlag, suggestionFlag}) {
+function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, yearData, objectID, name, busynessRank, crimeRank, propertyRank, transitRank, combinedRank, cafeRank, cafeId, cafe_url, cafe_name, cafe_rating, cafeClick, setCafeClick, zoneInfo, zoneFlag, setZoneFlag, suggestionFlag, setSelectedImage, setSelectedName, setSelectedRating, setCurrentObjectId, setSideBarName, setZoneBusynessRank, setZoneCrimeRank, setZonePropertyRank, setZoneCombinedRank, setZoneTransportRank, setCafeDensity, setChartFlag, newGeoJson}) {
     const sidebarRef = useRef(null);
-    const {sortedCafes, reviews} = useContext(ApiContext);  
+    const {sortedCafes, reviews, fetchReviews} = useContext(ApiContext);  
     const [selectedCafes, setSelectedCafes] = useState([]);
     const [averageCafe, setAverageCafe] = useState([]);
-
+    // const [newCafeID, setNewCafeID] = useState(null);
     //function that fetches reviews for a cafe if cafeID is not null
 
     //function that handles cafe selection
@@ -52,7 +52,6 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
         const map = getMap();
         // Now you have the latest value of the map
         // console.log("Map test", map);
-    
         if (!map) {
             return;
         }
@@ -73,31 +72,47 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
     }, [rightSidebar, getMap]);
     
     const toggleSidebar = (side) => {
+      const map = getMap();
+
+      console.log('toggleSidebar called with side: ', side); 
         if (side === 'right') {
-            setRightSidebar(!rightSidebar);
+            setRightSidebar(false);
             setCafeClick(false);
+            const padding = { right: 0 };
+            map.easeTo({
+                padding: padding,
+                duration: 1000
+            });
+
         }
     };
 
+    useEffect(() => {
+      console.log("right sidebar", rightSidebar)
+      }, [rightSidebar])
+
     //function that averages the rating of all cafes in a zone
-      useEffect(() => {
-        if (sortedCafes.length > 0) {
-          let total = 0;
-          let count = 0;
-          sortedCafes.forEach(cafe => {
-            if (cafe.objectid === objectID) {
-              total += Number(cafe.rating);
-              count++;
-            }
-          })
-          let average = total / count;
-          setAverageCafe(average);
-        }
-      }, [sortedCafes,objectID])
+    useEffect(() => {
+      if (sortedCafes.length > 0) {
+        let total = 0;
+        let count = 0;
+        sortedCafes.forEach(cafe => {
+          if (cafe.objectid === objectID) {
+            total += Number(cafe.rating);
+            count++;
+          }
+        })
+        let average = total / count;
+  
+        // round to the nearest half decimal
+        average = Math.round(average * 2) / 2;
+  
+        setAverageCafe(average);
+      }
+    }, [sortedCafes,objectID])
 
 
       //returns zoneInfo information
-
       useEffect(() => {
         if (zoneInfo) {
         //for the length of zone info array, return the first element and then the second element...
@@ -112,6 +127,60 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
         })
       }
       }, [zoneInfo])
+
+      //returns the cafe information page if a cafe is clicked in the drawer
+      const selectCafe = (cafe) => {
+        setRightSidebar(true);
+        setCafeClick(true);
+        setZoneFlag(false); // This assumes that you want to close the zone drawer if it is open
+        // set the selected cafe state
+        console.log("fuck",  cafe)
+        fetchReviews(cafe.id)
+        setSelectedImage(cafe.image_url)
+        setSelectedName(cafe.name)
+        setSelectedRating(cafe.rating)
+        // setNewCafeID(cafe.objectid)
+      };
+
+      // //changes the drawer so it renders the zoneInfo page instead of the cafe info Page
+      // const handleZoneButtonClick = (target) => {
+        
+      //   let target2 = target;
+      //   console.log("target 2", target2);
+      //   let feature = newGeoJson.features.find(feature => feature.properties.objectid === target2);
+      //   if (feature) {
+      //     setChartFlag(true);
+      //     setCurrentObjectId(feature.properties.objectid);
+      //     setCafeClick(false);
+      //     setSideBarName(feature.properties.zone);
+      //     setZoneBusynessRank(feature.properties.busyness_rank);
+      //     setZoneCrimeRank(feature.properties.crime_rank);
+      //     setZonePropertyRank(feature.properties.prices_rank);
+      //     setZoneCombinedRank(feature.properties.combined_rank);
+      //     setZoneTransportRank(feature.properties.transport_rank);
+      //     setCafeDensity(feature.properties.cafe_rank);
+      //     setZoneFlag(true);
+      //     setRightSidebar(true);
+      //   } else {
+      //     console.log("No feature found with objectid: " + target2);
+      //   }      };
+
+      //changes the drawer so it renders the zoneInfo page instead of the suggested Zones Page
+      const handleZoneNameClick = (zone) => {
+        const properties = zone.properties;
+        setChartFlag(true);
+        setCurrentObjectId(properties.objectid);
+        setCafeClick(false);
+        setSideBarName(properties.zone);
+        setZoneBusynessRank(properties.busyness_rank);
+        setZoneCrimeRank(properties.crime_rank);
+        setZonePropertyRank(properties.prices_rank);
+        setZoneCombinedRank(properties.combined_rank);
+        setZoneTransportRank(properties.transport_rank);
+        setCafeDensity(properties.cafe_rank);
+        setZoneFlag(true);
+        setRightSidebar(true);
+      };
     
 //using a ternerary operator to switch between three conditions
     return (
@@ -122,7 +191,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
             <h1 className="sidebar-header">{name}</h1>
             <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
               &rarr;
-            </div>
+              </div>
             <p className="rank-info">
               Busyness Rank: {busynessRank}<br/>
               Crime Rank: {crimeRank}<br/>
@@ -135,8 +204,8 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
               <p><b>  Top Rated Cafes </b></p>
               {selectedCafes.length > 0 ? selectedCafes.slice(0, 3).map((cafe, index) => {
                 return (
-                  <div key={index}>
-                    <p>{cafe.name}: Rating: {cafe.rating}</p>
+                  <div key={index} onClick={() => selectCafe(cafe)}> 
+                    <p className = "cafe-name">{cafe.name}: Rating: {cafe.rating}</p>
                     {/* <img  src = {cafe.image_url} className = "cafe_image"></img> */}
                   </div>
                   )
@@ -155,7 +224,8 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
           <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
             &rarr;
           </div>
-          <h2>Reviews: </h2>
+          {/* <button onClick={() => handleZoneButtonClick(newCafeID)}>Show Zone Info</button> */}
+                    <h2>Reviews: </h2>
           {reviews && Array.isArray(reviews.reviews) && (
           <ul className = "cafe-info">
             {reviews.reviews.map((review, index) => (
@@ -182,7 +252,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
           <div className="cafe-info">
              
               {zoneInfo.map((zone, index) => (
-                <div key={index}>
+                <div key={index} onClick={() => handleZoneNameClick(zone)}>
                   <h2> {index + 1}. {zone.properties.zone}</h2>
                   <p><b>Current Rank: {zone.properties.current_rank}</b></p>
                   <p>Busyness Rank: {zone.properties.busyness_rank}</p>

@@ -3,17 +3,17 @@ import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-const HeatMapBox = ({handleHeatMap, setFindSuggestionButton}) => {
+const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton}) => {
     // const [header, setHeader] = useState('Busyness');
     //state variable to keep track of which checkboxes are checked
     //this is used to determine which layers to display on the map
-    const [checked, setChecked] = useState({
-        busyness: true,
-        crimeData: false,
-        prices: false,
-        transportData: false,
-        cafeDensity: false,
-    });
+    // const [checked, setChecked] = useState({
+    //     busyness: true,
+    //     crimeData: false,
+    //     prices: false,
+    //     transportData: false,
+    //     cafeDensity: false,
+    // });
 
     //function to handle when a checkbox is checked or unchecked
     //updates the state variable
@@ -37,6 +37,12 @@ const HeatMapBox = ({handleHeatMap, setFindSuggestionButton}) => {
             //function that returns the top rated zone based on the selected heatmap (checked)
             //this is used to suggest a zone to the user
             //it returns the zone with the highest current rank
+
+
+    //check to see if the user has selected a heatmap
+    const isCheckedNotEmpty = () => {
+        return Object.values(checked).some(value => value);
+    }
 
     return (
         <div className="HeatMapBox">
@@ -107,8 +113,7 @@ const HeatMapBox = ({handleHeatMap, setFindSuggestionButton}) => {
 
 
             </FormGroup>
-         <button className = "buttonSuggestion" onClick={() => setFindSuggestionButton(true)}>Find Your Location</button>
-    </div>
+<button className = "buttonSuggestion" onClick={() => setFindSuggestionButton(true)} disabled={!isCheckedNotEmpty()}>Find Your Location</button>    </div>
     );
 };
 export default  HeatMapBox;
