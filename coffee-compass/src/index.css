@@ -1538,96 +1538,18 @@ width: 90%;
   z-index: 2;
 }
 
-#footer-name{
-  color: antiquewhite;
-  font-size: x-large;
-  position: absolute;
-  left: 75px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-}
-
-#footer-rating{
-  color: antiquewhite;
-  font-size: xx-large;
-  position: absolute;
-  right: 75px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-}
-
-#footer-button{
-    color: antiquewhite;
-    font-size: x-large;
-    position: absolute;
-    right: 25px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-}
-
-
-
-
-
-
-/*comment out .session h2 display TimeFrame
-  in Map.js move Help Button out of filternav container
-added a footer and header in index html
-duplicate filter nav and put in separate container
-change help button text to a ?
-  */
-
-
-
-
 
 
 /*
-What I did:
-Restyled the webapge, making small changes to some JSX elems, the index html to add header
-Integrated font-awesome icons which are easier to adjust over images and will reduce storage reqs
-Made the two top custom buttons on procreate and ported them over
-Added animation events to everything in the header
-Fully styled the header, and made fully responsive and usable down to roughly 400px
-Came up with a design for the individual scores in the drawer 
-
-What I'm going to do: 
-Mobile version of header with slider below eveything else at < 400px, should get down to 250 ish hopefully, might have to shrink its width, text and button
-  Maybe flip header and footer positions, and move side buttons down
-Shrink text in drawer because of long names
-
-Obstacles: 
-My React is limited, the slider button and takeaway buttons are place holders, might need max to replace the radio buttons with a single toggle button each that I can style instead
-Need to understand how the Drawer is brought in and out, and how I can adjust to sit with lip out, and then to pull out fully.
-Can't style the side buttons animations as it stands I got the background colors grey, need to get the icon to change color inside, and a on click animation
-Having trouble styling the Chart
-Need cafe scroller in the zone drawer
-Need cafe drawer on its own after
-
-
-Bugs:
-Heatmaps shouldn't disappear adding first POIs?
-Should have cafe's selected by default
-
-PERSONAL
-Try get takeaway working without text, just icons
-Get lists working with just css no js 
-
-
-
 av cafe rating needs to be truncated to smaller float
-
-
 add hover to heatmap buttons
 add shrink animation on click to both sets of buttons
 add feedback to takeaway buttons
-style drawer scrollbars
 check firefox, edge, chrome and safari
-
-
+drawer in and out animation and lip
+total responsiveness
+mobile layout flip
 need link from zone cafe to individual cafe windows
+should have link from top zones to zone drawer view.
 */
 
