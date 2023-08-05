@@ -92,7 +92,7 @@ function Store({ children, selectedCafeId }) {
     const todayDate = getFormattedDate();
     console.log('input to 24 hour API - day/month/week_of_year', todayDate);
 
-    fetch(`http://localhost:8000/yelp_api/pickle_views/model-output/${todayDate}/`)
+    fetch(`http://127.0.0.1:8000/yelp_api/pickle_views/model-output/${todayDate}/`)
     .then(response => response.json())
     .then(data => {
       console.log('API data', data);
@@ -127,7 +127,7 @@ function Store({ children, selectedCafeId }) {
 
     //return the month endpoint
     useEffect(() => {
-      fetch('http://localhost:8000/yelp_api/pickle_views/monthly/')
+      fetch('http://127.0.0.1:8000/yelp_api/pickle_views/monthly/')
         .then(response => response.json())
         .then(data => {
           console.log('Month data', data);
@@ -162,7 +162,7 @@ function Store({ children, selectedCafeId }) {
   useEffect(() => {
     const currentWeek = getWeek();
     console.log("current week", currentWeek);
-    fetch(`http://localhost:8000/yelp_api/pickle_views/weekly/${currentWeek}/`)
+    fetch(`http://127.0.0.1:8000/yelp_api/pickle_views/weekly/${currentWeek}/`)
     .then(response => response.json())
     .then(data => {
       console.log('Week data', data);
