@@ -17,6 +17,7 @@ import HeatMapButton from './HeatMapButton';
 import TakeOutButton from './TakeOutButton';
 import HelpButton from './HelpButton';
 import HelpBox from './HelpBox';
+import ModeSelection from './ModeSelection';
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
 function Map({ selectedIndex, addNextStep }) {
@@ -1354,6 +1355,7 @@ useEffect(() => {
       {/* {isButton5Active && (<Legend/>)} Render the legend if the button is active */}
 
        <div className = "heatmap-analytics">
+       {/* <ModeSelection /> */}
 
        <BusynessSlider selectedTimeFrame = {selectedTimeFrame} setSelectedTimeFrame = {setSelectedTimeFrame} activeIndex = {activeIndex} setActiveIndex = {setActiveIndex} />
 

@@ -669,3 +669,17 @@ nav li a.active .inner {
   color: #B6B8B9;
   text-decoration: underline;
 }
+
+.mode-selection {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  /* bottom: 30px; */
+  left: 50px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  z-index: 1;
+
+  
+}
