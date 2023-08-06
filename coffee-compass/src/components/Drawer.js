@@ -138,7 +138,6 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
         setCafeClick(true);
         setZoneFlag(false); // This assumes that you want to close the zone drawer if it is open
         // set the selected cafe state
-        console.log("fuck",  cafe)
         fetchReviews(cafe.id)
         setSelectedImage(cafe.image_url)
         setSelectedName(cafe.name)
@@ -186,6 +185,8 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
         setRightSidebar(true);
       };
     
+
+
 //using a ternerary operator to switch between three conditions
     return (
       rightSidebar ? (

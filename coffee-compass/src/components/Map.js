@@ -20,7 +20,7 @@ import HelpBox from './HelpBox';
 import ModeSelection from './ModeSelection';
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
-function Map({ selectedIndex, addNextStep }) {
+function Map({ selectedIndex, addNextStep, setRun, setRunTakeOut}) {
 
   const getHour = () => {
     const today = new Date();
@@ -965,6 +965,10 @@ useEffect(() => {
           <strong class = "large-text">${zoneName}</strong> <br>
           <strong class = "small-text">Busyness Rank:</strong> ${e.features[0].properties.busyness_rank} <br>
           <strong class = "small-text">Suitability Rank:</strong> ${e.features[0].properties.combined_rank} <br>
+          <strong class = "small-text">Crime Rank:</strong> ${e.features[0].properties.crime_rank} <br>
+          <strong class = "small-text">Property Rank:</strong> ${e.features[0].properties.prices_rank} <br>
+          <strong class = "small-text">Cafe Density Rank:</strong> ${e.features[0].properties.cafe_rank} <br>
+
           </div>
           `);
           
@@ -1280,7 +1284,6 @@ useEffect(() => {
     // console.log("TESTING findsuggestion return button", suggestZone(activeMaps));
 
     let objectIDs = suggestZone(activeMaps);
-    console.log("These are our objectIDs", objectIDs);
     let zoneInfo = objectIDs.map(id => rankedGeoJson.features.find(feature => feature.properties.objectid === id));    console.log("Zone Info", zoneInfo);
     setSuggestedZoneInfo(zoneInfo);
     setSuggestionFlag(false);
@@ -1293,6 +1296,18 @@ useEffect(() => {
 
     }
   }, [suggestionFlag, activeMaps, findSuggestionButton]);
+
+  useEffect(()=> {
+    if (activeMaps && suggestionFlag && rightSidebar) {
+      let objectIDs = suggestZone(activeMaps);
+      let zoneInfo = objectIDs.map(id => rankedGeoJson.features.find(feature => feature.properties.objectid === id));    console.log("Zone Info", zoneInfo);
+      setSuggestedZoneInfo(zoneInfo);
+    }
+    //if all states in activeMaps are false
+    if (activeMaps && !activeMaps.busyness && !activeMaps.cafeDensity && !activeMaps.crimeData && !activeMaps.prices && !activeMaps.transportData) {
+      setRightSidebar(false);
+    }
+  }, [activeMaps])
 
 
   // // function to remove all markers from the map if the user displays a heatmap 
@@ -1317,10 +1332,6 @@ useEffect(() => {
   //     },[activeMaps]);
       
 
-//function to reload page when user clicks on the logo
-const handleLogoClick = () => {
-  window.location.reload();
-}
 
 //if checked is false, remove the heatmap
 // useEffect(() => {
@@ -1352,10 +1363,10 @@ const handleLogoClick = () => {
   return (
     <MapContext.Provider value={map.current}>
     <div>
-    <HelpButton helpBox = {helpBox} setHelpBox = {setHelpBox} />
+    <HelpButton setRun =  {setRun} />
 
     <header>
-      <div id="compass-btn" onClick={handleLogoClick}><img src="./compass-coffee.png" width="50px" height="50px"/></div>
+      <div id="compass-btn"><img src="./compass-coffee.png" width="50px" height="50px"/></div>
       <div id="title">Cafe Compass</div>
       <div id="page-toggle"><img src="./page-nav.png"  width="40px" height="40px"/></div>
     </header>
@@ -1387,13 +1398,13 @@ const handleLogoClick = () => {
 
        {activeMaps && <Legend activeMaps = {activeMaps}/>}
 
-       <HeatMapButton heatMap = {heatMap} setHeatMap = {setHeatMap} addNextStep={addNextStep} />
+       {/* <HeatMapButton heatMap = {heatMap} setHeatMap = {setHeatMap} addNextStep={addNextStep} /> */}
 
-       {mapIsCurrent && <div style={{ visibility: heatMap === 1 ? "hidden" : "visible" }}> <HeatMapBox checked = {checked} setChecked = {setChecked} handleHeatMap = {handleHeatMap} setFindSuggestionButton = {setFindSuggestionButton} /> </div>} 
+       {mapIsCurrent && <HeatMapBox checked = {checked} setChecked = {setChecked} handleHeatMap = {handleHeatMap} setFindSuggestionButton = {setFindSuggestionButton} /> }
 
       </div>
-      <TakeOutButton takeOut = {takeOut} setTakeOut = {setTakeOut}  />
-      {takeOut && mapIsCurrent && <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng} getMap = {getMap} setChecked = {setChecked} /> }
+      <TakeOutButton takeOut = {takeOut} setTakeOut = {setTakeOut} setRunTakeOut = {setRunTakeOut} />
+      {takeOut && mapIsCurrent && <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng} getMap = {getMap} setChecked = {setChecked} setActiveMaps = {setActiveMaps} /> }
       <div className="filter-nav-container">
       <FilterNav activeButtons = {activeButtons} setActiveButtons = {setActiveButtons} handleLayerChange={handleLayerChange} />
 

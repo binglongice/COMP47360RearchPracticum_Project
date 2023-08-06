@@ -171,22 +171,6 @@ nav li a.active .inner {
 
   }
   
-.HeatMapBox {
-  background-color: #1f1f1f;
-  color: #F2F4F3;
-  border-radius: 3px;
-  bottom: 30px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  /* position: absolute; */
-  /* left: 12.5vh; */
-  /* bottom: 8vh; */
-  z-index: 1;
-  pointer-events: auto; /* Allow the button to be clickable */
-
-
-  }
 
 .HeatMapBox h3 {
   padding: 0;
@@ -1081,19 +1065,25 @@ nav li a .inner {
   display: none;
 
 }
-.HeatMapBox{
+
+.HeatMapBox {
+  background-color: transparent;
+  color: #F2F4F3;
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  z-index: 1;
+  pointer-events: auto; /* Allow the button to be clickable */
   position: absolute;
   right: 0px;
   top: 75px;
-  bottom: 50px;
-  width: 45px;
-  padding: 0px;
-  overflow: hidden;
-  visibility: visible;
+  width: 300px;
   display: flex;
   align-items: center;
-  background-color: transparent;
-  width: 300px;
+  visibility: visible;
+  overflow: hidden;
 }
 .buttonSuggestion{
   background-color: #555555;
@@ -1613,6 +1603,44 @@ should have link from top zones to zone drawer view.
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
   z-index: 1;
+
+  
+}
+
+.welcome {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+}
+
+.Welcome-Text {
+  margin-right: 20px;
+  color: antiquewhite;
+  width: 30vw;
+  height: 20vh;
+  font-size: 18px; /* or adjust to match your site's text size */
+  align-self: center; /* aligns the text vertically centered in the flex container */
+  justify-self: start; /* aligns the text at the start of its grid area */
+}
+
+.Welcome-Button {
+  background-color: #555555;
+  color: antiquewhite;
+  border: none;
+  padding: 20px 20px;
+  font-size: 16px; /* or adjust to match your site's text size */
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px; /* add space to the right of each button */
+
 
   
 }

@@ -37,7 +37,7 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
     return (
         <div className="HeatMapBox">
             <h3>Heat Map Selection</h3>
-            <FormGroup>
+            <FormGroup className="formgroup">
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -129,8 +129,8 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
                     }
                 />
             </FormGroup>
-            <button className="buttonSuggestion" onClick={() => setFindSuggestionButton(true)}>
-                <span className="buttonText">Top Zone</span>
+            <button className = "buttonSuggestion" onClick={() => setFindSuggestionButton(true)} disabled={!isCheckedNotEmpty()}>                 
+            <span className="buttonText">Top Zone</span>
                 <FontAwesomeIcon icon={faLocationDot} />
             </button>
 

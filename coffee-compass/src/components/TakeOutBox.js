@@ -8,7 +8,7 @@ import { faWalking, faBicycle, faCar, faTimes } from '@fortawesome/free-solid-sv
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
-const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng, setChecked }) => {
+const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng, setChecked, setActiveMaps }) => {
     const map = useContext(MapContext); // Get the map instance
 
     const [modeIndex, setModeIndex] = useState(0); // Track the current index of the mode options
@@ -75,6 +75,24 @@ const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng, setC
     };
 const createMarker = () => {
     if (map) {
+        if (map.getLayer("taxi_zones_fill_map")) {
+            map.removeLayer('taxi_zones_fill_map');
+              setChecked({
+                busyness: false,
+                crimeData: false,
+                prices: false,
+                transportData: false,
+                cafeDensity: false,
+  });
+        setActiveMaps({
+            busyness: false,
+            crimeData: false,
+            prices: false,
+            transportData: false,
+            cafeDensity: false,
+        })
+
+        }
         map.getCanvas().style.cursor = `url(${customMarkerImage}), auto`;
         map.on('click', onMapClick);
     }
