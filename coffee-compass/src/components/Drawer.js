@@ -78,9 +78,15 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
     }, [rightSidebar, getMap]);
     
     const toggleSidebar = (side) => {
+        const map = getMap();
         if (side === 'right') {
-            setRightSidebar(!rightSidebar);
+            setRightSidebar(false);
             setCafeClick(false);
+            const padding = { bottom: 0 };
+            map.easeTo({
+                padding: padding,
+                duration: 1000
+            });
         }
     };
 
