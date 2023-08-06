@@ -603,6 +603,9 @@ useEffect(() => {
 
 // add the source and layer to the map for takeaway radius
   useEffect(() => {
+    if (takeoutLng === 0 || takeoutLat === 0) {
+      return;
+    }
     if (map.current) {
     map.current.on('load', () => {
       // When the map loads, add the source and layer
@@ -813,12 +816,24 @@ useEffect(() => {
 
     map.current.on('mouseenter', 'cafe_markers', (e) => {
       const cafe = e.features[0].properties;
-      const popupContent = `<strong>Name:</strong> ${cafe.name}<br>` +
+      const popupContent = `    <div class="my-custom-popup">
+      <strong>Name:</strong> ${cafe.name}<br>` +
         `<strong>Address:</strong> ${cafe.address}<br>` +
-        `<strong>Rating:</strong> ${cafe.rating}`;
+        `<strong>Rating:</strong> ${cafe.rating} </div>`;
       popup.setLngLat(e.lngLat).setHTML(popupContent).addTo(map.current);
     });
     
+    // popup.setHTML(`
+
+    // <div class="my-custom-popup">
+    
+    // <strong class = "large-text">${zoneName}</strong> <br>
+    // <strong class = "small-text">Busyness Rank:</strong> ${e.features[0].properties.busyness_rank} <br>
+    // <strong class = "small-text">Suitability Rank:</strong> ${e.features[0].properties.combined_rank} <br>
+    // </div>
+    // `);
+
+
     // Handle mouseleave event on cafe markers
     map.current.on('mouseleave', 'cafe_markers', () => {
       popup.remove();
@@ -1024,7 +1039,6 @@ useEffect(() => {
       layer.id === 'bus_markers' ||
       layer.id === 'cafe_markers' ||
       layer.id === 'taxi_zones_fill' ||
-      layer.id === 'taxi_zones_fill_map' ||
       layer.id === 'taxi_zones_price_map' ||
       layer.id === 'bike_locations'
     ) {
@@ -1033,13 +1047,13 @@ useEffect(() => {
   
   });
 
-  setChecked({
-    busyness: false,
-    crimeData: false,
-    prices: false,
-    transportData: false,
-    cafeDensity: false,
-  });
+  // setChecked({
+  //   busyness: false,
+  //   crimeData: false,
+  //   prices: false,
+  //   transportData: false,
+  //   cafeDensity: false,
+  // });
 
 
   
@@ -1133,7 +1147,7 @@ useEffect(() => {
     // save the state of activeMaps on function call
     setActiveMaps(activeMaps);
 
-    setActiveButtons([]);
+    // setActiveButtons([]);
     
     //if the current layer is taxi zones, remove it
     if (map.current.getLayer("taxi_zones_fill_map")) {
@@ -1281,29 +1295,32 @@ useEffect(() => {
   }, [suggestionFlag, activeMaps, findSuggestionButton]);
 
 
-  // function to remove all markers from the map if the user displays a heatmap 
-    useEffect(() => {
-      if (activeMaps) {
-      if(activeMaps.busyness || activeMaps.cafeDensity || activeMaps.crimeData || activeMaps.prices || activeMaps.transportData) {
-      map.current.getStyle().layers.forEach((layer) => {
-        if (
-          layer.id === 'bench_locations_markers' ||
-          layer.id === 'subway_markers' ||
-          layer.id === 'bus_markers' ||
-          layer.id === 'cafe_markers' ||
-          layer.id === 'taxi_zones_fill' ||
-          layer.id === 'taxi_zones_price_map' ||
-          layer.id === 'bike_locations'
-        ) {
-          map.current.removeLayer(layer.id);
-        }
-      })
-    }
-  }
-      },[activeMaps]);
+  // // function to remove all markers from the map if the user displays a heatmap 
+  //   useEffect(() => {
+  //     if (activeMaps) {
+  //     if(activeMaps.busyness || activeMaps.cafeDensity || activeMaps.crimeData || activeMaps.prices || activeMaps.transportData) {
+  //     map.current.getStyle().layers.forEach((layer) => {
+  //       if (
+  //         layer.id === 'bench_locations_markers' ||
+  //         layer.id === 'subway_markers' ||
+  //         layer.id === 'bus_markers' ||
+  //         layer.id === 'cafe_markers' ||
+  //         layer.id === 'taxi_zones_fill' ||
+  //         layer.id === 'taxi_zones_price_map' ||
+  //         layer.id === 'bike_locations'
+  //       ) {
+  //         map.current.removeLayer(layer.id);
+  //       }
+  //     })
+  //   }
+  // }
+  //     },[activeMaps]);
       
 
-
+//function to reload page when user clicks on the logo
+const handleLogoClick = () => {
+  window.location.reload();
+}
 
 //if checked is false, remove the heatmap
 // useEffect(() => {
@@ -1338,8 +1355,8 @@ useEffect(() => {
     <HelpButton helpBox = {helpBox} setHelpBox = {setHelpBox} />
 
     <header>
-      <div id="compass-btn"><img src="./compass-coffee.png" width="50px" height="50px"/></div>
-      <div id="title">Culinary Compass</div>
+      <div id="compass-btn" onClick={handleLogoClick}><img src="./compass-coffee.png" width="50px" height="50px"/></div>
+      <div id="title">Cafe Compass</div>
       <div id="page-toggle"><img src="./page-nav.png"  width="40px" height="40px"/></div>
     </header>
 

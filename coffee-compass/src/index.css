@@ -125,7 +125,7 @@ nav li a.active .inner {
   margin: -38px 0 0 -38px;
 }
 
-/* .legend {
+.legend {
   background-color: #555555;
   color: #F2F4F3;
   border-radius: 3px;
@@ -133,7 +133,10 @@ nav li a.active .inner {
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
   z-index: 1;
-} */
+  position: relative;
+  left: 35vw;
+  top: 40vh;
+}
 .legend h4 {
   margin: 0 0 10px;
   text-align: center;
@@ -1133,7 +1136,7 @@ nav li a .inner {
   position: absolute;
   right: auto;
   left: 5px;
-  width: 147.5px;
+  width: 197.5px; /* From 147.5px to 197.5px */
   top: 80px;
   height: 50px;
   padding: 0px;
@@ -1143,7 +1146,7 @@ nav li a .inner {
   font-size: x-large;
 }
 
-.mode-selection-header, .duration-selection-header{
+.mode-selection-header, .duration-selection-header, .exit-header {
   display: none;
 }
 
@@ -1173,7 +1176,21 @@ nav li a .inner {
   left: auto;
 }
 
-.mode-selection-options button, .duration-selection-options button, .button-container button{
+.exit-options {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 100px;
+  top: 0px;
+  left: auto;
+}
+
+.exit-option {
+  left: auto;
+  right: 0px;
+}
+
+.mode-selection-options button, .duration-selection-options button, .button-container button, .exit-options button{
   width: 40px;
   height: 40px;
   border-radius: 50px;
