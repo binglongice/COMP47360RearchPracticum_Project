@@ -24,8 +24,13 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
+<<<<<<< HEAD
     "react-scripts": "5.0",
     "turf": "^3.0.14"
+=======
+    "react-joyride": "^2.5.5",
+    "react-scripts": "5.0"
+>>>>>>> features/max/front-end/backup
   },
   "scripts": {
     "start": "react-scripts start",

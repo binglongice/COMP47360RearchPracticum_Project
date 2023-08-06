@@ -5,14 +5,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCoffee, faVanShuttle, faHandcuffs, faShoePrints, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
-const HeatMapBox = ({ handleHeatMap, setFindSuggestionButton }) => {
-    const [checked, setChecked] = useState({
-        busyness: true,
-        crimeData: false,
-        prices: false,
-        transportData: false,
-        cafeDensity: false,
-    });
+const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton}) => {
+    // const [header, setHeader] = useState('Busyness');
+    //state variable to keep track of which checkboxes are checked
+    //this is used to determine which layers to display on the map
+    // const [checked, setChecked] = useState({
+    //     busyness: true,
+    //     crimeData: false,
+    //     prices: false,
+    //     transportData: false,
+    //     cafeDensity: false,
+    // });
 
     const handleCheckChange = (event) => {
         const newCheckedState = { ...checked, [event.target.name]: event.target.checked };
@@ -23,6 +26,18 @@ const HeatMapBox = ({ handleHeatMap, setFindSuggestionButton }) => {
     useEffect(() => {
         handleHeatMap(checked);
     }, []);
+
+
+    //check to see if the user has selected a heatmap
+    const isCheckedNotEmpty = () => {
+        return Object.values(checked).some(value => value);
+    }
+
+
+    //check to see if the user has selected a heatmap
+    const isCheckedNotEmpty = () => {
+        return Object.values(checked).some(value => value);
+    }
 
     return (
         <div className="HeatMapBox">

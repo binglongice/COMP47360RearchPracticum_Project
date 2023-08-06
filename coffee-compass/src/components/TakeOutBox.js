@@ -13,7 +13,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpd
 
 //https://docs.mapbox.com/help/tutorials/get-started-isochrone-api/
 
-const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng }) => {
+
+const TakeOutBox = ({getMap, setProfile, setMinutes, setTakeoutLat, setTakeoutLng, setChecked}) => {
     const map = useContext(MapContext); // Get the map instance
 
     const [modeIndex, setModeIndex] = useState(0); // Track the current index of the mode options
@@ -55,8 +56,20 @@ const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng }) =>
 
     const createMarker = () => {
         if (map) map.on('click', onMapClick);
+        
     };
 
+    const removeMarker = () => {
+        const marker = document.querySelector('.mapboxgl-marker');
+        if (map && marker) {
+            marker.remove();  
+            if (map.getLayer("isoLayer")) {
+                map.removeLayer('isoLayer');
+            }
+        }
+    }
+    
+    
     return (
         <div className='takeout-box-container'>
             <form id='params'>
@@ -72,10 +85,9 @@ const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng }) =>
                         {durationOptions[durationIndex]}
                     </button>
                 </div>
-                <div className='button-container'>
-                    <button className='submit-button' type='button' onClick={createMarker}>
-                        +
-                    </button>
+                <div className="button-container">
+                    <button className="submit-button" type="button" onClick={createMarker}>Create a Marker</button>
+                    <button className="remove-button" type = "button" onClick={removeMarker}>Remove Marker</button>
                 </div>
             </form>
         </div>

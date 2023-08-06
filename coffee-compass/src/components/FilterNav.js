@@ -11,8 +11,8 @@ import { faTaxi, faBus, faSubway, faChair, faCoffee, faBicycle } from '@fortawes
 // handle click button checks to see if 4 is in array, if not it will add it, if it is already there it will remove it
 // results in toggling buttons through the use of an array
 
-function FilterNav({ handleLayerChange }) {
-    const [activeButtons, setActiveButtons] = useState([]);
+function FilterNav({activeButtons, setActiveButtons, handleLayerChange }) {
+    // const [activeButtons, setActiveButtons] = useState([]);
   
     const handleClick = (index) => {
         if (activeButtons.includes(index)) {

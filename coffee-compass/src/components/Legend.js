@@ -13,10 +13,13 @@ const levels = Array.from({length: 11}, (_, i) => {
     value: value,
   };
 });
-const Legend = () => { 
+const Legend = ({activeMaps}) => { 
   const [width, setWidth] = useState(100);  // Adjust the initial width
   const [height, setHeight] = useState(60);  // Adjust the initial height
   const [svg, setSvg] = useState(null);
+  const [title, setTitle] = useState("Busyness");
+  console.log("Rendering, title is: ", title);
+
 
   useEffect(() => {
     const svg = d3.select('#legend-svg');
@@ -72,9 +75,30 @@ const Legend = () => {
     }
   }, [svg, width, height]);
   
+  
+  useEffect(() => {
+    const numActive = Object.values(activeMaps).filter(value => value).length;
+    
+    if (numActive > 1) {
+      setTitle('Suitability');
+    } else if (activeMaps.busyness) {
+      setTitle('Busyness');
+    } else if (activeMaps.crimeData) {
+      setTitle('Crime');
+    } else if (activeMaps.prices) {
+      setTitle('Property Prices');
+    } else if (activeMaps.transportData) {
+      setTitle('Transport Links');
+    } else if (activeMaps.cafeDensity) {
+      setTitle('Cafe Density');
+    } else {
+      setTitle('Legend');
+    }
+  }, [activeMaps]);
+  
   return (
     <div className="legend">
-      <h4>Busyness</h4>
+      <h4>{title}</h4>
       <svg id="legend-svg" width="180" height="50" />  
     </div>
   );
