@@ -1337,6 +1337,13 @@ useEffect(() => {
     <div>
     <HelpButton helpBox = {helpBox} setHelpBox = {setHelpBox} />
 
+    <header>
+      <div id="compass-btn"><img src="./compass-coffee.png" width="50px" height="50px"/></div>
+      <div id="title">Culinary Compass</div>
+      <div id="page-toggle"><img src="./page-nav.png"  width="40px" height="40px"/></div>
+    </header>
+
+
       {/* Render the name element */}
       {/* <Navbar name = {zonename} busyness = {zonebusyness} /> */}
 

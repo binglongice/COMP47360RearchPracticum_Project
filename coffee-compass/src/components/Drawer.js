@@ -3,12 +3,6 @@ import LineChart from './LineChart';
 import { ApiContext } from '../context/ApiContext';
 
 
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faShoePrints, faHandcuffs, faDollarSign, faBus, faCoffee, faArrowDown, faQuestion } from '@fortawesome/free-solid-svg-icons';
-
-
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faShoePrints, faHandcuffs, faDollarSign, faBus, faCoffee, faArrowDown, faQuestion } from '@fortawesome/free-solid-svg-icons';
 
@@ -99,6 +93,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
       console.log("right sidebar", rightSidebar)
       }, [rightSidebar])
 
+      const [cafeCount, setCafeCount] = useState(0);
     //function that averages the rating of all cafes in a zone
     useEffect(() => {
       if (sortedCafes.length > 0) {
@@ -116,6 +111,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
         average = Math.round(average * 2) / 2;
   
         setAverageCafe(average);
+        setCafeCount(count);
       }
     }, [sortedCafes,objectID])
 
@@ -294,7 +290,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
               Combined Rank: {combinedRank}
             </p>
             <div className="cafe-info">
-              <p id="zone-cafe-title"><b> Cafés: 23 </b></p>
+              <p id="zone-cafe-title"><b> Cafés: {cafeCount} </b></p>
               {selectedCafes.length > 0 ? selectedCafes.slice(0, 3).map((cafe, index) => {
                 return (
                   <div className='zone-cafe' key={index} onClick={() => selectCafe(cafe)}> 
@@ -345,7 +341,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
               {zoneInfo.map((zone, index) => (
                 <div key={index} onClick={() => handleZoneNameClick(zone)}>
                 <h2> #{index + 1} {zone.properties.zone}</h2>
-                  <p><b>Selected: # {zone.properties.current_rank}</b></p>
+                  <p><b>Current: # {zone.properties.current_rank}</b></p>
                   <p>Busyness: #{zone.properties.busyness_rank}</p>
                   <p>Crime: #{zone.properties.crime_rank}</p>
                   <p>Property: #{zone.properties.prices_rank}</p>

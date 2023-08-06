@@ -28,11 +28,6 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
     }, []);
 
 
-    //check to see if the user has selected a heatmap
-    const isCheckedNotEmpty = () => {
-        return Object.values(checked).some(value => value);
-    }
-
 
     //check to see if the user has selected a heatmap
     const isCheckedNotEmpty = () => {

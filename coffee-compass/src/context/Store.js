@@ -128,22 +128,10 @@ const fetchDataRestaurants = () => {
   };
 
   useEffect(() => {
-    if (mode.cafe){
     fetchData().catch((error) => {
       console.log(error);
     });
-  }
-    else if(mode.bar){
-      fetchDataBars().catch((error) => {
-        console.log(error);
-      });
-    }
-    else if(mode.rest){
-      fetchDataRestaurants().catch((error) => {
-        console.log(error);
-      });
-    }
-  }, [mode]);
+  }, []);
 
   useEffect(() => {
     if (selectedCafeId) {

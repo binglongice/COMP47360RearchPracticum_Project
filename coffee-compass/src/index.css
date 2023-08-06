@@ -125,18 +125,15 @@ nav li a.active .inner {
   margin: -38px 0 0 -38px;
 }
 
-.legend {
-  background-color: #1f1f1f;
+/* .legend {
+  background-color: #555555;
   color: #F2F4F3;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
-  /* position: absolute;
-  left: 10vh;  
-  bottom: 35vh;   */
   z-index: 1;
-}
+} */
 .legend h4 {
   margin: 0 0 10px;
   text-align: center;
@@ -149,13 +146,13 @@ nav li a.active .inner {
   color: white;
 }
 
-.legend div span {
+/* .legend div span {
   border-radius: 50%;
   display: inline-block;
-  height: 30px;
+  height: 15px;
   margin-right: 5px;
   width: 10vh;
-  }
+  } */
 
   .heatmap-analytics {
     display: flex;
@@ -1214,9 +1211,9 @@ nav li a .inner {
 } */
 
 
-.legend{
+/* .legend{
   display: none;
-}
+} */
 
 #right{
   position: absolute;
