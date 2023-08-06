@@ -198,24 +198,6 @@ def bars_api(request, location):
             bars.save()
 
         serializer = BarsSerializer(bars_list, many=True)
-
-        # Store the data in Redis with the specified key for future use
-        redis_client.set(redis_key, json.dumps(serializer.data))
-        print("Yelp API Data stored in Redis from the API call.")
-
-                # Get all entries from Bars and Cafe models
-        bars_entries = Bars.objects.all()
-        cafe_entries = Cafe.objects.all()
-
-        # Extract unique identifiers (primary keys) from each queryset
-        bars_ids = set(bars_entries.values_list('id', flat=True))
-        cafe_ids = set(cafe_entries.values_list('id', flat=True))
-
-        # Find overlapping entries by calculating the intersection of the two sets
-        overlapping_entries = bars_ids.intersection(cafe_ids)
-
-        # Print the number of overlapping entries
-        print("Number of overlapping entries between Bars and Cafe:", len(overlapping_entries))
         
         return Response(serializer.data)
 
