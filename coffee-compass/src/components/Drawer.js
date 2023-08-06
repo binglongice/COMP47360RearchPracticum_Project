@@ -299,7 +299,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
                   </div>
                   )
                 }) : <p>No cafes in this area</p>}
-                <p id="av-cafe-rating">Avg Rating: {averageCafe}</p>
+                <p id="av-cafe-rating">Avg Rating: {Math.round(averageCafe * 2) / 2}</p>
               
               
                           </div>
