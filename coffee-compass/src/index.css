@@ -3150,7 +3150,7 @@ nav li a .inner {
 
 
 .rank-info{
-  display: none;
+  display: block;
 }
 
 .chart-container{
@@ -3456,6 +3456,25 @@ padding: 0px;
   cursor: pointer;
 }
 
+.sidebar-zone-rating{
+  width: 190px;
+  height: 40px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 50px;
+}
+
+.sidebar-zone-rating p {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+
+
 @media only screen and (max-width: 575px) {
   .BusynessSliderBox{
     left: 75px;
@@ -3618,6 +3637,57 @@ padding: 0px;
       width: 20;
     }
 
+    .zone-cafe-rating{
+      width: 125px;
+      background-color: antiquewhite;
+      height: 30px;
+      display: flex;
+      color: #444444;
+      align-items: center;
+      margin-top: 0px;border-radius: 10px;
+
+  }
+
+  .zone-cafe-rating svg{
+    z-index: 20;
+  }
+
+  .zone-background-stars{
+    position: absolute;
+  }
+
+  #av-cafe-rating{
+    text-align: left;
+    height: 35px;
+    width: 190px;
+    position: absolute;
+    right: 0px;
+    left: auto;
+  }
+
+
+  .zone-av-cafe-rating{
+    width: 125px;
+      background-color: antiquewhite;
+      height: 30px;
+      display: flex;
+      color: #444444;
+      align-items: center;
+      margin-top: 0px;border-radius: 10px;
+      font-size: 22px;
+      position: absolute;
+      right: 0px;
+      top: 0px
+    }
+
+    .zone-av-cafe-rating svg{
+      z-index: 20;
+    }
+.zone-av-background-stars{
+  position: absolute;
+}
+
+
 
 .sidebar-content{
   overflow-x: hidden;
@@ -3731,4 +3801,5 @@ bike map pngs big and obscure
 title png
 page sometimes reloads on takeaway button
 style all scrollbars
+randalls island no cafes needs styling and NaN
 */

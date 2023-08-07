@@ -9,6 +9,16 @@ import { faStar, faShoePrints, faHandcuffs, faHome, faShuttleVan, faDollarSign, 
 
 function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, yearData, objectID, name, busynessRank, crimeRank, propertyRank, transitRank, combinedRank, cafeRank, cafeId, cafe_url, cafe_name, cafe_rating, cafeClick, setCafeClick, zoneInfo, zoneFlag, setZoneFlag, suggestionFlag, setSelectedImage, setSelectedName, setSelectedRating, setCurrentObjectId, setSideBarName, setZoneBusynessRank, setZoneCrimeRank, setZonePropertyRank, setZoneCombinedRank, setZoneTransportRank, setCafeDensity, setChartFlag, newGeoJson}) {
     
+
+  const [visibleIndex, setVisibleIndex] = useState(0);
+  const cycleRankInfo = () => {
+    setVisibleIndex((prevIndex) => (prevIndex + 1) % 6); // Assuming there are 6 p elements to cycle through
+  };
+
+
+
+
+
   function generateStars(rating) {
     const fullStars = Math.floor(rating);
     const halfStar = (rating % 1) >= 0.5 ? 1 : 0;
@@ -306,112 +316,85 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
           <div className="sidebar-content rounded-rect flex-center">
             <h1 className="sidebar-header">{name}</h1>
             <div className='sidebar-zone-rating'>
-            {/* <div id="overall-rating">
-                <p>
-                Rating:
-                </p>
-                <div id="score">
-                  <FontAwesomeIcon icon={faStar} />
-                  <FontAwesomeIcon icon={faStar} />
-                  <FontAwesomeIcon icon={faStar} />
-                  <FontAwesomeIcon icon={faStar} />
-                  <FontAwesomeIcon icon={faStar} />
-                </div>
-              </div> */}
-              <div id="busyness-rating">
-                <p>
-                Busy:
-                </p>
-                <div id="score">
-                  <FontAwesomeIcon icon={faShoePrints} />
-                  <FontAwesomeIcon icon={faShoePrints} />
-                  <FontAwesomeIcon icon={faShoePrints} />
-                  <FontAwesomeIcon icon={faShoePrints} />
-                  <FontAwesomeIcon icon={faShoePrints} />
-                </div>
-              </div>
-              {/*}
-              <div id="crime-rating">
-                <p>
-                Crime:
-                </p>
-                <div id="score">
-                  <FontAwesomeIcon icon={faHandcuffs} />
-                  <FontAwesomeIcon icon={faHandcuffs} />
-                  <FontAwesomeIcon icon={faHandcuffs} />
-                  <FontAwesomeIcon icon={faHandcuffs} />
-                  <FontAwesomeIcon icon={faHandcuffs} />
-                </div>
-              </div>
-              <div id="price-rating">
-                <p>
-                Price:
-                </p>
-                <div id="score">
-                  <FontAwesomeIcon icon={faDollarSign} />
-                  <FontAwesomeIcon icon={faDollarSign} />
-                  <FontAwesomeIcon icon={faDollarSign} />
-                  <FontAwesomeIcon icon={faDollarSign} />
-                  <FontAwesomeIcon icon={faDollarSign} />
-                </div>
-              </div>
-              <div id="transit-rating">
-                <p>
-                Transit:
-                </p>
-                <div id="score">
-                  <FontAwesomeIcon icon={faBus} />
-                  <FontAwesomeIcon icon={faBus} />
-                  <FontAwesomeIcon icon={faBus} />
-                  <FontAwesomeIcon icon={faBus} />
-                  <FontAwesomeIcon icon={faBus} />
-                </div>
-              </div>
-              <div id="cafe-density-rating">
-                <p>
-                Density:
-                </p>
-                <div id="score">
-                  <FontAwesomeIcon icon={faCoffee} />
-                  <FontAwesomeIcon icon={faCoffee} />
-                  <FontAwesomeIcon icon={faCoffee} />
-                  <FontAwesomeIcon icon={faCoffee} />
-                  <FontAwesomeIcon icon={faCoffee} />
-                </div>
-              </div> */}
-
-
-
+              {/* Use the visibleIndex state to show/hide the p elements */}
+              <p className="rank-info" onClick={cycleRankInfo}>
+          {visibleIndex === 0 && (
+            <span>
+              Busyness: {calculateShoePrints(busynessRank)}
+            </span>
+          )}
+          {visibleIndex === 1 && (
+            <span>
+              Crime: {calculateHandcuffs(crimeRank)}
+            </span>
+          )}
+          {visibleIndex === 2 && (
+            <span>
+              Property: {calculateHome(propertyRank)}
+            </span>
+          )}
+          {visibleIndex === 3 && (
+            <span>
+              Transit: {calculateShuttleVan(transitRank)}
+            </span>
+          )}
+          {visibleIndex === 4 && (
+            <span>
+              Cafe Density: {calculateCoffee(cafeRank)}
+            </span>
+          )}
+          {visibleIndex === 5 && (
+            <span>
+              Selection: #{combinedRank}
+              
+              {/* {calculateStarIcons(combinedRank)} */}
+            </span>
+          )}
+        </p>
             </div>
-            <div className='sidebar-help-button'>
-              <FontAwesomeIcon icon={faQuestion} />
-
-            </div>
+            
             <div class="sidebar-toggle rounded-rect right">
             
             </div>
             <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
               <FontAwesomeIcon icon={faArrowDown} />
             </div>
-            <p className="rank-info">
-              Busyness Rank: {busynessRank}<br/>
-              Crime Rank: {crimeRank}<br/>
-              Property Rank: {propertyRank}<br/>
-              Transit Rank: {transitRank}<br/>
-              Cafe Density Rank: {cafeRank}<br/>
-              Combined Rank: {combinedRank}
-            </p>
+            
             <div className="cafe-info">
               <p id="zone-cafe-title"><b> Cafés: {cafeCount} </b></p>
               {selectedCafes.length > 0 ? selectedCafes.slice(0, 3).map((cafe, index) => {
                 return (
                   <div className='zone-cafe' key={index} onClick={() => selectCafe(cafe)}> 
-                    <p><b className = "cafe-name">{cafe.name} </b><br />Rating: {cafe.rating}</p>
+                    <p>
+                      <b className = "cafe-name">{cafe.name} </b>
+                      <br />                      
+                      <div className="zone-cafe-rating">
+                        {generateStars(cafe.rating)}
+                        <div className='zone-background-stars zone-cafe-rating'>
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        </div>
+                      </div>
+                      </p>
                     <img  src = {cafe.image_url} className = "cafe_image"></img>
                   </div>
                   )
                 }) : <p>No cafes in this area</p>}
-                <p id="av-cafe-rating">Avg Rating: {Math.round(averageCafe * 2) / 2}</p>
+                <p id="av-cafe-rating">Avg: 
+                <div className="zone-av-cafe-rating">
+                        {generateStars(Math.round(averageCafe * 2) / 2)}
+                        <div className='zone-av-background-stars zone-av-cafe-rating'>
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+                        </div>
+                      </div>
+                </p>
               
               
                           </div>
@@ -434,7 +417,6 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
             <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
             <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
             <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
-
             </div>
           </div>
           <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
