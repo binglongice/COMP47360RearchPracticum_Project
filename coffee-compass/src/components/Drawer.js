@@ -340,8 +340,8 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
           <div className="zone-info">
              
               {zoneInfo.map((zone, index) => (
-                <div key={index} onClick={() => handleZoneNameClick(zone)}>
-                <h2> #{index + 1} {zone.properties.zone}</h2>
+                <div key={index} >
+                <h2 className = "cafe-name" onClick={() => handleZoneNameClick(zone)}> #{index + 1} {zone.properties.zone}</h2>
                   <p><b>Current: # {zone.properties.current_rank}</b></p>
                   <p>Busyness: #{zone.properties.busyness_rank}</p>
                   <p>Crime: #{zone.properties.crime_rank}</p>
