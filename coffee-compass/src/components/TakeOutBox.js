@@ -60,7 +60,8 @@ const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng, setC
         }
         map.off('click', onMapClick);
     };
-    const handleModeChange = () => {
+    const handleModeChange = (event) => {
+        event.preventDefault();
         const newIndex = (modeIndex + 1) % modeOptions.length;
         setModeIndex(newIndex);
         const selectedMode = modeOptions[newIndex].value;
@@ -98,7 +99,8 @@ const createMarker = () => {
         map.on('click', onMapClick);
     }
 };
-    const removeMarker = () => {
+    const removeMarker = (event) => {
+        event.preventDefault();
         const marker = document.querySelector('.mapboxgl-marker');
         if (map && marker) {
             marker.remove();  
