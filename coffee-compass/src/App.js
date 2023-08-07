@@ -4,8 +4,8 @@ import Map from './components/Map';
 import Store from '../src/context/Store';
 import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import Welcome from './components/Welcome';
+import Essentials from './components/Essentials';
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
-
 
 // add components to website
 
@@ -87,6 +87,10 @@ function App() {
 
   return (
     <>
+
+
+
+
     {/* <Welcome/> */}
       <Joyride 
         steps={steps}

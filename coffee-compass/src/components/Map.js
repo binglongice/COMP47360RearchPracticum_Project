@@ -18,9 +18,25 @@ import TakeOutButton from './TakeOutButton';
 import HelpButton from './HelpButton';
 import HelpBox from './HelpBox';
 import ModeSelection from './ModeSelection';
+import { Link, useNavigate } from 'react-router-dom';
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
 function Map({ selectedIndex, addNextStep, setRun, setRunTakeOut}) {
+
+
+  const handleReload = () => {
+    window.location.reload(); // This will reload the whole page
+  };
+
+
+  const navigate = useNavigate();
+  const handlePageToggle = () => {
+    // Navigate to the 'essentials' page
+    navigate('/essentials');
+  };
+
 
   const getHour = () => {
     const today = new Date();
@@ -1366,9 +1382,11 @@ useEffect(() => {
     <HelpButton setRun =  {setRun} />
 
     <header>
-      <div id="compass-btn"><img src="./compass-coffee.png" width="50px" height="50px"/></div>
+      <div id="compass-btn" onClick={handleReload}><img src="./compass-coffee.png" width="50px" height="50px"/></div>
       <div id="title">Cafe Compass</div>
-      <div id="page-toggle"><img src="./page-nav.png"  width="40px" height="40px"/></div>
+      <div id="page-toggle" onClick={handlePageToggle}>
+          <img src="./page-nav.png"  width="40px" height="40px"/>
+      </div>
     </header>
 
 

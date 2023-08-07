@@ -2507,6 +2507,7 @@ header{
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  
 }
 #compass-btn, #page-toggle{
   position: absolute;
@@ -3446,8 +3447,10 @@ x- fix takeout button stylign
 X -  remove taxi button
 x - style legend
 x - check map clickable
++/- for legend
+header transparent
 
-link to essentials
+half --- link to essentials
 half --- style map buttons
 drawer responsiveness
 drawer rating func
