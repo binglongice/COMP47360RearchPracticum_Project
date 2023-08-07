@@ -31,7 +31,7 @@ function FilterNav({activeButtons, setActiveButtons, handleLayerChange }) {
         return (
     <nav className="filter-nav" role="filter">
       <ul>
-        <li>
+        {/* <li>
           <a
             href="#"
             onClick={() => handleClick(0)}
@@ -40,7 +40,7 @@ function FilterNav({activeButtons, setActiveButtons, handleLayerChange }) {
             <span className="inner"></span>
             <FontAwesomeIcon icon={faTaxi} />
           </a>
-        </li>
+        </li> */}
         <li>
           <a
             href="#"

@@ -13,8 +13,7 @@ const TakeOutButton = ({takeOut, setTakeOut, setRunTakeOut}) => {
     return (
         <button className = "takeOutButton" onClick={handleHeatMap}>
                        <FontAwesomeIcon icon={faBicycle} /> 
-
-            Delivery 
+        <span>Delivery</span>
 
         
         </button>
