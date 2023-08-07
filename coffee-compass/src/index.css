@@ -7,26 +7,33 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
 .map-container {
   width: 100vw;
   height: 100vh;
   pointer-events: auto;
+  top: 75px;
+  z-index: 1;
+  height: auto;
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
 
-  }
-
+}
 .nav-bar {
   height: 5vh;
 }
-
 .mapboxgl-popup {
   max-width: 200px;
-  }
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
 
 
   
@@ -454,11 +461,7 @@ nav li a.active .inner {
   overflow: hidden;
 }
 
-.mapboxgl-popup {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
+
   
 .mapboxgl-popup-content {
   background-color: transparent !important;
@@ -983,17 +986,6 @@ background-color: #444444;
 }
 
 
-
-
-.map-container{
-  top: 75px;
-  z-index: 1;
-  height: auto;
-  bottom: 0px;
-  position: absolute;
-  width: 100%;
-
-}
 .filter-nav-container{
   position: absolute;
   top: 75px;
@@ -1816,35 +1808,6 @@ bike map pngs big and obscure
 
 
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.map-container {
-  width: 100vw;
-  height: 100vh;
-  pointer-events: auto;
-
-  }
-
-.nav-bar {
-  height: 5vh;
-}
-
-.mapboxgl-popup {
-  max-width: 200px;
-  }
-
 
   
 /** CSS FOR BUTTTONS **/
@@ -2271,11 +2234,7 @@ nav li a.active .inner {
   overflow: hidden;
 }
 
-.mapboxgl-popup {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
+
   
 .mapboxgl-popup-content {
   background-color: transparent !important;
@@ -2802,16 +2761,6 @@ background-color: #444444;
 
 
 
-
-.map-container{
-  top: 75px;
-  z-index: 1;
-  height: auto;
-  bottom: 0px;
-  position: absolute;
-  width: 100%;
-
-}
 .filter-nav-container{
   position: absolute;
   top: 75px;
@@ -3458,33 +3407,7 @@ padding: 0px;
 
 
 
-/*
-total responsiveness
-x -reload button
-x -fixed slider length, padding on slider text
-x -hover and click animations on takeout
-x- fix takeout button stylign
-X -  remove taxi button
-x - style legend
-x - check map clickable
-+/- for legend
-header transparent
 
-half --- link to essentials
-half --- style map buttons
-drawer responsiveness
-drawer rating func
-cafe drawer resp, maybe fix the image upto min width and have reviews scroll
-  replace cafe drawer with stars. 
-
-check firefox, edge, chrome and safari
-drawer in and out animation and lip
-mobile layout flip?
-bike map pngs big and obscure
-title png
-page sometimes reloads on takeaway button
-style all scrollbars
-*/
 
 
 
@@ -3629,4 +3552,183 @@ style all scrollbars
     }
 
     }
+
+
+
+    .zone-info div p{
+      width: 100%;
+    }
+    
+    .zone-info{
+      height: 270px;
+    }
+
+    .zone-info div{
+      height: 190px;
+      border: none;
+    }
+
+    .zone-info div div{
+      height: 150px;
+      width: 100%;
+      position: relative;
+      top: 0px;
+      width:max-content;
+      border-top: 2px solid antiquewhite;
+      border-bottom: 2px solid antiquewhite;
+      display: flex;
+      justify-content: space-between;
+      padding: 3px;
+    }
+
+.zone-info div h2{
+
+     font-size: 1.7vw;
+     height: fit-content;
+
+    }
+
+    .sidebar-cafe-header{
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      right: 160px;
+      height: 35px;
+      z-index: 10;
+      padding: 0px;
+      margin: 0px;
+      color: antiquewhite;
+      font-size: 40px;
+      display: flex;
+      align-items: center;
       
+    }
+
+    .sidebar-cafe-rating{
+      position: absolute;
+      right: 50px;
+      background-color: antiquewhite;
+      color: #444444;
+      top: 11px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      font-size: large;
+      width: 20;
+    }
+
+
+.sidebar-content{
+  overflow-x: hidden;
+}
+    .sidebar-content::-webkit-scrollbar {
+    width: 5px;
+  }
+   
+  .sidebar-content::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+  }
+   
+  .sidebar-content::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+    border-radius: 5px;
+  }
+  
+  .background-stars{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 10px
+  }
+
+    @media only screen and (max-width: 950px) {
+
+      .sidebar-cafe-header{
+        font-size: 4.0vw;
+
+      }
+      .zone-info div h2{
+
+        font-size: 2.6vw
+       }
+    }
+
+    @media only screen and (max-width: 200px) {
+      .sidebar-cafe-header{
+        font-size: 8.0vw;
+        height: 40px;
+        display: flex;
+        align-items: end;      }
+
+    }
+    @media only screen and (max-width: 675px) {
+      .sidebar-cafe-header{
+        font-size: 4vw;
+
+      }
+    }
+    @media only screen and (max-width: 625px) {
+      .zone-info div h2{
+
+        font-size: 5.4vw
+       }
+    }
+
+    @media only screen and (max-width: 435px) {
+      .sidebar-header{
+        font-size: 8.0vw;
+        height: 40px;
+        display: flex;
+        align-items: end;
+      }
+    }
+
+    @media only screen and (max-width: 300px) {
+
+    .zone-info div p{
+      font-size: 6vw;
+    }
+    .sidebar-cafe-header{
+      font-size: 3vw;
+
+    }
+
+  }
+
+  /*
+total responsiveness
+x -reload button
+x -fixed slider length, padding on slider text
+x -hover and click animations on takeout
+x- fix takeout button stylign
+X -  remove taxi button
+x - style legend
+x - check map clickable
+x - top-zone drawer responsive
+x - emojis for zone ratings
+
++/- for legend
+
+
+
+
+header transparent
+text truncated for cafe review
+
+half --- link to essentials
+half --- style map buttons
+drawer responsiveness
+drawer rating func
+cafe drawer resp, maybe fix the image upto min width and have reviews scroll
+  replace cafe drawer with stars. 
+
+check firefox, edge, chrome and safari
+drawer in and out animation and lip
+mobile layout flip?
+bike map pngs big and obscure
+title png
+page sometimes reloads on takeaway button
+style all scrollbars
+*/

@@ -4,10 +4,121 @@ import { ApiContext } from '../context/ApiContext';
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faShoePrints, faHandcuffs, faDollarSign, faBus, faCoffee, faArrowDown, faQuestion } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faShoePrints, faHandcuffs, faHome, faShuttleVan, faDollarSign, faBus, faCoffee, faArrowDown, faQuestion, faStarHalf } from '@fortawesome/free-solid-svg-icons';
 
 
 function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, yearData, objectID, name, busynessRank, crimeRank, propertyRank, transitRank, combinedRank, cafeRank, cafeId, cafe_url, cafe_name, cafe_rating, cafeClick, setCafeClick, zoneInfo, zoneFlag, setZoneFlag, suggestionFlag, setSelectedImage, setSelectedName, setSelectedRating, setCurrentObjectId, setSideBarName, setZoneBusynessRank, setZoneCrimeRank, setZonePropertyRank, setZoneCombinedRank, setZoneTransportRank, setCafeDensity, setChartFlag, newGeoJson}) {
+    
+  function generateStars(rating) {
+    const fullStars = Math.floor(rating);
+    const halfStar = (rating % 1) >= 0.5 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStar;
+  
+    const starIcons = [];
+  
+    for (let i = 0; i < fullStars; i++) {
+      starIcons.push(<FontAwesomeIcon icon={faStar} key={i} />);
+    }
+  
+    if (halfStar) {
+      starIcons.push(<FontAwesomeIcon icon={faStarHalf} key={starIcons.length} />);
+    }
+  
+    for (let i = 0; i < emptyStars; i++) {
+      starIcons.push(<FontAwesomeIcon icon={faStar} key={starIcons.length} style={{ opacity: 0.3 }} />);
+    }
+  
+    return starIcons;
+  }
+
+
+
+
+  function calculateStarIcons(rank) {
+    const starCount = calculateStarCount(rank);
+    const starIcons = [];
+
+    for (let i = 0; i < starCount; i++) {
+      starIcons.push(<FontAwesomeIcon icon={faStar} key={i} />);
+    }
+
+    return starIcons;
+  }
+
+  function calculateShoePrints(rank) {
+    const shoeCount = calculateStarCount(rank);
+
+    const shoePrints = [];
+
+    for (let i = 0; i < shoeCount; i++) {
+      shoePrints.push(<FontAwesomeIcon icon={faShoePrints} key={i} />);
+    }
+
+    return shoePrints;
+  }
+
+  function calculateHandcuffs(rank) {
+    const handcuffCount = calculateStarCount(rank);
+    const handcuffs = [];
+
+    for (let i = 0; i < handcuffCount; i++) {
+      handcuffs.push(<FontAwesomeIcon icon={faHandcuffs} key={i} />);
+    }
+
+    return handcuffs;
+  }
+
+  function calculateHome(rank) {
+    const homeCount = calculateStarCount(rank);
+    const homes = [];
+
+    for (let i = 0; i < homeCount; i++) {
+      homes.push(<FontAwesomeIcon icon={faHome} key={i} />);
+    }
+
+    return homes;
+  }
+
+  function calculateShuttleVan(rank) {
+    const vanCount = calculateStarCount(rank);
+
+    const shuttleVans = [];
+
+    for (let i = 0; i < vanCount; i++) {
+      shuttleVans.push(<FontAwesomeIcon icon={faShuttleVan} key={i} />);
+    }
+
+    return shuttleVans;
+  }
+
+  function calculateCoffee(rank) {
+    const coffeeCount = calculateStarCount(rank);
+
+    const coffees = [];
+
+    for (let i = 0; i < coffeeCount; i++) {
+      coffees.push(<FontAwesomeIcon icon={faCoffee} key={i} />);
+    }
+
+    return coffees;
+  }
+
+  function calculateStarCount(rank) {
+    if (rank >= 1 && rank <= 14) {
+      return 5;
+    } else if (rank >= 15 && rank <= 28) {
+      return 4;
+    } else if (rank >= 29 && rank <= 42) {
+      return 3;
+    } else if (rank >= 43 && rank <= 56) {
+      return 2;
+    } else if (rank >= 57 && rank <= 66) {
+      return 1;
+    }
+    return 0; // Return 0 for ranks outside the defined ranges
+  }
+  
+  
     const sidebarRef = useRef(null);
     const {sortedCafes, reviews, fetchReviews} = useContext(ApiContext);  
     const [selectedCafes, setSelectedCafes] = useState([]);
@@ -307,10 +418,25 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
              {zoneFlag && <LineChart dayData={dayData} weekData={weekData} yearData={yearData} objectID={objectID} sidebarIsOpen={rightSidebar}/>}
           </div>
         </div>
-        ) : cafeClick ? (
-        <div ref={sidebarRef} id="right" className={`sidebar flex-center right ${rightSidebar ? '' : 'collapsed'}`}>
+        ) 
+        
+        : cafeClick ? (
+
+
+<div ref={sidebarRef} id="right" className={`sidebar flex-center right ${rightSidebar ? '' : 'collapsed'}`}>
         <div className="sidebar-content rounded-rect flex-center">
-          <h1 className="sidebar-header">{cafe_name} {cafe_rating}</h1>
+          <h1 className="sidebar-cafe-header">{cafe_name}</h1>
+          <div className="sidebar-cafe-rating">
+            {generateStars(cafe_rating)}
+            <div className='background-stars'>
+            <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+            <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+            <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+            <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+            <FontAwesomeIcon icon={faStar} style={{ opacity: 0.3 }} />
+
+            </div>
+          </div>
           <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
           <FontAwesomeIcon icon={faArrowDown} />
           </div>
@@ -338,21 +464,40 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
           <FontAwesomeIcon icon={faArrowDown} />
           </div>
           <div className="zone-info">
-             
-              {zoneInfo.map((zone, index) => (
-                <div key={index} >
-                <h2 className = "cafe-name" onClick={() => handleZoneNameClick(zone)}> #{index + 1} {zone.properties.zone}</h2>
-                  <p><b>Current: # {zone.properties.current_rank}</b></p>
-                  <p>Busyness: #{zone.properties.busyness_rank}</p>
-                  <p>Crime: #{zone.properties.crime_rank}</p>
-                  <p>Property: #{zone.properties.prices_rank}</p>
-                  <p>Transit: #{zone.properties.transport_rank}</p>
-                  <p>Cafe Density: #{zone.properties.cafe_rank}</p>
-          
-                </div>
-              ))
-            }
+      {zoneInfo.map((zone, index) => (
+        <div key={index} className="zone-item">
+          <h2 className="cafe-name" onClick={() => handleZoneNameClick(zone)}>
+            #{index + 1} {zone.properties.zone}
+          </h2>
+          <div className="rating-container">
+            <p>
+              <span className="rating-text"><b>Selection: </b></span>
+              <span className='rating-stars'>#{zone.properties.current_rank}</span>
+            </p>
+            <p>
+              <span className="rating-text">Busyness: </span>
+              <span className='rating-stars'>{calculateShoePrints(zone.properties.busyness_rank)}</span>
+            </p>
+            <p>
+              <span className="rating-text">Crime: </span>
+              <span className='rating-stars'>{calculateHandcuffs(zone.properties.crime_rank)}</span>
+            </p>
+            <p>
+              <span className="rating-text">Property: </span>
+              <span className='rating-stars'>{calculateHome(zone.properties.prices_rank)}</span>
+            </p>
+            <p>
+              <span className="rating-text">Transit:</span> 
+              <span className='rating-stars'>{calculateShuttleVan(zone.properties.transport_rank)}</span>
+            </p>
+            <p>
+              <span className="rating-text">Cafe Density:</span> 
+              <span className='rating-stars'>{calculateCoffee(zone.properties.cafe_rank)}</span>
+            </p>
           </div>
+        </div>
+      ))}
+    </div>
           </div>
           </div>
         ) : null
