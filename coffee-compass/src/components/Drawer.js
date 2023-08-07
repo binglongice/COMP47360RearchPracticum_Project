@@ -452,10 +452,10 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
             #{index + 1} {zone.properties.zone}
           </h2>
           <div className="rating-container">
-            <p>
+            {/* <p>
               <span className="rating-text"><b>Selection: </b></span>
               <span className='rating-stars'>#{zone.properties.current_rank}</span>
-            </p>
+            </p> */}
             <p>
               <span className="rating-text">Busyness: </span>
               <span className='rating-stars'>{calculateShoePrints(zone.properties.busyness_rank)}</span>

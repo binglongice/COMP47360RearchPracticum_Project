@@ -3515,6 +3515,7 @@ padding: 0px;
     .sidebar-content img{
       height: 200px;
       top: 55px;
+      left: 5px;
     }
     .cafe-info-ul{
       top: 245px;
@@ -3542,11 +3543,14 @@ padding: 0px;
     }
     .buttonSuggestion{
       top: 60px;
-      left: 0px;
       right: 0px;
-      width: auto;
+      width: 60px;
+      left: auto;
     }
 
+    .buttonSuggestion span{
+      display: none;
+    }
     .takeOutButton, .takeout-box-container{
       top: 190px;
       right: 0px;
@@ -3554,8 +3558,18 @@ padding: 0px;
       width: auto;
     }
 
+    .takeOutButton{
+      width: 60px;
+      right: auto;
+      top: 135px
+    }
+
+    .takeOutButton span{
+      display: none;
+    }
+
     .legend{
-      top: 245px;
+      top: 135px;
       
     }
 
@@ -3598,6 +3612,14 @@ padding: 0px;
       display: flex;
       justify-content: space-between;
       padding: 3px;
+      margin-top: 10px;
+
+    }
+
+    .cafe-info-ul li{
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px;
     }
 
 .zone-info div h2{
@@ -3713,6 +3735,14 @@ padding: 0px;
     top: 10px
   }
 
+  .sidebar-header{
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+
+
     @media only screen and (max-width: 950px) {
 
       .sidebar-cafe-header{
@@ -3723,6 +3753,20 @@ padding: 0px;
 
         font-size: 2.6vw
        }
+    }
+
+    @media only screen and (max-width: 875px) {
+      .sidebar-header{
+        font-size: 4vw;
+      }
+    }
+    @media only screen and (max-width: 660px) {
+      .sidebar-header{
+        font-size: 3vw;
+        right: 250px;
+        background-color: #0aa1cf;
+      }
+      
     }
 
     @media only screen and (max-width: 200px) {
@@ -3744,14 +3788,19 @@ padding: 0px;
 
         font-size: 5.4vw
        }
+
+
     }
 
-    @media only screen and (max-width: 435px) {
-      .sidebar-header{
-        font-size: 8.0vw;
-        height: 40px;
-        display: flex;
-        align-items: end;
+    
+
+    @media only screen and (max-width: 325px) {
+      .legend{
+        width: 110px;
+      }
+
+      svg text{
+        display: none;
       }
     }
 
@@ -3802,4 +3851,5 @@ title png
 page sometimes reloads on takeaway button
 style all scrollbars
 randalls island no cafes needs styling and NaN
+selection not working for zone window stuff
 */
