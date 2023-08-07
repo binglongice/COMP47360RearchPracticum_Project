@@ -67,7 +67,8 @@ const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng, setC
         setProfile(selectedMode);
     };
     
-    const handleDurationChange = () => {
+    const handleDurationChange = (event) => {
+        event.preventDefault();
         const newIndex = (durationIndex + 1) % durationOptions.length;
         setDurationIndex(newIndex);
         const selectedDuration = durationOptions[newIndex];

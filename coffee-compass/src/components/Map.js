@@ -31,11 +31,11 @@ function Map({ selectedIndex, addNextStep, setRun, setRunTakeOut}) {
   };
 
 
-  const navigate = useNavigate();
-  const handlePageToggle = () => {
-    // Navigate to the 'essentials' page
-    navigate('/essentials');
-  };
+  // const navigate = useNavigate();
+  // const handlePageToggle = () => {
+  //   // Navigate to the 'essentials' page
+  //   navigate('/essentials');
+  // };
 
 
   const getHour = () => {
@@ -1384,7 +1384,7 @@ useEffect(() => {
     <header>
       <div id="compass-btn" onClick={handleReload}><img src="./compass-coffee.png" width="50px" height="50px"/></div>
       <div id="title">Cafe Compass</div>
-      <div id="page-toggle" onClick={handlePageToggle}>
+      <div id="page-toggle" >
           <img src="./page-nav.png"  width="40px" height="40px"/>
       </div>
     </header>
