@@ -49,9 +49,16 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, activeIndex, s
         setActiveIndex(index);
     }
 
-    const handleTimeframeChange = (event) => {
-        setSelectedTimeFrame(event.target.value);
+    
+  const handleTimeframeChange = () => {
+    if (selectedTimeFrame === 'day') {
+      setSelectedTimeFrame('week');
+    } else if (selectedTimeFrame === 'week') {
+      setSelectedTimeFrame('year');
+    } else {
+      setSelectedTimeFrame('day');
     }
+  };
 
     let displayTimeframe;
     switch(selectedTimeFrame) {
@@ -73,29 +80,22 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, activeIndex, s
     const maxRange = selectedTimeFrame === 'day' ? 23 : selectedTimeFrame === 'week' ? 6 : 11;
 
     return (
-    <div className="BusynessSliderBox">
-        <h3>Busyness Slider</h3>
-        <div className='session'>
+        <div className="BusynessSliderBox">
+          <h3>Busyness Slider</h3>
+          <div className='session'>
             <h2>
-                
-                {/*{displayTimeframe}: {" "}*/}
-
-
-            <label>{displayValue}</label>
-            </h2> 
+              {/*{displayTimeframe}: {" "}*/}
+              <label className = "test22">{displayValue}</label>
+            </h2>
             <input className='row' type='range' min='0' max={maxRange} step='1' value={activeIndex} onChange={handleSliderChange} />
+          </div>
+          <div className='filter_row'>
+            <button onClick={handleTimeframeChange} style={{borderRadius: '50px'}}>
+              {selectedTimeFrame === 'day' ? 'D' : selectedTimeFrame === 'week' ? 'W' : 'M'}
+            </button>
+          </div>
         </div>
-        <div className='filter_row'>
-            <h2>D</h2>
-            
-            <input id = "day" type='radio' name='toggle' value='day' checked={selectedTimeFrame === 'day'} onChange={handleTimeframeChange}/>
-            <label htmlFor='day'>Day</label>
-            <input id = "week" type='radio' name='toggle' value='week' checked={selectedTimeFrame === 'week'} onChange={handleTimeframeChange}/>
-            <label htmlFor='week'>Week</label>
-            <input id = "year" type='radio' name='toggle' value='year' checked={selectedTimeFrame === 'year'} onChange={handleTimeframeChange}/>
-            <label htmlFor='year'>Month</label>
-        </div>
-    </div>
-    );
-}
+      );
+    }
+
 export default BusynessSlider;

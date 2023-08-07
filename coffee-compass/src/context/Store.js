@@ -54,6 +54,11 @@ function Store({ children }) {
     const [prices,setPrices] = useState([]);
     const [averageRating, setAverageRating] = useState([]);
     const [selectedCafeId, setSelectedCafeId] = useState(null);
+    const [mode, setMode] = useState({
+      cafe: true,
+      bar: false,
+      rest: false
+  });
 
   //API fetch request via axios
   //Used to interact with Django endpoint - using GET request
@@ -73,6 +78,39 @@ function Store({ children }) {
         throw error;
       });
   };
+
+
+  const fetchDataBars = () => {
+    return axios
+    .get(`http://127.0.0.1:8000/yelp_api/api/bars/${location}/`)
+    .then((response) => {
+      const responseData = response.data;
+      console.log('Received data:', responseData);
+      setData(responseData); //Saves data as response data (from Django db) - returned API data
+      return responseData;
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+};
+
+const fetchDataRestaurants = () => {
+  return axios
+  .get(`http://127.0.0.1:8000/yelp_api/api/restaurants/${location}/`)
+  .then((response) => {
+    const responseData = response.data;
+    console.log('Received data:', responseData);
+    setData(responseData); //Saves data as response data (from Django db) - returned API data
+    return responseData;
+  })
+  .catch((error) => {
+    console.error(error);
+    throw error;
+  });
+};
+
+
 
   const fetchReviews = (id) => {
     return axios
@@ -109,7 +147,7 @@ function Store({ children }) {
     const todayDate = getFormattedDate();
     console.log('input to 24 hour API - day/month/week_of_year', todayDate);
 
-    fetch(`http://localhost:8000/yelp_api/pickle_views/model-output/${todayDate}/`)
+    fetch(`http://127.0.0.1:8000/yelp_api/pickle_views/model-output/${todayDate}/`)
     .then(response => response.json())
     .then(data => {
       console.log('API data', data);
@@ -122,7 +160,7 @@ function Store({ children }) {
 
     //return the month endpoint
     useEffect(() => {
-      fetch('http://localhost:8000/yelp_api/pickle_views/monthly/')
+      fetch('http://127.0.0.1:8000/yelp_api/pickle_views/monthly/')
         .then(response => response.json())
         .then(data => {
           console.log('Month data', data);
@@ -136,7 +174,7 @@ function Store({ children }) {
   useEffect(() => {
     const currentWeek = getWeek();
     console.log("current week", currentWeek);
-    fetch(`http://localhost:8000/yelp_api/pickle_views/weekly/${currentWeek}/`)
+    fetch(`http://127.0.0.1:8000/yelp_api/pickle_views/weekly/${currentWeek}/`)
     .then(response => response.json())
     .then(data => {
       console.log('Week data', data);
@@ -303,7 +341,7 @@ useEffect(() => {
 
 
   return (
-    <ApiContext.Provider value={{data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity, prices, selectedCafeId, setSelectedCafeId, fetchReviews}}>
+    <ApiContext.Provider value={{data, setData, reviews, setReviews, picklePredictions, setPicklePredictions, yearData, setYearData, weekData, setWeekData, sortedCafes, setSortedCafes, cafeDensity, prices, selectedCafeId, setSelectedCafeId, fetchReviews, mode, setMode}}>
       {children}
     </ApiContext.Provider>
   );

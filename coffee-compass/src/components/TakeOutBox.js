@@ -3,105 +3,139 @@ import React, { useState, useEffect, useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
 import MapContext from '../context/MapContext';
 import customMarkerImage from '../coffee.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWalking, faBicycle, faCar, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
-// we might use a different mapbox api key so we don't go over 
 
-// Import your custom marker image
-
-//https://docs.mapbox.com/help/tutorials/get-started-isochrone-api/
-
-
-const TakeOutBox = ({setProfile, setMinutes, setTakeoutLat, setTakeoutLng}) => {
+const TakeOutBox = ({ setProfile, setMinutes, setTakeoutLat, setTakeoutLng, setChecked, setActiveMaps }) => {
     const map = useContext(MapContext); // Get the map instance
-    
-    const handleProfileChange = (e) => {
-        setProfile(e.target.value);
-    };
 
-    const handleDurationChange = (e) => {
-        setMinutes(e.target.value);
-    };
+    const [modeIndex, setModeIndex] = useState(0); // Track the current index of the mode options
+    const [durationIndex, setDurationIndex] = useState(0); // Track the current index of the duration options
+
+    const modeOptions = [
+        { icon: faWalking, value: 'walking' },
+        { icon: faBicycle, value: 'cycling' },
+        { icon: faCar, value: 'driving' },
+    ];
+
+    const durationOptions = ['10', '20', '30'];
 
     useEffect(() => {
+        // Set initial mode and duration
+        setProfile(modeOptions[modeIndex].value);
+        setMinutes(durationOptions[durationIndex]);
+    
         return () => {
             // Cleanup on unmount: remove the event listener
             if (map) map.off('click', onMapClick);
         };
-    }, []);
+    }, []); // Empty dependency array so this effect only runs once on mount
+
 
     const onMapClick = (e) => {
         const marker = document.querySelector('.mapboxgl-marker');
         if (marker) {
-            map.on('click', onMapClick); 
             marker.remove();  
         }
 
-
-
         const { lng, lat } = e.lngLat;
-
 
         // Create a new marker and add it to the map
         const customMarkerElement = document.createElement('img');
         customMarkerElement.src = customMarkerImage;
         customMarkerElement.classList.add('custom-marker');
-    
+
         new mapboxgl.Marker({ element: customMarkerElement }) // Use the custom marker element
             .setLngLat([lng, lat])
             .addTo(map);
-            console.log("takeout coords", lng,lat)
-        //check to see if a marker exists, if it does, remove it
+
         setTakeoutLat(lat);
         setTakeoutLng(lng);
 
         // After placing the marker, remove the event listener
+        if (map) {
+            map.getCanvas().style.cursor = '';
+        }
         map.off('click', onMapClick);
     };
-
-    const createMarker = () => {
-        
-        if (map) map.on('click', onMapClick);
-        
+    const handleModeChange = () => {
+        const newIndex = (modeIndex + 1) % modeOptions.length;
+        setModeIndex(newIndex);
+        const selectedMode = modeOptions[newIndex].value;
+        setProfile(selectedMode);
     };
     
+    const handleDurationChange = (event) => {
+        event.preventDefault();
+        const newIndex = (durationIndex + 1) % durationOptions.length;
+        setDurationIndex(newIndex);
+        const selectedDuration = durationOptions[newIndex];
+        setMinutes(selectedDuration);
+    };
+const createMarker = () => {
+    if (map) {
+        if (map.getLayer("taxi_zones_fill_map")) {
+            map.removeLayer('taxi_zones_fill_map');
+              setChecked({
+                busyness: false,
+                crimeData: false,
+                prices: false,
+                transportData: false,
+                cafeDensity: false,
+  });
+        setActiveMaps({
+            busyness: false,
+            crimeData: false,
+            prices: false,
+            transportData: false,
+            cafeDensity: false,
+        })
+
+        }
+        map.getCanvas().style.cursor = `url(${customMarkerImage}), auto`;
+        map.on('click', onMapClick);
+    }
+};
+    const removeMarker = () => {
+        const marker = document.querySelector('.mapboxgl-marker');
+        if (map && marker) {
+            marker.remove();  
+            if (map.getLayer("isoLayer")) {
+                map.removeLayer('isoLayer');
+            }
+            setTakeoutLat(0);
+            setTakeoutLng(0);
+        }
+    }
+
     return (
         <div className='takeout-box-container'>
             <form id='params'>
+            <h4 className='exit-header'>Exit:</h4>
+                <div className='exit-options'>
+                    <button className='exit-option' onClick={removeMarker}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                </div>
                 <h4 className='mode-selection-header'>Choose a travel mode:</h4>
                 <div className='mode-selection-options'>
-                    <label className='mode-option'>
-                        <input name='profile' type='radio' value='walking' onChange={handleProfileChange} />
-                        <div className='mode-label'>Walking</div>
-                    </label>
-                    <label className='mode-option'>
-                        <input name='profile' type='radio' value='cycling' onChange={handleProfileChange} />
-                        <div className='mode-label'>Cycling</div>
-                    </label>
-                    <label className='mode-option'>
-                        <input name='profile' type='radio' value='driving' onChange={handleProfileChange}/>
-                        <div className='mode-label'>Driving</div>
-                    </label>
+                    <button className='mode-option' onClick={handleModeChange}>
+                        <FontAwesomeIcon icon={modeOptions[modeIndex].icon} />
+                    </button>
                 </div>
                 <h4 className='duration-selection-header'>Choose a maximum duration:</h4>
                 <div className='duration-selection-options'>
-                    <label className='duration-option'>
-                        <input name='duration' type='radio' value='10' onChange={handleDurationChange} />
-                        <div className='duration-label'>10 min</div>
-                    </label>
-                    <label className='duration-option'>
-                        <input name='duration' type='radio' value='20' onChange={handleDurationChange}/>
-                        <div className='duration-label'>20 min</div>
-                    </label>
-                    <label className='duration-option'>
-                        <input name='duration' type='radio' value='30' onChange={handleDurationChange}/>
-                        <div className='duration-label'>30 min</div>
-                    </label>
+                    <button className='duration-option' onClick={handleDurationChange}>
+                        {durationOptions[durationIndex]}
+                    </button>
                 </div>
-                <div className="button-container">
-                    <button className="submit-button" type="button" onClick={createMarker}>Create a Marker</button>
+                <div className='button-container'>
+                    <button className='submit-button' type='button' onClick={createMarker}>
+                        +
+                    </button>
                 </div>
-
             </form>
         </div>
     );

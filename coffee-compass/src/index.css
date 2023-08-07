@@ -16,6 +16,8 @@ code {
 .map-container {
   width: 100vw;
   height: 100vh;
+  pointer-events: auto;
+
   }
 
 .nav-bar {
@@ -57,6 +59,7 @@ nav li a {
   border: 2px solid transparent; /* Set an initial transparent border */
   transition: border-color 0.1s; /* Add transition for the border color change */ 
   background-color: #1f1f1f; 
+  font-size: 18px;
 }
 
 nav li a img {
@@ -95,7 +98,7 @@ a .inner *{
 }
 
 nav li a:hover {
-  color: #fff;
+  color: antiquewhite;
 }
 
 nav li a:hover .inner {
@@ -113,6 +116,7 @@ nav li a:hover .inner {
 
 nav li a.active {
   border-color: #00FF00;
+  color: antiquewhite;
 }
 
 nav li a.active .inner {
@@ -122,16 +126,16 @@ nav li a.active .inner {
 }
 
 .legend {
-  background-color: #1f1f1f;
+  background-color: #555555;
   color: #F2F4F3;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
-  /* position: absolute;
-  left: 10vh;  
-  bottom: 35vh;   */
   z-index: 1;
+  position: relative;
+  left: 35vw;
+  top: 40vh;
 }
 .legend h4 {
   margin: 0 0 10px;
@@ -145,13 +149,13 @@ nav li a.active .inner {
   color: white;
 }
 
-.legend div span {
+/* .legend div span {
   border-radius: 50%;
   display: inline-block;
-  height: 30px;
+  height: 15px;
   margin-right: 5px;
   width: 10vh;
-  }
+  } */
 
   .heatmap-analytics {
     display: flex;
@@ -163,6 +167,8 @@ nav li a.active .inner {
     left: 10%; 
     z-index: 1;
     gap: 20px;
+    pointer-events: none; /* Set the overlay to be non-clickable by default */
+
   }
   
 .HeatMapBox {
@@ -177,6 +183,11 @@ nav li a.active .inner {
   /* left: 12.5vh; */
   /* bottom: 8vh; */
   z-index: 1;
+  pointer-events: none; /* Allow the button to be clickable */
+  }
+
+  .HeatMapBox div{
+    pointer-events: auto;
   }
 
 .HeatMapBox h3 {
@@ -240,6 +251,7 @@ nav li a.active .inner {
     .row {
       height: 12px;
       width: 100%;
+    
     }
 
     :root {
@@ -305,6 +317,8 @@ nav li a.active .inner {
       bottom: 52vh; */
       z-index: 1;
       color: #F2F4F3;
+      pointer-events: auto; /* Allow the button to be clickable */
+
     }
 
     .BusynessSliderBox h2 {
@@ -499,7 +513,7 @@ nav li a.active .inner {
   /* position: absolute;
   left: 15vh;  
   bottom: 28vh;   */
-  z-index: 1;
+  z-index: 11;
   
 }
 
@@ -519,6 +533,13 @@ nav li a.active .inner {
   border: none;
   transition: background-color 0.3s ease;
   z-index: 2;
+  pointer-events: auto;
+}
+
+.buttonSuggestion:disabled {
+  background-color: #292929;
+  color: #666666;
+  cursor: not-allowed;
 }
 
 .buttonSuggestion:hover {
@@ -539,9 +560,29 @@ nav li a.active .inner {
   position: relative;
 }
 
+.remove-button {
+  background-color: #292929;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+
+
 .submit-button:hover {
   background-color: #393939;
 }
+
+.remove-button:hover {
+  background-color: #393939;
+}
+
 
 .takeOutButton {
   background-color: #1f1f1f;
@@ -668,13 +709,12 @@ header{
   display: flex;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
+  z-index: 1;
 }
 #compass-btn, #page-toggle{
   position: absolute;
   left: 10px;
   width: 50px;
-  background-color: ;
   aspect-ratio: 1/1;
   border-radius: 50px;
   display: flex;
@@ -684,7 +724,9 @@ header{
   z-index: 10;
   cursor: pointer;
 }
-
+#page-toggle{
+  width: 40px;
+}
 #compass-btn:hover, #page-toggle:hover{
   transform: rotate(360deg);
 }
@@ -727,20 +769,22 @@ header{
   top: 0px;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 1;
 }
 .BusynessSliderBox{
   position: absolute;
   top: 12.5px;
-  width: auto;
+  width: 400px;
   height: 50px;
   padding: 0px;
-  left: 375px;
+  max-width: 600px;
+  right: 110px;
 
-  right: 120px;
+  left: auto;
+
   background-color: transparent;
   box-shadow: none;
-  min-width: 250px;
+  min-width: 200px;
 }
 
 @media only screen and (max-width: 760px) {
@@ -771,7 +815,7 @@ header{
   width: auto;
   position: absolute;
   left: 0px;
-  right: 50px;
+  right: 90px;
   color: antiquewhite;
   background-color: antiquewhite;
   /* Add rounded corners */
@@ -830,9 +874,10 @@ header{
 .session h2{
   position: absolute;
   right: 0px;
-  width: 40px;
+  width: 80px;
   margin: 0px;
   color: antiquewhite;
+  text-align: center;
 }
 
 
@@ -865,8 +910,23 @@ header{
   margin-bottom: 2px;
 
 }
+
+.filter_row button{
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  font-size: 30px;
+  background-color: antiquewhite;
+  transition: 0.3s ease;
+  color: #555555
+}
+
+.filter_row button:hover{
+background-color: #444444;
+}
 .filter_row input, .filter_row label{
-  display: none;
 }
 
 
@@ -876,7 +936,7 @@ header{
   top: 17.5px;
   width: 40px;
   height: 40px;
-  right: 70px;
+  right: 60px;
   left: auto;
   border-radius: 40px;
   color: #555555;
@@ -892,24 +952,47 @@ header{
   right: 10px;
 }
 
-@media only screen and (max-width: 725px) {
+.buttonSuggestion{
+  background-color: #555555;
+  color: antiquewhite;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 197.5px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  font-size: x-large;
+}
+
+.buttonSuggestion span{
+  font-size: xx-large;
+  margin-left: 10px;
+}
+
+
+.buttonSuggestion svg {
+  position: absolute;
+  right: 15px;
+}
+
+@media only screen and (max-width: 810px) {
   #title{
     display: none;
   }
-
-  .BusynessSliderBox{
-    left: 75px;
-  }
 }
 
-@media only screen and (max-width: 460px) {
-  .BusynessSliderBox{
-    min-width: 0px;
-  }
-}
+
+
+
 .map-container{
   top: 75px;
   z-index: 1;
+  height: auto;
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
+
 }
 .filter-nav-container{
   position: absolute;
@@ -923,6 +1006,8 @@ header{
   justify-content: center;
   align-items: center;
   z-index: 10;
+  pointer-events: none;
+  
 }
 .filter-nav{
   display: flex;
@@ -939,6 +1024,7 @@ nav li{
   padding: 0px;
   width: 40px;
   height: 40px;
+  pointer-events: auto;
 }
 nav li{
   font-size: medium;
@@ -958,9 +1044,13 @@ nav li a{
   transition: 0.3s ease;
 }
 
+li a svg{
+  z-index: 20;
+}
 
 .nav li a:hover{
   background-color: #555555;
+  color: antiquewhite
 }
 
 a .inner:active{
@@ -970,7 +1060,10 @@ a .inner:active{
 
 .nav li a:active{
   animation: shrinkAnimation 0.3s;
+  color: white;
 }
+
+
 
 
 nav li a .inner {
@@ -1011,26 +1104,164 @@ nav li a .inner {
   position: absolute;
   left: 0%;
   top: 50%;
+  z-index: 1000;
   display: none;
+
 }
-.HeatMapBox{
+
+.HeatMapBox {
+  background-color: transparent;
+  color: #F2F4F3;
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  z-index: 1;
+  pointer-events: auto; /* Allow the button to be clickable */
   position: absolute;
   right: 0px;
   top: 75px;
-  bottom: 0px;
-  width: 50px;
-  padding: 0px;
-  background-color: transparent;
-  overflow: hidden;
-}
-.MuiFormControlLabel-root{
-  height: 50px;
-  aspect-ratio: 1/1;
+  width: 300px;
 }
 
-.legend, .takeOutButton{
+
+
+.buttonSuggestion {
+  display: flex;
+  align-items: center;
+  visibility: visible;
+  overflow: hidden;
+}
+
+
+
+.HeatMapBox h3{
   display: none;
 }
+.HeatMapBox div{
+  position: absolute;
+  right: 10px;
+}
+
+.HeatMapBox div label{
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+
+.takeOutButton, .takeout-box-container{
+  position: absolute;
+  right: auto;
+  left: 5px;
+  width: 197.5px; /* From 147.5px to 197.5px */
+  top: 80px;
+  height: 50px;
+  padding: 0px;
+  background-color: #555555;
+  z-index: 15;
+  color: antiquewhite;
+  font-size: x-large;
+}
+
+.takeOutButton svg{
+  position: absolute;
+  left: 15px;
+  top: 12.5px ;
+}
+.takeOutButton span{
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: xx-large;
+}
+
+
+.mode-selection-header, .duration-selection-header, .exit-header {
+  display: none;
+}
+
+
+.button-container{
+  width: 40px;
+  height: 40px;
+  left: 5px;
+  position: absolute;
+}
+
+.duration-selection-options{
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 52.5px;
+  top: 0px;
+  left: auto;
+}
+
+.mode-selection-options{
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  left: auto;
+}
+
+.exit-options {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 100px;
+  top: 0px;
+  left: auto;
+}
+
+.exit-option {
+  left: auto;
+  right: 0px;
+}
+
+.mode-selection-options button, .duration-selection-options button, .button-container button, .exit-options button{
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  background-color: antiquewhite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  font-size:x-large;
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.mode-option{
+  left: auto;
+  right: 0px;
+}
+
+.duration-selection-options button{
+  font-size: medium;
+  right: 50px;
+}
+
+.button-container button{
+  font-size: 40px;
+  left: 0px;
+  right: auto
+}
+
+/* .button-container button.{
+
+} */
+
+
+/* .legend{
+  display: none;
+} */
 
 #right{
   position: absolute;
@@ -1101,6 +1332,34 @@ nav li a .inner {
 }
 
 
+.sidebar-content h2{
+  position: absolute;
+  left: 50%;
+  top: 10px;
+}
+
+.sidebar-content img{
+  position: absolute;
+  left: 15px;
+  top: 69px;
+  height: auto;
+  bottom: 15px;
+  width: 50%;
+  max-height: 215px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cafe-info-ul{
+  position: absolute;
+  right: 10px;
+  left: 50%;
+  width: auto;
+  top: 50px;
+  font-size: 15px;
+  color: antiquewhite;
+}
+
 
 
 .sidebar-toggle.right, .sidebar-help-button{
@@ -1111,7 +1370,6 @@ nav li a .inner {
   height: 40px;
   border-radius: 50px;
   top: 10px;
-  rotate: 180deg;
   background-color: antiquewhite;
   color: #555555;
   display: flex;
@@ -1133,130 +1391,2222 @@ nav li a .inner {
   color: #555555;
 }
 
-.rank-info, .chart-container{
-  position: absolute;
-  left: 10px;
-  top: 60px;
-  bottom: 0px;
-  width: 30%;
-  text-align: left;
-}
+
 
 .rank-info{
   display: none;
 }
 
 .chart-container{
-  left: 10px;
+  position: absolute;
+  left: 0px;
+  top: 60px;
+  bottom: 0px;
   right: auto;
+  width: 45%;
+  max-width: none;
+  display: flex;
+  align-items: end;
+  justify-content: center;
   background-color: transparent;
+  padding: 0px;
 }
 
 .chart-container canvas{
   position: absolute;
-  top: 25px;
+  left: 15px;
+  right: 15px;
+  top: 10px;
+  bottom: 50px;
+  width: auto;
+  max-height: 200px;
+  min-height: 200px;
+
+}
+
+.chart-container label{
+  color: antiquewhite;
+  margin-bottom: 10px;
+}
+
+.chart-container input{
+  margin-bottom: 15px;
+
+}
+
+
+
+.cafe-info{
+  position: absolute;
+  right: 5px;
+  width: 50%;
+  left: auto;
   bottom: 0px;
-  height: auto;
+  top: 60px;
+  overflow: auto;
+}
+
+.cafe-info::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+.cafe-info::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+}
+ 
+.cafe-info::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 5px;
+
+}#right::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+#right::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+}
+ 
+#right::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 5px;
+}
+
+
+
+
+#zone-cafe-title{
+  width: 150px;
+  height: 50px;
+  border-radius: 50px;
+  color: antiquewhite;
+  font-size: 30px;
+  margin: 0px;
+}
+
+#av-cafe-rating{
+  height: 50px;
+  border-radius: 50px;
+  position: absolute;
+  right: 0px; 
+  left: 150px;
+  width: auto;
+  top: 0px;
+  height: 50px;
+  border-radius: 50px;
+  color: antiquewhite;
+  font-size: 30px;
+  margin: 0px;
+  text-align: right;
+}
+
+.zone-cafe{
   width: 100%;
+  height: 100px;
+  display: flex;
+  align-items:start;
+  justify-content: left;
+  
+  border-top: 2px solid antiquewhite;
 }
 
-
-
-
-
-footer{
-  position: absolute;
-  bottom: 0px;
-  height: 50px;
+.zone-cafe img{
+  width: 50%;
+  position: relative;
+  height: 90px;
   left: 0px;
-  right: 0px;
-  background-color: #555555;
-  z-index: 2;
+  top: 5px;
+  bottom: 5px;
+  object-fit: cover;
+
 }
 
-#footer-name{
-  color: antiquewhite;
-  font-size: x-large;
+.zone-cafe p{
   position: absolute;
-  left: 75px;
+  left: 52%;
+  text-align: left;  
+  color: antiquewhite;
+  font-size: 22px;
+  margin: 0px;
+  margin-top: 5px;
+}
+
+
+.zone-info{
+  position: absolute;
+  top: 60px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+
+}
+
+.sidebar-toggle.right{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+
+.zone-info *{
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  color: antiquewhite;
+
+}
+.zone-info div{
+  width: 31% ;
+  min-width: 240px;
+  height: 226px;
+  margin: 10px;
+  margin-top: 0px;
+  border-top: 3px solid antiquewhite;
+
+  border-bottom: 3px solid antiquewhite;
+  float: left;
+}
+
+.zone-info div h2{
+font-size: 23px;
+position: static;
+margin-top: 5px;
+}
+.zone-info div p{
+font-size: 18px;
+margin: 0px;
+padding: 0px;
+height: 20px;
+width: 90%;
+}
+
+@media only screen and (max-width: 926px) {
+  .zone-info div{
+  width: 45%;
+  }
+}
+
+@media only screen and (max-width: 627px) {
+  .zone-info div{
+    width: 95%;
+    }
+}
+
+
+.heatmap-analytics{
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.legend{
+  position: absolute;
+  right: auto;
+  top: 80px;
+  width: 197.5px;
   height: 50px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  left: auto;
+color: antiquewhite;
+pointer-events: auto;
+padding: 0px;
 }
 
-#footer-rating{
-  color: antiquewhite;
-  font-size: xx-large;
+.legend svg{
+  margin-top: 10px;
+}
+
+.legend h4{
   position: absolute;
-  right: 75px;
-  height: 50px;
-  display: flex;
-  align-items: center;
+  bottom: 5px;
+
 }
-
-#footer-button{
-    color: antiquewhite;
-    font-size: x-large;
-    position: absolute;
-    right: 25px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-}
-
-
-
-
-
-
-/*comment out .session h2 display TimeFrame
-  in Map.js move Help Button out of filternav container
-added a footer and header in index html
-duplicate filter nav and put in separate container
-change help button text to a ?
-  */
-
-
-
 
 
 
 /*
-What I did:
-Restyled the webapge, making small changes to some JSX elems, the index html to add header
-Integrated font-awesome icons which are easier to adjust over images and will reduce storage reqs
-Made the two top custom buttons on procreate and ported them over
-Added animation events to everything in the header
-Fully styled the header, and made fully responsive and usable down to roughly 400px
-Came up with a design for the individual scores in the drawer 
-
-What I'm going to do: 
-Mobile version of header with slider below eveything else at < 400px, should get down to 250 ish hopefully, might have to shrink its width, text and button
-  Maybe flip header and footer positions, and move side buttons down
-Style the takeaway box 
-Make changes after learning from Max
-Merge my changes to NewDev
-Fix flashing of compass logo at start
-Shrink text in drawer because of long names
-Add color gradients to some of the elements 
-
-Obstacles: 
-My React is limited, the slider button and takeaway buttons are place holders, might need max to replace the radio buttons with a single toggle button each that I can style instead
-Need to understand how the Drawer is brought in and out, and how I can adjust to sit with lip out, and then to pull out fully.
-Can't style the side buttons animations as it stands I got the background colors grey, need to get the icon to change color inside, and a on click animation
-Need RHS buttons to replace the placeholders
-Having trouble styling the Chart
-Need cafe scroller in the zone drawer
-Need cafe drawer on its own after
-
-
-Bugs:
-Heatmaps shouldn't disappear adding first POIs?
-Should have cafe's selected by default
-
-PERSONAL
-Try get takeaway working without text, just icons
-Get lists working with just css no js 
-
+total responsiveness
+x -reload button
+x -fixed slider length, padding on slider text
+link to essentials
+hover and click animations on takeout
+fix takeout button stylign
+X -  remove taxi button
+x - style legend
+style map buttons
+drawer responsiveness
+drawer rating func
+cafe drawer resp, maybe fix the image upto min width and have reviews scroll
+  replace cafe drawer with stars. 
+x - check map clickable
+check firefox, edge, chrome and safari
+drawer in and out animation and lip
+mobile layout flip?
+bike map pngs big and obscure
 */
 
+
+
+.cafe-name {
+  cursor: pointer;
+}
+
+.cafe-name:hover {
+  color: #B6B8B9;
+  text-decoration: underline;
+}
+
+.mode-selection {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  /* bottom: 30px; */
+  left: 50px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  z-index: 1;
+}
+
+
+@media only screen and (max-width: 575px) {
+  .BusynessSliderBox{
+    left: 75px;
+    width: auto;
+  }
+  }
+
+  @media only screen and (max-width: 675px) {
+
+    .chart-container{
+      width: 90%;
+      top: 40px;
+      height: 240px;
+    }
+
+    .cafe-info{
+      top: 270px;
+      width: 90%;
+      left: 15px;
+      right: 15px;
+      height: 260px;
+    }
+
+    .sidebar-content{
+      overflow: auto;
+    }
+  }
+
+  @media only screen and (max-width: 615px) {
+    .legend{
+      top: 140px;
+    }
+
+  }
+
+  @media only screen and (max-width: 435px) {
+    .BusynessSliderBox{
+      background-color: #555555;
+      top: 80px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+      z-index: 20;
+    }
+
+    .HeatMapBox{
+      left: 0px;
+      right: 0px;
+      width: auto;
+    }
+    .buttonSuggestion{
+      top: 60px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+    }
+
+    .takeOutButton, .takeout-box-container{
+      top: 190px;
+      right: 0px;
+      left: 0px;
+      width: auto;
+    }
+
+    .legend{
+      top: 245px;
+      
+    }
+
+    .filter-nav{
+      position: absolute;
+      top: 215px;
+    }
+    
+
+    .HeatMapBox div{
+      position: absolute;
+      top: 225px;
+    }
+
+    }
+      
+
+.welcome {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+}
+
+.Welcome-Text {
+  margin-right: 20px;
+  color: antiquewhite;
+  width: 30vw;
+  height: 20vh;
+  font-size: 18px; /* or adjust to match your site's text size */
+  align-self: center; /* aligns the text vertically centered in the flex container */
+  justify-self: start; /* aligns the text at the start of its grid area */
+}
+
+.Welcome-Button {
+  background-color: #555555;
+  color: antiquewhite;
+  border: none;
+  padding: 20px 20px;
+  font-size: 16px; /* or adjust to match your site's text size */
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px; /* add space to the right of each button */
+
+
+  
+}
+
+
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.map-container {
+  width: 100vw;
+  height: 100vh;
+  pointer-events: auto;
+
+  }
+
+.nav-bar {
+  height: 5vh;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+  }
+
+
+  
+/** CSS FOR BUTTTONS **/
+
+.filter-nav {
+  padding: 0px;
+  margin-left: 0; /* Add this line to remove the left margin */
+  z-index: 20px;
+}
+
+nav li {
+  float: none;
+  font-size: 2em;
+  margin-right: 40px;
+  line-height: 80px;
+  position: relative;
+  text-align: center;
+  list-style-type: none; /*Hide bullets*/
+  padding: 5px;
+}
+
+nav li a {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden; /* Ensure the image stays within the circular shape */
+  border: 2px solid transparent; /* Set an initial transparent border */
+  transition: border-color 0.1s; /* Add transition for the border color change */ 
+  background-color: #1f1f1f; 
+  font-size: 18px;
+}
+
+nav li a img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  /* border: 2px solid #20826c; Add the border property with the desired color */
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+
+}
+nav li a:hover {
+  border-color: #00FF00; /* Change the border color on hover */
+}
+nav li a .inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin: 0;
+  background-color: #555555;
+  color: antiquewhite;
+  border-radius: 50%;
+  transition: all 0.1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a .inner *{
+  color: antiquewhite;
+}
+
+nav li a:hover {
+  color: antiquewhite;
+}
+
+nav li a:hover .inner {
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
+}
+
+.filter-nav-container {
+  position: absolute;
+  top: 15%;
+  left: -35px;
+  z-index: 1;
+}
+
+nav li a.active {
+  border-color: #00FF00;
+  color: antiquewhite;
+}
+
+nav li a.active .inner {
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
+}
+
+.legend {
+  background-color: #555555;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  z-index: 1;
+  position: relative;
+  left: 35vw;
+  top: 40vh;
+}
+.legend h4 {
+  margin: 0 0 10px;
+  text-align: center;
+  color: white;
+}
+
+.legend p {
+  margin: 0 0 10px;
+  text-align: center;
+  color: white;
+}
+
+/* .legend div span {
+  border-radius: 50%;
+  display: inline-block;
+  height: 15px;
+  margin-right: 5px;
+  width: 10vh;
+  } */
+
+  .heatmap-analytics {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
+    position: absolute;
+    top: 15%;  
+    left: 10%; 
+    z-index: 1;
+    gap: 20px;
+    pointer-events: none; /* Set the overlay to be non-clickable by default */
+
+  }
+  
+.HeatMapBox {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  /* position: absolute; */
+  /* left: 12.5vh; */
+  /* bottom: 8vh; */
+  z-index: 1;
+  pointer-events: none; /* Allow the button to be clickable */
+  }
+
+  .HeatMapBox div{
+    pointer-events: auto;
+  }
+
+.HeatMapBox h3 {
+  padding: 0;
+  margin: 0
+}
+
+.takeout-box-container {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  right: 40vh;
+  bottom: 5vh;
+  z-index: 1;
+}
+/* I want the radio buttons to be next to each other in the same line */
+
+.takeout-box-container input {
+  display: inline-block;
+  margin: 0 0 10px;
+  width: 10px;
+  height: 10px;
+ 
+  vertical-align: middle;
+
+  }
+
+.takeout-box-container label {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 10px;
+  text-align: center;
+  }
+
+
+  .takeout-box-container button {
+    display: inline-block;
+    margin: 0 0 10px;
+    padding: 10px;
+    text-align: center;
+    }
+  
+
+    .session {
+      margin-bottom: 20px;
+      padding-top: 10px;
+      font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+
+    }
+
+    .session h3 {
+      margin: 0 0 10px;
+      text-align: center;
+    }
+    
+    .row {
+      height: 12px;
+      width: 100%;
+    
+    }
+
+    :root {
+      --custom-lightness: 35%; /*  initial value of 'lightness' */
+    }
+    
+    
+    .colors {
+      background: linear-gradient(
+        to right,
+        hsl(120, 100%, var(--custom-lightness)),
+        hsl(120, 100%, calc(var(--custom-lightness) - 5%)),
+        hsl(120, 100%, calc(var(--custom-lightness) - 10%)),
+        hsl(120, 100%, calc(var(--custom-lightness) - 15%)),
+        hsl(120, 100%, calc(var(--custom-lightness) - 20%)),
+        hsl(120, 100%, calc(var(--custom-lightness) - 22.5%))
+      );
+      margin-bottom: 5px;
+    }
+        
+    /* label for the heatmap legend, in the session div */
+    /* There are three labels, one should be directly in the middle and the other two on their respective ends*/
+    
+    /* .label {
+      display: inline-block;
+      width: 33.3333%;
+      padding-left: 15px;
+      box-sizing: border-box;
+      text-align: center;
+    } */
+
+
+    .label-first {
+      display: inline-block;
+      width: 33.3333%;
+      box-sizing: border-box;
+      text-align: left;
+    }
+    
+    .label-middle {
+      display: inline-block;
+      width: 33.3333%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    
+    .label-last {
+      display: inline-block;
+      width: 33.3333%;
+      box-sizing: border-box;
+      text-align: right;
+    }
+
+
+    .BusynessSliderBox {
+      background-color: #1f1f1f;
+      border-radius: 3px;
+      bottom: 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      /* position: absolute;
+      left: 10vh;
+      bottom: 52vh; */
+      z-index: 1;
+      color: #F2F4F3;
+      pointer-events: auto; /* Allow the button to be clickable */
+
+    }
+
+    .BusynessSliderBox h2 {
+      font-size: 14px;
+      line-height: 20px;
+      margin-bottom: 10px;
+    }
+
+
+/* browsers except firefox
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: #00FF00;
+    }
+    input[type="range"]::-moz-range-track {
+      background: #20826c;
+      height: 0.5rem;
+    }
+ */
+
+/* chart container */
+
+
+.chart-container {
+  background-color: #1f1f1f; /* Lighter Green */
+  color: #F2F4F3; /* Darker Text */
+  /* border-radius: 3px; */
+  /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); */
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  bottom: 0vh;
+  z-index: 10;
+  /* width: calc(100% - 20px); Subtract padding from width */
+  max-width: calc(285px - 20px); /* Set max-width to match .sidebar-content width (subtracting the padding) */
+}
+
+/* side bar */
+
+.sidebar {
+  max-height: 94vh; /* or any other value that suits your needs */
+  overflow-y: auto;
+  border-radius: 10px; 
+  top: 3vh;
+  bottom: 3vh;
+  /* add a shadow*/
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  background-color: #1f1f1f; /* Dark Teal Primary Color */
+  color: #F2F4F3; /* Off-White Text */
+
+
+}
+
+.rounded-rect {
+  background: #1f1f1f; /* Starbucks Green */
+  color: #F2F4F3; /* White */
+  border-radius: 10px;
+  /* box-shadow: 0 0 50px -25px black; */
+}
+
+.flex-center {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center.left {
+  left: 0px;
+}
+
+.flex-center.right {
+  right: 0px;
+}
+
+.sidebar-content {
+  position: relative;
+  width: 95%;
+  height: 95%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 32px;
+  color: #F2F4F3; /* White */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align elements to the top */
+  align-items: center; /* Center horizontally */
+}   
+.sidebar-toggle {
+  position: absolute;
+  width: 1.3em;
+  height: 1.3em;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #F2F4F3; /* White */
+}
+   
+.sidebar-toggle.left {
+  right: -1.5em;
+}
+   
+.sidebar-toggle.right {
+  position: absolute;
+  top: -2vh; /* adjust this value to move up/down */
+  right: 30vh; /* adjust this value to move left/right */
+  color: red;
+}
+   
+.sidebar-toggle:hover {
+  color: #0aa1cf;
+  cursor: pointer;
+}
+   
+.sidebar {
+  transition: transform 1s;
+  z-index: 1;
+  width: 300px;
+  height: 100%;
+  background-color: #1f1f1f; /* Starbucks Green */
+  color: #F2F4F3; /* White */
+}
+   
+.left.collapsed {
+  transform: translateX(-295px);
+}
+   
+.right.collapsed {
+  transform: translateX(295px);
+}
+
+.collapsed {
+  width: 0;
+  overflow: hidden;
+}
+
+.mapboxgl-popup {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+  
+.mapboxgl-popup-content {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.my-custom-popup {
+  max-width: 200px;
+  padding: 10px;
+  background-color: #1f1f1f; /* Starbucks Green */
+  color: #ffffff; /* White */
+  font: 14px/20px 'Arial', sans-serif;
+  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.my-custom-popup .large-text {
+  color: #ffffff; /* White */
+  font-size: 16px;
+}
+
+.my-custom-popup .small-text {
+  color: #ffffff; /* White */
+  font-size: 12px;
+}
+
+.sidebar-header {
+  font-size: 2.5rem; /* Adjust as needed */
+  color: #F2F4F3; /* Adjust as needed */
+  text-align: center;
+  padding-bottom: 1rem; /* Space below the header */
+}
+
+.rank-info {
+  font-size: 0.8rem; 
+  color: #B6B8B9; 
+  text-align: center;
+}
+
+.HeatMapButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  /* position: absolute;
+  left: 15vh;  
+  bottom: 28vh;   */
+  z-index: 11;
+  
+}
+
+.HeatMapButton:hover {
+  background-color: #393939;
+}
+
+
+.buttonSuggestion {
+  background-color: #292929;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.buttonSuggestion:disabled {
+  background-color: #292929;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.buttonSuggestion:hover {
+  background-color: #393939;
+}
+
+.submit-button {
+  background-color: #292929;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+
+.remove-button {
+  background-color: #292929;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+
+
+.submit-button:hover {
+  background-color: #393939;
+}
+
+.remove-button:hover {
+  background-color: #393939;
+}
+
+
+.takeOutButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 1;
+  position: absolute;
+  right: 47vh;
+  bottom: 50vh;
+}
+
+.takeOutButton:hover {
+  background-color: #393939;
+
+}
+
+/* style my helpButton so its at the top right of the page */
+
+
+
+.helpButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 10%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 20;
+  position: fixed;
+  left: 5vh;
+  top: 0vh;
+}
+
+.helpButton:hover {
+  background-color: #393939;
+}
+.HelpBoxContainer {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 10%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 500;
+  text-align: center;
+
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 499;
+}
+
+.ExitButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 10%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 500;
+  position: absolute;
+  left: 550%;
+}
+
+.ExitButton:hover {
+  background-color: #393939;
+}
+
+.cafe-info {
+  font-size: 0.8rem; /* Adjust as needed */
+  color: #B6B8B9; /* Adjust as needed */
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*New from Nick*/
+header{
+  position: absolute;
+  top: 0px;
+  height: 75px;
+  width: 100%;
+  background-color: #555555;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  
+}
+#compass-btn, #page-toggle{
+  position: absolute;
+  left: 10px;
+  width: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease;
+  z-index: 10;
+  cursor: pointer;
+}
+#page-toggle{
+  width: 40px;
+}
+#compass-btn:hover, #page-toggle:hover{
+  transform: rotate(360deg);
+}
+
+@keyframes shrinkAnimation {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.5);
+  }
+}
+
+#compass-btn:active, #page-toggle:active{
+  animation: shrinkAnimation 0.5s;
+}
+
+#compass-btn img, #page-toggle img{
+  width: 100%;
+  aspect-ratio: 1/1;
+}
+#title{
+  position: absolute;
+  left: 75px;
+  height: 50px;
+  width: 300px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-size: xx-large;
+  color: antiquewhite;
+
+}
+
+
+.heatmap-analytics{
+  position: absolute;
+  right: 0px;
+  left: auto;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.BusynessSliderBox{
+  position: absolute;
+  top: 12.5px;
+  width: 400px;
+  height: 50px;
+  padding: 0px;
+  max-width: 600px;
+  right: 110px;
+
+  left: auto;
+
+  background-color: transparent;
+  box-shadow: none;
+  min-width: 200px;
+}
+
+@media only screen and (max-width: 760px) {
+  .BusynessSliderBox{
+    left: auto;
+  }
+
+
+}
+
+.BusynessSliderBox h3 {
+  display: none;
+}
+.session{
+  position: absolute;
+  height: 50px;
+  width: auto;
+  top: 0px;
+  left: 0px;
+  right: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
+  padding: 0px;
+}
+.row{
+  width: auto;
+  position: absolute;
+  left: 0px;
+  right: 90px;
+  color: antiquewhite;
+  background-color: antiquewhite;
+  /* Add rounded corners */
+  border-radius: 5px;
+  /* Remove the default styling on WebKit browsers (Chrome, Safari) */
+  -webkit-appearance: none;
+}
+.row::-webkit-slider-runnable-track {
+  background-color: antiquewhite; /* Green */
+  border-radius: 20px;
+  height: 10px;
+}
+.row::-webkit-slider-thumb {
+  /* Set the width and height to your preferred values */
+  width: 25px;
+  height: 25px;
+  position: relative;
+  top: -7.5px;
+  /* Change the color of the thumb */
+  background-color: #888888; /* Green */
+  /* Add a border and rounded corners for aesthetics */
+  border-radius: 50%;
+  /* Remove the default styling on WebKit browsers (Chrome, Safari) */
+  -webkit-appearance: none;
+  cursor: pointer;
+
+}
+
+.row::-webkit-slider-thumb:active, .row::-webkit-slider-thumb:hover  {
+    background-color: #333333;
+}
+/* Optionally, style the value indicator */
+.row::-moz-range-thumb {
+  /* For Firefox */
+  width: 20px;
+  height: 20px;
+  background-color: #4CAF50; /* Green */
+  border: 2px solid #4CAF50; /* Green */
+  border-radius: 50%;
+  /* Remove the default styling on Firefox */
+  -moz-appearance: none;
+}
+/* Optionally, style the value indicator */
+.row::-ms-thumb {
+  /* For Edge */
+  width: 20px;
+  height: 20px;
+  background-color: #4CAF50; /* Green */
+  border: 2px solid #4CAF50; /* Green */
+  border-radius: 50%;
+  /* Remove the default styling on Edge */
+  appearance: none;
+}
+
+
+.session h2{
+  position: absolute;
+  right: 0px;
+  width: 80px;
+  margin: 0px;
+  color: antiquewhite;
+  text-align: center;
+}
+
+
+.filter_row{
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  background-color: antiquewhite;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  transition: 0.3s ease;
+  cursor: pointer;
+
+}
+.filter_row:hover{
+  background-color: #333333;
+}
+.filter_row:active{
+  animation: shrinkAnimation 0.3s;
+}
+.filter_row h2{
+  font-size: xx-large;
+  margin: 0px;
+  margin-bottom: 2px;
+
+}
+
+.filter_row button{
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  font-size: 30px;
+  background-color: antiquewhite;
+  transition: 0.3s ease;
+  color: #555555
+}
+
+.filter_row button:hover{
+background-color: #444444;
+}
+.filter_row input, .filter_row label{
+}
+
+
+.helpButton{
+  background-color: antiquewhite;
+  position: absolute;
+  top: 17.5px;
+  width: 40px;
+  height: 40px;
+  right: 60px;
+  left: auto;
+  border-radius: 40px;
+  color: #555555;
+  font-size: xx-large;
+}
+
+.helpButton:active{
+  animation: shrinkAnimation 0.3s;
+}
+
+#page-toggle{
+  left: auto;
+  right: 10px;
+}
+
+.buttonSuggestion{
+  background-color: #555555;
+  color: antiquewhite;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 197.5px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  font-size: x-large;
+}
+
+.buttonSuggestion span{
+  font-size: xx-large;
+  margin-left: 10px;
+}
+
+
+.buttonSuggestion svg {
+  position: absolute;
+  right: 15px;
+}
+
+@media only screen and (max-width: 810px) {
+  #title{
+    display: none;
+  }
+}
+
+
+
+
+.map-container{
+  top: 75px;
+  z-index: 1;
+  height: auto;
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
+
+}
+.filter-nav-container{
+  position: absolute;
+  top: 75px;
+  bottom: 50px;
+  width: 50px;
+  left: 0px;
+  background-color:  transparent;
+  bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+  
+}
+.filter-nav{
+  display: flex;
+  justify-content: center;
+}
+.filter-nav ul{
+  padding: 0px;
+  margin: 0px;
+  width: 50px;
+  list-style-type: none;
+}
+nav li{
+  margin: 10px;
+  padding: 0px;
+  width: 40px;
+  height: 40px;
+  pointer-events: auto;
+}
+nav li{
+  font-size: medium;
+  line-height: normal;
+  cursor: pointer;
+
+}
+nav li a{
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: antiquewhite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  transition: 0.3s ease;
+}
+
+li a svg{
+  z-index: 20;
+}
+
+.nav li a:hover{
+  background-color: #555555;
+  color: antiquewhite
+}
+
+a .inner:active{
+  animation: shrinkAnimation 0.3s;
+
+}
+
+.nav li a:active{
+  animation: shrinkAnimation 0.3s;
+  color: white;
+}
+
+
+
+
+nav li a .inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin: 0;
+  background-color: #555555;
+  color: antiquewhite;
+  border-radius: 50%;
+  transition: all 0.1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+.filter-heatmap-container{
+  position: absolute;
+  top: 75px;
+  bottom: 50px;
+  width: 50px;
+  right: 5px;
+  bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+}
+
+
+.HeatMapButton{
+  position: absolute;
+  left: 0%;
+  top: 50%;
+  z-index: 1000;
+  display: none;
+
+}
+.HeatMapBox{
+  position: absolute;
+  right: 0px;
+  top: 75px;
+  bottom: 50px;
+  width: 45px;
+  padding: 0px;
+  overflow: hidden;
+  visibility: visible;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  width: 300px;
+}
+
+
+
+.HeatMapBox h3{
+  display: none;
+}
+.HeatMapBox div{
+  position: absolute;
+  right: 10px;
+}
+
+.HeatMapBox div label{
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+
+.takeOutButton, .takeout-box-container{
+  position: absolute;
+  right: auto;
+  left: 5px;
+  width: 197.5px; /* From 147.5px to 197.5px */
+  top: 80px;
+  height: 50px;
+  padding: 0px;
+  background-color: #555555;
+  z-index: 15;
+  color: antiquewhite;
+  font-size: x-large;
+}
+
+.takeOutButton svg{
+  position: absolute;
+  left: 15px;
+  top: 12.5px ;
+}
+.takeOutButton span{
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: xx-large;
+}
+
+
+.mode-selection-header, .duration-selection-header, .exit-header {
+  display: none;
+}
+
+
+.button-container{
+  width: 40px;
+  height: 40px;
+  left: 5px;
+  position: absolute;
+}
+
+.duration-selection-options{
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 52.5px;
+  top: 0px;
+  left: auto;
+}
+
+.mode-selection-options{
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  left: auto;
+}
+
+.exit-options {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 100px;
+  top: 0px;
+  left: auto;
+}
+
+.exit-option {
+  left: auto;
+  right: 0px;
+}
+
+.mode-selection-options button, .duration-selection-options button, .button-container button, .exit-options button{
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  background-color: antiquewhite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  font-size:x-large;
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.mode-option{
+  left: auto;
+  right: 0px;
+}
+
+.duration-selection-options button{
+  font-size: medium;
+  right: 50px;
+}
+
+.button-container button{
+  font-size: 40px;
+  left: 0px;
+  right: auto
+}
+
+/* .button-container button.{
+
+} */
+
+
+/* .legend{
+  display: none;
+} */
+
+#right{
+  position: absolute;
+  bottom: 0px;
+  top: auto;
+  right: 0px;
+  left: 0px;
+  width: auto;
+  height: 300px;
+  z-index: 11;
+  background-color: #555555;
+}
+
+.sidebar-content{
+  position: absolute;
+  width: auto;
+  height: auto;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: transparent;
+
+}
+.sidebar-header{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 10;
+  padding: 0px;
+  margin: 0px;
+  color: antiquewhite;
+}
+
+.sidebar-zone-rating{
+  color: #555555;
+  font-size: medium;
+  position: absolute;
+  height: 40px;
+  right: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: antiquewhite;
+  border-radius: 50px;
+  width: 175px;
+  top: 10px;
+}
+
+.sidebar-zone-rating p{
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  align-items: center;
+  height: 20px;
+  color: #555555;
+  position: absolute;
+  left: 15px;
+}
+
+.sidebar-zone-rating div{
+  margin-bottom: 15px;
+}
+
+#score{
+  position: absolute;
+  left: 70px;
+}
+
+
+.sidebar-content h2{
+  position: absolute;
+  left: 50%;
+  top: 10px;
+}
+
+.sidebar-content img{
+  position: absolute;
+  left: 15px;
+  top: 69px;
+  height: auto;
+  bottom: 15px;
+  width: 50%;
+  max-height: 215px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cafe-info-ul{
+  position: absolute;
+  right: 10px;
+  left: 50%;
+  width: auto;
+  top: 50px;
+  font-size: 15px;
+  color: antiquewhite;
+}
+
+
+
+.sidebar-toggle.right, .sidebar-help-button{
+  position: absolute;
+  right: 5px;
+  left: auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  top: 10px;
+  background-color: antiquewhite;
+  color: #555555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-help-button{
+  right: 55px;
+  rotate: none;
+}
+
+.sidebar-toggle.right p{
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  align-items: center;
+  height: 25px;
+  color: #555555;
+}
+
+
+
+.rank-info{
+  display: none;
+}
+
+.chart-container{
+  position: absolute;
+  left: 0px;
+  top: 60px;
+  bottom: 0px;
+  right: auto;
+  width: 45%;
+  max-width: none;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  background-color: transparent;
+  padding: 0px;
+}
+
+.chart-container canvas{
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  top: 10px;
+  bottom: 50px;
+  width: auto;
+  max-height: 200px;
+  min-height: 200px;
+
+}
+
+.chart-container label{
+  color: antiquewhite;
+  margin-bottom: 10px;
+}
+
+.chart-container input{
+  margin-bottom: 15px;
+
+}
+
+
+
+.cafe-info{
+  position: absolute;
+  right: 5px;
+  width: 50%;
+  left: auto;
+  bottom: 0px;
+  top: 60px;
+  overflow: auto;
+}
+
+.cafe-info::-webkit-scrollbar 
+.sidebar-content::-webkit-scrollbar 
+
+{
+  width: 5px;
+}
+ 
+.cafe-info::-webkit-scrollbar-track 
+.sidebar-content::-webkit-scrollbar-track 
+  {
+  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+}
+ 
+.cafe-info::-webkit-scrollbar-thumb 
+.sidebar-content::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 5px;
+
+}#right::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+#right::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+}
+ 
+#right::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+#zone-cafe-title{
+  width: 150px;
+  height: 50px;
+  border-radius: 50px;
+  color: antiquewhite;
+  font-size: 30px;
+  margin: 0px;
+}
+
+#av-cafe-rating{
+  height: 50px;
+  border-radius: 50px;
+  position: absolute;
+  right: 0px; 
+  left: 150px;
+  width: auto;
+  top: 0px;
+  height: 50px;
+  border-radius: 50px;
+  color: antiquewhite;
+  font-size: 30px;
+  margin: 0px;
+  text-align: right;
+}
+
+.zone-cafe{
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items:start;
+  justify-content: left;
+  
+  border-top: 2px solid antiquewhite;
+}
+
+.zone-cafe img{
+  width: 50%;
+  position: relative;
+  height: 90px;
+  left: 0px;
+  top: 5px;
+  bottom: 5px;
+  object-fit: cover;
+
+}
+
+.zone-cafe p{
+  position: absolute;
+  left: 52%;
+  text-align: left;  
+  color: antiquewhite;
+  font-size: 22px;
+  margin: 0px;
+  margin-top: 5px;
+}
+
+
+.zone-info{
+  position: absolute;
+  top: 60px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+
+}
+
+.sidebar-toggle.right{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+
+.zone-info *{
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  color: antiquewhite;
+
+}
+.zone-info div{
+  width: 31% ;
+  min-width: 240px;
+  height: 226px;
+  margin: 10px;
+  margin-top: 0px;
+  border-top: 3px solid antiquewhite;
+
+  border-bottom: 3px solid antiquewhite;
+  float: left;
+}
+
+.zone-info div h2{
+font-size: 23px;
+position: static;
+margin-top: 5px;
+}
+.zone-info div p{
+font-size: 18px;
+margin: 0px;
+padding: 0px;
+height: 20px;
+width: 90%;
+}
+
+li a:active, li a span:active, li a svg:active{
+  animation: shrinkAnimation 0.5s;
+}
+
+.MuiFormGroup-root label:active{
+  animation: shrinkAnimation 0.5s;
+}
+
+
+
+@media only screen and (max-width: 926px) {
+  .zone-info div{
+  width: 45%;
+  }
+}
+
+@media only screen and (max-width: 627px) {
+  .zone-info div{
+    width: 95%;
+    }
+}
+
+
+.heatmap-analytics{
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.legend{
+  position: absolute;
+  right: auto;
+  top: 80px;
+  width: 197.5px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: auto;
+color: antiquewhite;
+pointer-events: auto;
+padding: 0px;
+}
+
+.legend svg{
+  margin-top: 10px;
+}
+
+.legend h4{
+  position: absolute;
+  bottom: 5px;
+
+}
+
+
+
+/*
+total responsiveness
+x -reload button
+x -fixed slider length, padding on slider text
+x -hover and click animations on takeout
+x- fix takeout button stylign
+X -  remove taxi button
+x - style legend
+x - check map clickable
++/- for legend
+header transparent
+
+half --- link to essentials
+half --- style map buttons
+drawer responsiveness
+drawer rating func
+cafe drawer resp, maybe fix the image upto min width and have reviews scroll
+  replace cafe drawer with stars. 
+
+check firefox, edge, chrome and safari
+drawer in and out animation and lip
+mobile layout flip?
+bike map pngs big and obscure
+title png
+page sometimes reloads on takeaway button
+style all scrollbars
+*/
+
+
+
+.cafe-name {
+  cursor: pointer;
+}
+
+.cafe-name:hover {
+  color: #B6B8B9;
+  text-decoration: underline;
+}
+
+.mode-selection {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  /* bottom: 30px; */
+  left: 50px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  z-index: 1;
+}
+
+.takeOutButton svg{
+  font-size: xx-large;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.exit-option, .duration-option, .mode-option{
+  transition: 0.3s ease;
+}
+
+.exit-option:hover, .submit-button:hover, .duration-option:hover, .mode-option:hover{
+  background-color: #444444;
+  color: antiquewhite;
+}
+
+.buttonSuggestion:active{
+  animation: shrinkAnimation 0.5s;
+}
+
+.filter_row{
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 575px) {
+  .BusynessSliderBox{
+    left: 75px;
+    width: auto;
+  }
+  }
+
+  @media only screen and (max-width: 675px) {
+
+    .chart-container{
+      width: 90%;
+      top: 40px;
+      height: 240px;
+    }
+
+    .cafe-info{
+      top: 270px;
+      width: 90%;
+      left: 15px;
+      right: 15px;
+      height: 260px;
+    }
+
+    .sidebar-content{
+      overflow: auto;
+    }
+  }
+
+  @media only screen and (max-width: 615px) {
+    .legend{
+      top: 140px;
+    }
+
+    .sidebar-content img, .cafe-info-ul{
+      width: 95%;
+
+    }
+    .sidebar-content img{
+      height: 200px;
+      top: 55px;
+    }
+    .cafe-info-ul{
+      top: 245px;
+      left: 20px;
+      margin: 0px;
+      padding: 0px;
+    }
+  
+  }
+
+  @media only screen and (max-width: 435px) {
+    .BusynessSliderBox{
+      background-color: #555555;
+      top: 80px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+      z-index: 20;
+    }
+
+    .HeatMapBox{
+      left: 0px;
+      right: 0px;
+      width: auto;
+    }
+    .buttonSuggestion{
+      top: 60px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+    }
+
+    .takeOutButton, .takeout-box-container{
+      top: 190px;
+      right: 0px;
+      left: 0px;
+      width: auto;
+    }
+
+    .legend{
+      top: 245px;
+      
+    }
+
+    .filter-nav{
+      position: absolute;
+      top: 215px;
+    }
+    
+
+    .HeatMapBox div{
+      position: absolute;
+      top: 225px;
+    }
+
+    }
+      

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-const HelpButton = ({helpBox, setHelpBox}) => {
+const HelpButton = ({setRun}) => {
     
 
     const handleHelpBox = () => {
-        setHelpBox(helpBox => !helpBox); // toggle between true and false
+        console.log("setting run to true")
+        setRun(false)
+        setRun(true) // toggle between true and false
     }
 
     return (

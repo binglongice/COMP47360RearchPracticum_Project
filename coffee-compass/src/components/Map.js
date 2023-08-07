@@ -17,9 +17,26 @@ import HeatMapButton from './HeatMapButton';
 import TakeOutButton from './TakeOutButton';
 import HelpButton from './HelpButton';
 import HelpBox from './HelpBox';
+import ModeSelection from './ModeSelection';
+import { Link, useNavigate } from 'react-router-dom';
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
 
-function Map({ selectedIndex }) {
+function Map({ selectedIndex, addNextStep, setRun, setRunTakeOut}) {
+
+
+  const handleReload = () => {
+    window.location.reload(); // This will reload the whole page
+  };
+
+
+  // const navigate = useNavigate();
+  // const handlePageToggle = () => {
+  //   // Navigate to the 'essentials' page
+  //   navigate('/essentials');
+  // };
+
 
   const getHour = () => {
     const today = new Date();
@@ -71,6 +88,7 @@ function Map({ selectedIndex }) {
   const [cafeClick, setCafeClick] = useState(false);
   const [busynessRank, setBusynessRank] = useState(null);
   const [crimeRank, setCrimeRank] = useState(null);
+  const [crimeRankLow, setCrimeRankLow] = useState(null);
   const [propertyRank, setPropertyRank] = useState(null);
   const [transportRank, setTransportRank] = useState(null);
   const [combinedRank, setCombinedRank] = useState(null);
@@ -80,6 +98,15 @@ function Map({ selectedIndex }) {
   const [findSuggestionButton, setFindSuggestionButton] = useState(false); //triggers the find suggestion button
   const [suggestedZoneInfo, setSuggestedZoneInfo] = useState(null); //stores the suggested zone info
   const [zoneFlag, setZoneFlag] = useState(false); //renders zone sidebar if true
+  const [checked, setChecked] = useState({
+    busyness: true,
+    crimeData: false,
+    prices: false,
+    transportData: false,
+    cafeDensity: false,
+  });
+  const [activeButtons, setActiveButtons] = useState([]);
+
 //takes in the json objects for busyness prices and crime
 //returns a json object with the objectid as the key and the rank as the value
 //assigns rank to each feature and creates a combined rank and current rank
@@ -91,6 +118,7 @@ function Map({ selectedIndex }) {
         "busyness": {},
         "prices": {},
         "crimeData": {},
+        "crimeDataLow": {},
         "transportData": {},
         "cafeDensity": {},
         "combined": {},
@@ -117,7 +145,8 @@ function Map({ selectedIndex }) {
   
       let sortedKeysBusyness = Object.keys(busynessData).sort((a, b) => busynessData[b][activeIndex] - busynessData[a][activeIndex]);
       let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[b] - prices[a]);
-      let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[b] - crimeData[a]); //sort so that zone with lowest crime is first
+      let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[a] - crimeData[b]); //sort so that zone with highest crime is first
+      let sortedKeysCrimeLow = Object.keys(crimeData).sort((a, b) => crimeData[a] - crimeData[b]); //sort so that zone with lowest crime is first
       let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
       let sortedKeysCafes = Object.keys(cafeDensity).sort((a, b) => cafeDensity[b] - cafeDensity[a]);
       let combined = {};
@@ -126,6 +155,7 @@ function Map({ selectedIndex }) {
       setBusynessRank(sortedKeysBusyness);
       setPropertyRank(sortedKeysPrices);
       setCrimeRank(sortedKeysCrime);
+      setCrimeRankLow(sortedKeysCrimeLow)
       setTransportRank(sortedKeysTransport);
       setCafeRank(sortedKeysCafes);
 
@@ -167,6 +197,21 @@ function Map({ selectedIndex }) {
             combined[objectid].rank += rank + 1;
           }
         }  
+
+        for (let rank = 0; rank < sortedKeysCrimeLow.length; rank++) {
+          let objectid = sortedKeysCrimeLow[rank];
+          rankedData.crimeDataLow[objectid] = { score: crimeData[objectid], rank: rank + 1 };
+    
+          // Add crimeDataLow rank to combined rank
+  
+            // Check if combined[objectid] exists before trying to add to its rank
+            if (!combined[objectid]) {
+              combined[objectid] = { rank: rank + 1 };
+            } else {
+              combined[objectid].rank += rank + 1;
+            }
+          }  
+  
 
       for (let rank = 0; rank < sortedKeysTransport.length; rank++) {
         let objectid = sortedKeysTransport[rank];
@@ -233,6 +278,43 @@ function Map({ selectedIndex }) {
           }
           setCurrentRank(sortedCurrent);
         }
+        if (activeCount === 1) {
+          // find which map is active
+          let activeSource = Object.keys(activeMaps).find(source => activeMaps[source]);
+          
+          // Initialize current
+          rankedData.current = {};
+          let current = {};
+          const sources = { busyness: sortedKeysBusyness, prices: sortedKeysPrices, crimeData: sortedKeysCrime, transportData: sortedKeysTransport, cafeDensity: sortedKeysCafes };
+
+        
+          // If the activeSource exists in sources, set the currentRank
+          if (sources[activeSource]) {
+            // Loop over the sorted keys for this source
+            for (let rank = 0; rank < sources[activeSource].length; rank++) {
+              let objectid = sources[activeSource][rank];
+              rankedData[activeSource][objectid] = { score: sources[activeSource][objectid], rank: rank + 1 };
+        
+              // If the objectid already exists in current, add to its rank; otherwise, initialize it
+              if (current[objectid]) {
+                current[objectid].rank += rank + 1;
+              } else {
+                current[objectid] = { rank: rank + 1 };
+              }
+            }
+        
+            // Sort current data and assign ranks
+            let sortedCurrent = Object.entries(current).sort((a, b) => a[1].rank - b[1].rank);
+            for (let rank = 0; rank < sortedCurrent.length; rank++) {
+              let [objectid] = sortedCurrent[rank];
+              rankedData.current[objectid] = { rank: rank + 1 };
+            }
+            setCurrentRank(sortedCurrent);
+          }
+        }                
+
+
+      
       }
 
       console.log("ranked data object: ", rankedData);
@@ -280,7 +362,12 @@ const createHeatMapGeo = async (rankedData) => {
           feature.properties.busyness_color = busynessColor;
           feature.properties.busyness_rank = busynessRank;
           feature.properties.busyness_score = rankedData.busyness[objectid].score;
-        } else {
+          if (rankedData.current.hasOwnProperty(objectid)) {
+            let currentRank = rankedData.current[objectid].rank;
+            feature.properties.current_rank = currentRank;
+          } else {
+            console.log(`objectid ${objectid} not found in rankedData.current.`);
+          }        } else {
           console.log(`objectid ${objectid} not found in rankedData.busyness.`);
         }
         if (rankedData.prices.hasOwnProperty(objectid)) {
@@ -289,6 +376,12 @@ const createHeatMapGeo = async (rankedData) => {
           feature.properties.prices_color = pricesColor;
           feature.properties.prices_rank = pricesRank;
           feature.properties.prices_score = rankedData.prices[objectid].score;
+          if (rankedData.current.hasOwnProperty(objectid)) {
+            let currentRank = rankedData.current[objectid].rank;
+            feature.properties.current_rank = currentRank;
+          } else {
+            console.log(`objectid ${objectid} not found in rankedData.current.`);
+          }
 
         } else {
           console.log(`objectid ${objectid} not found in rankedData.prices.`);
@@ -298,6 +391,12 @@ const createHeatMapGeo = async (rankedData) => {
           let transportColor = getColorFromRank(transportRank);
           feature.properties.transport_color = transportColor;
           feature.properties.transport_rank = transportRank;
+          if (rankedData.current.hasOwnProperty(objectid)) {
+            let currentRank = rankedData.current[objectid].rank;
+            feature.properties.current_rank = currentRank;
+          } else {
+            console.log(`objectid ${objectid} not found in rankedData.current.`);
+          }
         } else {
           console.log(`objectid ${objectid} not found in rankedData.transportData.`);
         }
@@ -307,14 +406,40 @@ const createHeatMapGeo = async (rankedData) => {
           feature.properties.crime_color = crimeColor;
           feature.properties.crime_rank = crimeRank;
           feature.properties.crime_score = rankedData.crimeData[objectid].score;
+          if (rankedData.current.hasOwnProperty(objectid)) {
+            let currentRank = rankedData.current[objectid].rank;
+            feature.properties.current_rank = currentRank;
+          } else {
+            console.log(`objectid ${objectid} not found in rankedData.current.`);
+          }
         } else {
           console.log(`objectid ${objectid} not found in rankedData.crimeData.`);
         }
+
+        if (rankedData.crimeDataLow.hasOwnProperty(objectid)) {
+          let crimeRanLow = rankedData.crimeData[objectid].rank;
+          feature.properties.crime_rank_low = crimeRank;
+          if (rankedData.current.hasOwnProperty(objectid)) {
+            let currentRank = rankedData.current[objectid].rank;
+            feature.properties.current_rank = currentRank;
+          } else {
+            console.log(`objectid ${objectid} not found in rankedData.current.`);
+          }
+        } else {
+          console.log(`objectid ${objectid} not found in rankedData.crimeDataLow.`);
+        }
+
         if (rankedData.cafeDensity.hasOwnProperty(objectid)) {
           let cafeRank = rankedData.cafeDensity[objectid].rank;
           let cafeColor = getColorFromRank(cafeRank);
           feature.properties.cafe_color = cafeColor;
           feature.properties.cafe_rank = cafeRank;
+          if (rankedData.current.hasOwnProperty(objectid)) {
+            let currentRank = rankedData.current[objectid].rank;
+            feature.properties.current_rank = currentRank;
+          } else {
+            console.log(`objectid ${objectid} not found in rankedData.current.`);
+          }
         }
         else {
           console.log(`objectid ${objectid} not found in rankedData.cafeDensity.`);
@@ -461,12 +586,42 @@ useEffect(() => {
     );
     const data = await query.json();
     console.log("take out data: ", data);
+    if (!map.current.getSource('iso')) {
+      map.current.addSource('iso', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      });
+    }
+    if (!map.current.getLayer('isoLayer')) {
+      map.current.addLayer(
+        {
+          id: 'isoLayer',
+          type: 'fill',
+          // Use "iso" as the data source for this layer
+          source: 'iso',
+          layout: {},
+          paint: {
+            // The fill color for the layer is set to a light purple
+            'fill-color': '#5a3fc0',
+            'fill-opacity': 0.3
+          }
+        },
+        'poi-label'
+      );
+    }
+
     map.current.getSource('iso').setData(data);
   }
 
 
 // add the source and layer to the map for takeaway radius
   useEffect(() => {
+    if (takeoutLng === 0 || takeoutLat === 0) {
+      return;
+    }
     if (map.current) {
     map.current.on('load', () => {
       // When the map loads, add the source and layer
@@ -677,12 +832,24 @@ useEffect(() => {
 
     map.current.on('mouseenter', 'cafe_markers', (e) => {
       const cafe = e.features[0].properties;
-      const popupContent = `<strong>Name:</strong> ${cafe.name}<br>` +
+      const popupContent = `    <div class="my-custom-popup">
+      <strong>Name:</strong> ${cafe.name}<br>` +
         `<strong>Address:</strong> ${cafe.address}<br>` +
-        `<strong>Rating:</strong> ${cafe.rating}`;
+        `<strong>Rating:</strong> ${cafe.rating} </div>`;
       popup.setLngLat(e.lngLat).setHTML(popupContent).addTo(map.current);
     });
     
+    // popup.setHTML(`
+
+    // <div class="my-custom-popup">
+    
+    // <strong class = "large-text">${zoneName}</strong> <br>
+    // <strong class = "small-text">Busyness Rank:</strong> ${e.features[0].properties.busyness_rank} <br>
+    // <strong class = "small-text">Suitability Rank:</strong> ${e.features[0].properties.combined_rank} <br>
+    // </div>
+    // `);
+
+
     // Handle mouseleave event on cafe markers
     map.current.on('mouseleave', 'cafe_markers', () => {
       popup.remove();
@@ -814,6 +981,10 @@ useEffect(() => {
           <strong class = "large-text">${zoneName}</strong> <br>
           <strong class = "small-text">Busyness Rank:</strong> ${e.features[0].properties.busyness_rank} <br>
           <strong class = "small-text">Suitability Rank:</strong> ${e.features[0].properties.combined_rank} <br>
+          <strong class = "small-text">Crime Rank:</strong> ${e.features[0].properties.crime_rank} <br>
+          <strong class = "small-text">Property Rank:</strong> ${e.features[0].properties.prices_rank} <br>
+          <strong class = "small-text">Cafe Density Rank:</strong> ${e.features[0].properties.cafe_rank} <br>
+
           </div>
           `);
           
@@ -888,7 +1059,6 @@ useEffect(() => {
       layer.id === 'bus_markers' ||
       layer.id === 'cafe_markers' ||
       layer.id === 'taxi_zones_fill' ||
-      layer.id === 'taxi_zones_fill_map' ||
       layer.id === 'taxi_zones_price_map' ||
       layer.id === 'bike_locations'
     ) {
@@ -896,6 +1066,16 @@ useEffect(() => {
     }
   
   });
+
+  // setChecked({
+  //   busyness: false,
+  //   crimeData: false,
+  //   prices: false,
+  //   transportData: false,
+  //   cafeDensity: false,
+  // });
+
+
   
   //if 0 (taxi button) then add in taxi zones as an overlay on the map
     if (activeButtons.includes(0)) {
@@ -986,6 +1166,8 @@ useEffect(() => {
 
     // save the state of activeMaps on function call
     setActiveMaps(activeMaps);
+
+    // setActiveButtons([]);
     
     //if the current layer is taxi zones, remove it
     if (map.current.getLayer("taxi_zones_fill_map")) {
@@ -1085,6 +1267,7 @@ useEffect(() => {
     const suggestZone = (activeMaps) => {
       //if a single checkbox is checked, return the zone with the highest rank for that heatmap
       if (activeMaps.busyness && !activeMaps.cafeDensity && !activeMaps.crimeData && !activeMaps.prices && !activeMaps.transportData) {
+        console.log("fuck busyness", busynessRank);
         let foundZone = [busynessRank[0], busynessRank[1], busynessRank[2]]
         return foundZone;
       }
@@ -1092,8 +1275,9 @@ useEffect(() => {
         let foundZone = [cafeRank[0], cafeRank[1], cafeRank[2]]
         return foundZone;
       }
+      //crime rank will reccomend zones with low ranks 
       else if (!activeMaps.busyness && !activeMaps.cafeDensity && activeMaps.crimeData && !activeMaps.prices && !activeMaps.transportData) {
-        let foundZone = [crimeRank[0], crimeRank[1], crimeRank[2]]
+        let foundZone = [crimeRankLow[0], crimeRankLow[1], crimeRankLow[2]];        
         return foundZone;
       }
       else if (!activeMaps.busyness && !activeMaps.cafeDensity && !activeMaps.crimeData && activeMaps.prices && !activeMaps.transportData) {
@@ -1116,8 +1300,7 @@ useEffect(() => {
     // console.log("TESTING findsuggestion return button", suggestZone(activeMaps));
 
     let objectIDs = suggestZone(activeMaps);
-    let zoneInfo = rankedGeoJson.features.filter((feature) => objectIDs.includes(feature.properties.objectid));
-    console.log("Zone Info", zoneInfo);
+    let zoneInfo = objectIDs.map(id => rankedGeoJson.features.find(feature => feature.properties.objectid === id));    console.log("Zone Info", zoneInfo);
     setSuggestedZoneInfo(zoneInfo);
     setSuggestionFlag(false);
     setFindSuggestionButton(false);
@@ -1130,8 +1313,20 @@ useEffect(() => {
     }
   }, [suggestionFlag, activeMaps, findSuggestionButton]);
 
+  useEffect(()=> {
+    if (activeMaps && suggestionFlag && rightSidebar) {
+      let objectIDs = suggestZone(activeMaps);
+      let zoneInfo = objectIDs.map(id => rankedGeoJson.features.find(feature => feature.properties.objectid === id));    console.log("Zone Info", zoneInfo);
+      setSuggestedZoneInfo(zoneInfo);
+    }
+    //if all states in activeMaps are false
+    if (activeMaps && !activeMaps.busyness && !activeMaps.cafeDensity && !activeMaps.crimeData && !activeMaps.prices && !activeMaps.transportData) {
+      setRightSidebar(false);
+    }
+  }, [activeMaps])
 
-  //function to remove all markers from the map if the user displays a heatmap 
+
+  // // function to remove all markers from the map if the user displays a heatmap 
   //   useEffect(() => {
   //     if (activeMaps) {
   //     if(activeMaps.busyness || activeMaps.cafeDensity || activeMaps.crimeData || activeMaps.prices || activeMaps.transportData) {
@@ -1153,40 +1348,83 @@ useEffect(() => {
   //     },[activeMaps]);
       
 
+
+//if checked is false, remove the heatmap
+// useEffect(() => {
+//     let allFalse = true;
+//   for (let key in checked) {
+//     if (checked[key]) {
+//       allFalse = false;
+//       break;
+//     }
+//   }
+//   if (map.current && allFalse) {
+//     map.current.getStyle().layers.forEach((layer) => {
+//       if (
+//         layer.id === 'bench_locations_markers' ||
+//         layer.id === 'subway_markers' ||
+//         layer.id === 'bus_markers' ||
+//         layer.id === 'cafe_markers' ||
+//         layer.id === 'taxi_zones_fill' ||
+//         layer.id === 'taxi_zones_fill_map' ||
+//         layer.id === 'taxi_zones_price_map' ||
+//         layer.id === 'bike_locations'
+//       ) {
+//         map.current.removeLayer(layer.id);
+//       }
+//     })
+//   }  
+//   }, [checked]);
+  
   return (
     <MapContext.Provider value={map.current}>
     <div>
-    <HelpButton helpBox = {helpBox} setHelpBox = {setHelpBox} />
+    <HelpButton setRun =  {setRun} />
+
+    <header>
+      <div id="compass-btn" onClick={handleReload}><img src="./compass-coffee.png" width="50px" height="50px"/></div>
+      <div id="title">Cafe Compass</div>
+      <div id="page-toggle" >
+          <img src="./page-nav.png"  width="40px" height="40px"/>
+      </div>
+    </header>
+
 
       {/* Render the name element */}
       {/* <Navbar name = {zonename} busyness = {zonebusyness} /> */}
 
       {/* <CafeDrawer cafeId={selectedCafeId} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating}/> */}
             {/* Map container */}
-      {mapIsCurrent && rightSidebar === true &&  <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {picklePredictions} weekData = {weekData} yearData = {yearData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} cafeRank = {cafeDensityRank} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating} cafeClick = {cafeClick} setCafeClick = {setCafeClick} zoneInfo = {suggestedZoneInfo} zoneFlag = {zoneFlag} setZoneFlag ={setZoneFlag} suggestionFlag = {suggestionFlag} />}
+      {mapIsCurrent && rightSidebar === true &&  <Drawer getMap = {getMap} rightSidebar={rightSidebar} setRightSidebar={setRightSidebar} dayData = {picklePredictions} weekData = {weekData} yearData = {yearData} objectID = {currentObjectId} name = {sideBarName} busynessRank = {zoneBusynessRank} crimeRank = {zoneCrimeRank} propertyRank = {zonePropertyRank} transitRank = {zoneTransportRank} combinedRank = {zoneCombinedRank} cafeRank = {cafeDensityRank} cafe_url = {selectedImage}  cafe_name = {selectedName} cafe_rating = {selectRating} cafeClick = {cafeClick} setCafeClick = {setCafeClick} zoneInfo = {suggestedZoneInfo} zoneFlag = {zoneFlag} setZoneFlag ={setZoneFlag} suggestionFlag = {suggestionFlag} setSelectedImage = {setSelectedImage} setSelectedName = {setSelectedName} setSelectedRating = {setSelectedRating} newGeoJson = {newGeoJson}   setChartFlag={setChartFlag}
+  setCurrentObjectId={setCurrentObjectId}
+  setSideBarName={setSideBarName}
+  setZoneBusynessRank={setZoneBusynessRank}
+  setZoneCrimeRank={setZoneCrimeRank}
+  setZonePropertyRank={setZonePropertyRank}
+  setZoneCombinedRank={setZoneCombinedRank}
+  setZoneTransportRank={setZoneTransportRank}
+  setCafeDensity={setCafeDensity}
+   />}
 
       <div ref={mapContainer} className="map-container"/> {/*the useRef is being used to render the map */}
       {/* {isButton5Active && (<Legend/>)} Render the legend if the button is active */}
 
        <div className = "heatmap-analytics">
+       {/* <ModeSelection /> */}
 
        <BusynessSlider selectedTimeFrame = {selectedTimeFrame} setSelectedTimeFrame = {setSelectedTimeFrame} activeIndex = {activeIndex} setActiveIndex = {setActiveIndex} />
 
-       <Legend/>
+       {activeMaps && <Legend activeMaps = {activeMaps}/>}
 
-       <HeatMapButton heatMap = {heatMap} setHeatMap = {setHeatMap} />
+       {/* <HeatMapButton heatMap = {heatMap} setHeatMap = {setHeatMap} addNextStep={addNextStep} /> */}
 
-       {mapIsCurrent && <div style={{ visibility: heatMap === 1 ? "hidden" : "visible" }}> <HeatMapBox handleHeatMap = {handleHeatMap} setFindSuggestionButton = {setFindSuggestionButton} /> </div>} 
+       {mapIsCurrent && <HeatMapBox checked = {checked} setChecked = {setChecked} handleHeatMap = {handleHeatMap} setFindSuggestionButton = {setFindSuggestionButton} /> }
 
       </div>
-      <TakeOutButton takeOut = {takeOut} setTakeOut = {setTakeOut} />
-      {takeOut && <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng}/> }
+      <TakeOutButton takeOut = {takeOut} setTakeOut = {setTakeOut} setRunTakeOut = {setRunTakeOut} />
+      {takeOut && mapIsCurrent && <TakeOutBox setProfile={setProfile} setMinutes={setMinutes} setTakeoutLat={setTakeoutLat} setTakeoutLng={setTakeoutLng} getMap = {getMap} setChecked = {setChecked} setActiveMaps = {setActiveMaps} /> }
       <div className="filter-nav-container">
-      <FilterNav handleLayerChange={handleLayerChange} />
-
-    </div>
-    <div className="filter-heatmap-container">
-      <FilterNav handleLayerChange={handleLayerChange} />
+      <FilterNav activeButtons = {activeButtons} setActiveButtons = {setActiveButtons} handleLayerChange={handleLayerChange} />
 
     </div>
     {helpBox && <HelpBox setHelpBox = {setHelpBox}/>}

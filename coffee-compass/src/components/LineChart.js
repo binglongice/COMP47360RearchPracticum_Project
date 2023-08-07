@@ -14,15 +14,14 @@ function LineChart({ dayData, weekData, yearData, objectID, sidebarIsOpen }) {
 
   const options = useMemo(() => ({
     responsive: true,
-
     plugins: {
       legend: {
         display: false,
       },
       title: {
         display: true,
-        text: 'Chart.js Line Chart',
-        color: '#F2F4F3',
+        text: 'Zone Busyness',
+        color: 'antiquewhite',
       },
     },
     scales: {
@@ -30,16 +29,17 @@ function LineChart({ dayData, weekData, yearData, objectID, sidebarIsOpen }) {
         type: 'category',
         labels: chartData?.labels || [],
         ticks: {
-            color: '#F2F4F3',
+          color: 'antiquewhite',
         },
-        y: {
-            ticks: {
-                color: '#F2F4F3' // New color for Y axis labels
-            },
+      },
+      y: {
+        ticks: {
+          color: 'antiquewhite', // New color for Y axis labels
         },
       },
     },
   }), [chartData]);
+  
 
   useEffect(() => {
     let rawData;
@@ -67,8 +67,8 @@ function LineChart({ dayData, weekData, yearData, objectID, sidebarIsOpen }) {
         {
         //   label: 'Dataset 1',
           data: formattedData,
-          borderColor: 'rgb(255, 99, 132)',
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          borderColor: 'antiquewhite',
+          backgroundColor: 'antiquewhite',
         },
       ],
     });
