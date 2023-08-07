@@ -360,7 +360,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
               <FontAwesomeIcon icon={faArrowDown} />
             </div>
             
-            <div className="cafe-info">
+            <div className="zone-cafe-info">
               <p id="zone-cafe-title"><b> Cafés: {cafeCount} </b></p>
               {selectedCafes.length > 0 ? selectedCafes.slice(0, 3).map((cafe, index) => {
                 return (
@@ -379,7 +379,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
                         </div>
                       </div>
                       </p>
-                    <img  src = {cafe.image_url} className = "cafe_image"></img>
+                    <img  src = {cafe.image_url} className = "zone-cafe_image"></img>
                   </div>
                   )
                 }) : <p>No cafes in this area</p>}
@@ -431,7 +431,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
             ))}
           </ul>
         )}
-        <img src = {cafe_url} />
+        <img className="cafe-img" src = {cafe_url} />
           
           
           </div>
@@ -441,7 +441,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
           //suggestion info
           <div ref={sidebarRef} id="right" className={`sidebar flex-center right ${rightSidebar ? '' : 'collapsed'}`}>
           <div className="sidebar-content rounded-rect flex-center">
-          <h1 className="sidebar-header">Top Zone Rankings</h1>
+          <h1 className="suggestion-sidebar-header">Top Zone Rankings</h1>
           <div className="sidebar-toggle rounded-rect right" onClick={() => toggleSidebar('right')}>
           <FontAwesomeIcon icon={faArrowDown} />
           </div>
