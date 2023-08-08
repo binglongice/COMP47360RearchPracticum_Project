@@ -34,7 +34,7 @@ code {
 }
 .filter-nav {
   padding: 0px;
-  margin-left: 0; /* Add this line to remove the left margin */
+  margin-left: 0;
   z-index: 20px;
   display: flex;
   justify-content: center;
@@ -45,7 +45,7 @@ nav li {
   line-height: 80px;
   position: relative;
   text-align: center;
-  list-style-type: none; /*Hide bullets*/
+  list-style-type: none; 
   padding: 5px;
   margin: 10px;
   padding: 0px;
@@ -59,8 +59,8 @@ nav li {
 nav li div {
   position: relative;
   border-radius: 50%;
-  overflow: hidden; /* Ensure the image stays within the circular shape */
-  border: 2px solid transparent; /* Set an initial transparent border */
+  overflow: hidden; 
+  border: 2px solid transparent; 
   font-size: 18px;
   width: 100%;
   height: 100%;
@@ -83,7 +83,7 @@ nav li div img {
   height: 25px;
 }
 nav li div:hover {
-  border-color: #00FF00; /* Change the border color on hover */
+  border-color: #00FF00;
   color: antiquewhite;
 }
 nav li div .inner {
@@ -161,7 +161,7 @@ nav li div.active .inner {
   left: 10%; 
   z-index: 1;
   gap: 20px;
-  pointer-events: none; /* Set the overlay to be non-clickable by default */
+  pointer-events: none;
 
 }
 .HeatMapBox {
@@ -186,6 +186,7 @@ nav li div.active .inner {
 }
 .HeatMapBox div{
     pointer-events: auto;
+    overflow-x: hidden;
 }
 .HeatMapBox h3 {
   padding: 0;
@@ -234,7 +235,7 @@ text-align: center;
   width: 100%;
 }
 :root {
-  --custom-lightness: 35%; /*  initial value of 'lightness' */
+  --custom-lightness: 35%; 
 }
 .colors {
   background: linear-gradient(
@@ -272,12 +273,9 @@ text-align: center;
   bottom: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 10px;
-  /* position: absolute;
-  left: 10vh;
-  bottom: 52vh; */
   z-index: 1;
   color: #F2F4F3;
-  pointer-events: none; /* Allow the button to be clickable */
+  pointer-events: none;
 }
 .BusynessSliderBox h2 {
   font-size: 14px;
@@ -285,17 +283,14 @@ text-align: center;
   margin-bottom: 10px;
 }
 .chart-container {
-  background-color: #1f1f1f; /* Lighter Green */
-  color: #F2F4F3; /* Darker Text */
-  /* border-radius: 3px; */
-  /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); */
+  background-color: #1f1f1f; 
+  color: #F2F4F3;
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
   position: absolute;
   bottom: 0vh;
   z-index: 10;
-  /* width: calc(100% - 20px); Subtract padding from width */
-  max-width: calc(285px - 20px); /* Set max-width to match .sidebar-content width (subtracting the padding) */
+  max-width: calc(285px - 20px);
 }
 .sidebar {
   max-height: 94vh; 
@@ -309,7 +304,7 @@ text-align: center;
   width: 300px;
   height: 100%;
   background-color: #1f1f1f; 
-  color: #F2F4F3; /* White */
+  color: #F2F4F3;
 }
 .rounded-rect {
   background: #1f1f1f;
@@ -334,11 +329,11 @@ text-align: center;
   height: 95%;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 32px;
-  color: #F2F4F3; /* White */
+  color: #F2F4F3;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align elements to the top */
-  align-items: center; /* Center horizontally */
+  justify-content: flex-start;
+  align-items: center; 
 }   
 .sidebar-toggle {
   position: absolute;
@@ -348,15 +343,15 @@ text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #F2F4F3; /* White */
+  color: #F2F4F3; 
 } 
 .sidebar-toggle.left {
   right: -1.5em;
 }
 .sidebar-toggle.right {
   position: absolute;
-  top: -2vh; /* adjust this value to move up/down */
-  right: 30vh; /* adjust this value to move left/right */
+  top: -2vh; 
+  right: 30vh;
   color: red;
 }  
 .sidebar-toggle:hover {
@@ -380,19 +375,19 @@ text-align: center;
 .my-custom-popup {
   max-width: 200px;
   padding: 10px;
-  background-color: #1f1f1f; /* Starbucks Green */
-  color: #ffffff; /* White */
+  background-color: #1f1f1f; 
+  color: #ffffff; 
   font: 14px/20px 'Arial', sans-serif;
   box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
   text-align: center;
 }
 .my-custom-popup .large-text {
-  color: #ffffff; /* White */
+  color: #ffffff; 
   font-size: 16px;
 }
 .my-custom-popup .small-text {
-  color: #ffffff; /* White */
+  color: #ffffff;
   font-size: 12px;
 }
 .sidebar-header, .suggestion-sidebar-header{
@@ -678,9 +673,7 @@ header{
   right: 90px;
   color: antiquewhite;
   background-color: antiquewhite;
-  /* Add rounded corners */
   border-radius: 5px;
-  /* Remove the default styling on WebKit browsers (Chrome, Safari) */
   -webkit-appearance: none;
 }
 .row::-webkit-slider-runnable-track {
@@ -689,16 +682,12 @@ header{
   height: 10px;
 }
 .row::-webkit-slider-thumb {
-  /* Set the width and height to your preferred values */
   width: 25px;
   height: 25px;
   position: relative;
   top: -7.5px;
-  /* Change the color of the thumb */
-  background-color: #888888; /* Green */
-  /* Add a border and rounded corners for aesthetics */
+  background-color: #888888; 
   border-radius: 50%;
-  /* Remove the default styling on WebKit browsers (Chrome, Safari) */
   -webkit-appearance: none;
   cursor: pointer;
 }
@@ -708,19 +697,17 @@ header{
 .row::-moz-range-thumb {
   width: 20px;
   height: 20px;
-  background-color: #555555; /* Green */
-  border: 2px solid #555555; /* Green */
+  background-color: #555555;
+  border: 2px solid #555555;
   border-radius: 50%;
   -moz-appearance: none;
 }
 .row::-ms-thumb {
-  /* For Edge */
   width: 20px;
   height: 20px;
-  background-color: #555555; /* Green */
-  border: 2px solid #555555; /* Green */
+  background-color: #555555; 
+  border: 2px solid #555555; 
   border-radius: 50%;
-  /* Remove the default styling on Edge */
   appearance: none;
 }
 .session h2{
@@ -886,7 +873,7 @@ a .inner:active{
   position: absolute;
   right: auto;
   left: 5px;
-  width: 197.5px; /* From 147.5px to 197.5px */
+  width: 197.5px;
   top: 80px;
   height: 50px;
   padding: 0px;
@@ -1285,7 +1272,6 @@ width: 100%;
   background-color: #1f1f1f;
   color: #F2F4F3;
   border-radius: 3px;
-  /* bottom: 30px; */
   left: 50px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -1350,9 +1336,9 @@ width: 100%;
       top: 135px;
       left: 5px;
     }
-    .legend{
+    /* .legend{
       top: 140px;
-    }
+    } */
   }
   @media only screen and (max-width: 435px) {
     .BusynessSliderBox{
@@ -1414,24 +1400,23 @@ width: 100%;
   color: antiquewhite;
   width: 30vw;
   height: 20vh;
-  font-size: 18px; /* or adjust to match your site's text size */
-  align-self: center; /* aligns the text vertically centered in the flex container */
-  justify-self: start; /* aligns the text at the start of its grid area */
+  font-size: 18px; 
+  align-self: center; 
+  justify-self: start;
 }
 .Welcome-Button {
   background-color: #555555;
   color: antiquewhite;
   border: none;
   padding: 20px 20px;
-  font-size: 16px; /* or adjust to match your site's text size */
+  font-size: 16px; 
   border-radius: 5px;
   cursor: pointer;
-  margin-right: 10px; /* add space to the right of each button */
+  margin-right: 10px; 
 }
 .Welcome-Button:hover {
   background-color: #393939;
 }
-/*///////////////////////////////////////////////////////////////////////////*/
 .rating-text-div{
 font-size: 18px;
 margin: 0px;
@@ -1530,55 +1515,43 @@ li div:active, li div span:active, li div svg:active{
 
     }
 
-
-    
-    
-
-    
-
-    .rating-container{
-      height: 150px;
-      width: 100%;
-      position: relative;
-      top: 0px;
-      width:max-content;
-      border-top: 2px solid antiquewhite;
-      border-bottom: 2px solid antiquewhite;
-      display: flex;
-      justify-content: space-between;
-      padding: 3px;
-      margin-top: 10px;
-
-    }
-
-    .cafe-info-ul li{
-      list-style-type: none;
-      padding: 0px;
-      margin: 0px;
-    }
-
+.rating-container{
+  width: 100%;
+  position: relative;
+  top: 0px;
+  border-top: 2px solid antiquewhite;
+  border-bottom: 2px solid antiquewhite;
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+  margin-top: 10px;
+  width: 100%;
+  height: 140px;
+}
+.cafe-info-ul li{
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
 .zone-info div h2{
-
-     font-size: 1.7vw;
-     height: fit-content;
-
-    }
-
-    .sidebar-cafe-header{
-      position: absolute;
-      left: 10px;
-      top: 15px;
-      right: 160px;
-      height: 40px;
-      z-index: 10;
-      padding: 0px;
-      margin: 0px;
-      color: antiquewhite;
-      font-size: 40px;
-      display: flex;
-      align-items: end;
-      
-    }
+  font-size: 1.7vw;
+  height: fit-content;
+}
+.sidebar-cafe-header{
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  right: 160px;
+  height: 40px;
+  z-index: 10;
+  padding: 0px;
+  margin: 0px;
+  color: antiquewhite;
+  font-size: 40px;
+  display: flex;
+  align-items: end;
+}
+/*///////////////////////////////////////////////////////*/
 
     .sidebar-cafe-rating{
       position: absolute;
@@ -1887,7 +1860,7 @@ li div:active, li div span:active, li div svg:active{
       left: 5px;
       bottom: 0px;
       overflow-y: auto;
-      direction: rtl; /* Set direction to right-to-left */
+      direction: rtl; 
 
     }
 
@@ -1898,10 +1871,7 @@ li div:active, li div span:active, li div svg:active{
     margin-top: 0px;
   }
 
-.rating-container{
-  width: 100%;
-  height: 140px;
-}
+
 
 
 .rating-stars-div{
@@ -1970,6 +1940,7 @@ x-fixed legend
 x - LHS not tucked in
 x - shrink buttons instead of drawer header for cafes
 x- lighthouse testing and changes
+x- remove css chat comments, search for / icons to find
 
 
 header transparent
@@ -1978,15 +1949,17 @@ link to essentials
 drawer in and out animation and lip
 mobile layout flip?
 tut at small sizes
-reformat css
+reformat css -- 1/2 done
 graph adjusting res at lower pixels
 
 Lighthouse performance fix
-remove css chat comments, search for / icons to find
 
 
 
 randalls island no cafes needs styling and NaN
-
-
+mobile tutorial
+personal writeup
+video plan
+feedback from the lads
+mid width the takeout buttons overlap the legend
 */
