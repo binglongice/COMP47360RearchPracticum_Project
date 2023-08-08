@@ -64,7 +64,7 @@ const Legend = ({activeMaps}) => {
   
       svg.append('text')
         .attr('x', 5)  // Adjust text's position
-        .attr('y', height + 4)
+        .attr('y', height +3.5)
         .style('fill', 'black')
         .html('<tspan font-size="25px">&#x2639;</tspan>'); // Frown emoticon Unicode character
 
@@ -76,7 +76,7 @@ const Legend = ({activeMaps}) => {
 
       svg.append('text')
         .attr('x', width - 35)
-        .attr('y', height + 4)
+        .attr('y', height +3.5)
         .style('fill', 'white')
         .html('<tspan font-size="35px">&#x263A;</tspan>'); // Smiley emoticon Unicode character
       }
@@ -105,7 +105,7 @@ const Legend = ({activeMaps}) => {
   
   return (
     <div className="legend">
-      <h4>{title}</h4>
+      <span>{title}</span>
       <svg id="legend-svg" width="180" height="20" />  
     </div>
   );

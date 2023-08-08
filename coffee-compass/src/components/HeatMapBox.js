@@ -5,17 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDollarSign, faCoffee, faVanShuttle, faHandcuffs, faShoePrints, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
-const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton}) => {
-    // const [header, setHeader] = useState('Busyness');
-    //state variable to keep track of which checkboxes are checked
-    //this is used to determine which layers to display on the map
-    // const [checked, setChecked] = useState({
-    //     busyness: true,
-    //     crimeData: false,
-    //     prices: false,
-    //     transportData: false,
-    //     cafeDensity: false,
-    // });
+const HeatMapBox = ({ checked, setChecked, handleHeatMap, setFindSuggestionButton }) => {
 
     const handleCheckChange = (event) => {
         const newCheckedState = { ...checked, [event.target.name]: event.target.checked };
@@ -27,9 +17,6 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
         handleHeatMap(checked);
     }, []);
 
-
-
-    //check to see if the user has selected a heatmap
     const isCheckedNotEmpty = () => {
         return Object.values(checked).some(value => value);
     }
@@ -38,9 +25,11 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
         <div className="HeatMapBox">
             <h3>Heat Map Selection</h3>
             <FormGroup className="formgroup">
+
                 <FormControlLabel
                     control={
                         <Checkbox
+                            id="busyness-heatmap-toggle"
                             icon={<FontAwesomeIcon icon={faShoePrints} style={{ fontSize: '18px', color: '#555555', transform: 'rotate(270deg)' }} />}
                             checkedIcon={<FontAwesomeIcon icon={faShoePrints} style={{ fontSize: '18px', color: 'antiquewhite', transform: 'rotate(270deg)' }} />}
                             checked={checked.busyness}
@@ -55,10 +44,13 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
                             size="small"
                         />
                     }
+                    label="Busyness-heatmap-toggle"
                 />
+
                 <FormControlLabel
                     control={
                         <Checkbox
+                            id="crime-heatmap-toggle"
                             icon={<FontAwesomeIcon icon={faHandcuffs} style={{ fontSize: '18px', color: '#555555' }} />}
                             checkedIcon={<FontAwesomeIcon icon={faHandcuffs} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
                             checked={checked.crimeData}
@@ -73,10 +65,13 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
                             size="small"
                         />
                     }
+                    label="Crime-heatmap-toggle"
                 />
+
                 <FormControlLabel
                     control={
                         <Checkbox
+                            id="prices-heatmap-toggle"
                             icon={<FontAwesomeIcon icon={faDollarSign} style={{ fontSize: '18px', color: '#555555' }} />}
                             checkedIcon={<FontAwesomeIcon icon={faDollarSign} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
                             checked={checked.prices}
@@ -91,10 +86,13 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
                             size="small"
                         />
                     }
+                    label="Prices-heatmap-toggle"
                 />
+
                 <FormControlLabel
                     control={
                         <Checkbox
+                            id="transport-heatmap-toggle"
                             icon={<FontAwesomeIcon icon={faVanShuttle} style={{ fontSize: '18px', color: '#555555' }} />}
                             checkedIcon={<FontAwesomeIcon icon={faVanShuttle} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
                             checked={checked.transportData}
@@ -109,10 +107,13 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
                             size="small"
                         />
                     }
+                    label="Transport-heatmap-toggle"
                 />
+
                 <FormControlLabel
                     control={
                         <Checkbox
+                            id="cafe-heatmap-toggle"
                             icon={<FontAwesomeIcon icon={faCoffee} style={{ fontSize: '18px', color: '#555555' }} />}
                             checkedIcon={<FontAwesomeIcon icon={faCoffee} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
                             checked={checked.cafeDensity}
@@ -127,13 +128,14 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
                             size="small"
                         />
                     }
+                    label="Cafe-heatmap-toggle"
                 />
+
             </FormGroup>
-            <button className = "buttonSuggestion" onClick={() => setFindSuggestionButton(true)} disabled={!isCheckedNotEmpty()}>                 
-            <span className="buttonText">Top Zone</span>
+            <button aria-label="Top Zone" className="buttonSuggestion" onClick={() => setFindSuggestionButton(true)} disabled={!isCheckedNotEmpty()}>
+                <span className="buttonText">Top Zone</span>
                 <FontAwesomeIcon icon={faLocationDot} />
             </button>
-
         </div>
     );
 };

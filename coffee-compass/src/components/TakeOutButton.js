@@ -11,7 +11,7 @@ const TakeOutButton = ({takeOut, setTakeOut, setRunTakeOut}) => {
     }
 
     return (
-        <button className = "takeOutButton" onClick={handleHeatMap}>
+        <button aria-label="Takeout Radius"className = "takeOutButton" onClick={handleHeatMap}>
                        <FontAwesomeIcon icon={faBicycle} /> 
         <span>Delivery</span>
 

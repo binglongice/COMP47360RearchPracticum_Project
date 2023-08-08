@@ -1382,10 +1382,10 @@ useEffect(() => {
     <HelpButton setRun =  {setRun} />
 
     <header>
-      <div id="compass-btn" onClick={handleReload}><img src="./compass-coffee.png" width="50px" height="50px"/></div>
+      <div id="compass-btn" onClick={handleReload}><img alt="coffee-compass-logo-reload-button" src="./compass-coffee.png" width="50px" height="50px"/></div>
       <div id="title">Cafe Compass</div>
       <div id="page-toggle" >
-          <img src="./page-nav.png"  width="40px" height="40px"/>
+          <img src="./page-nav.png" alt="info/map page toggle"  width="40px" height="40px"/>
       </div>
     </header>
 

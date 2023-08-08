@@ -56,7 +56,7 @@ nav li {
   padding: 5px;
 }
 
-nav li a {
+nav li div {
   position: relative;
   display: block;
   width: 40px;
@@ -69,7 +69,7 @@ nav li a {
   font-size: 18px;
 }
 
-nav li a img {
+nav li div img {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -81,10 +81,10 @@ nav li a img {
   height: 25px;
 
 }
-nav li a:hover {
+nav li div:hover {
   border-color: #00FF00; /* Change the border color on hover */
 }
-nav li a .inner {
+nav li div .inner {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -104,11 +104,11 @@ a .inner *{
   color: antiquewhite;
 }
 
-nav li a:hover {
+nav li div:hover {
   color: antiquewhite;
 }
 
-nav li a:hover .inner {
+nav li div:hover .inner {
   width: 76px;
   height: 76px;
   margin: -38px 0 0 -38px;
@@ -121,12 +121,12 @@ nav li a:hover .inner {
   z-index: 1;
 }
 
-nav li a.active {
+nav li div.active {
   border-color: #00FF00;
   color: antiquewhite;
 }
 
-nav li a.active .inner {
+nav li div.active .inner {
   width: 76px;
   height: 76px;
   margin: -38px 0 0 -38px;
@@ -144,7 +144,7 @@ nav li a.active .inner {
   left: 35vw;
   top: 40vh;
 }
-.legend h4 {
+.legend span {
   margin: 0 0 10px;
   text-align: center;
   color: white;
@@ -1026,7 +1026,7 @@ nav li{
   cursor: pointer;
 
 }
-nav li a{
+nav li div{
   width: 100%;
   height: 100%;
   border: none;
@@ -1038,11 +1038,11 @@ nav li a{
   transition: 0.3s ease;
 }
 
-li a svg{
+li div svg{
   z-index: 20;
 }
 
-.nav li a:hover{
+.nav li div:hover{
   background-color: #555555;
   color: antiquewhite
 }
@@ -1052,7 +1052,7 @@ a .inner:active{
 
 }
 
-.nav li a:active{
+.nav li div:active{
   animation: shrinkAnimation 0.3s;
   color: white;
 }
@@ -1060,7 +1060,7 @@ a .inner:active{
 
 
 
-nav li a .inner {
+nav li div .inner {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1616,11 +1616,12 @@ padding: 0px;
   margin-top: 10px;
 }
 
-.legend h4{
+.legend span{
   position: absolute;
   bottom: 5px;
 
 }
+
 
 
 
@@ -1829,7 +1830,7 @@ nav li {
   padding: 5px;
 }
 
-nav li a {
+nav li div {
   position: relative;
   display: block;
   width: 40px;
@@ -1842,7 +1843,7 @@ nav li a {
   font-size: 18px;
 }
 
-nav li a img {
+nav li div img {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1854,10 +1855,10 @@ nav li a img {
   height: 25px;
 
 }
-nav li a:hover {
+nav li div:hover {
   border-color: #00FF00; /* Change the border color on hover */
 }
-nav li a .inner {
+nav li div .inner {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1877,11 +1878,11 @@ a .inner *{
   color: antiquewhite;
 }
 
-nav li a:hover {
+nav li div:hover {
   color: antiquewhite;
 }
 
-nav li a:hover .inner {
+nav li div:hover .inner {
   width: 76px;
   height: 76px;
   margin: -38px 0 0 -38px;
@@ -1894,12 +1895,12 @@ nav li a:hover .inner {
   z-index: 1;
 }
 
-nav li a.active {
+nav li div.active {
   border-color: #00FF00;
   color: antiquewhite;
 }
 
-nav li a.active .inner {
+nav li div.active .inner {
   width: 76px;
   height: 76px;
   margin: -38px 0 0 -38px;
@@ -2798,7 +2799,7 @@ nav li{
   cursor: pointer;
 
 }
-nav li a{
+nav li div{
   width: 100%;
   height: 100%;
   border: none;
@@ -2810,11 +2811,11 @@ nav li a{
   transition: 0.3s ease;
 }
 
-li a svg{
+li div svg{
   z-index: 20;
 }
 
-.nav li a:hover{
+.nav li div:hover{
   background-color: #555555;
   color: antiquewhite
 }
@@ -2824,7 +2825,7 @@ a .inner:active{
 
 }
 
-.nav li a:active{
+.nav li div:active{
   animation: shrinkAnimation 0.3s;
   color: white;
 }
@@ -2832,7 +2833,7 @@ a .inner:active{
 
 
 
-nav li a .inner {
+nav li div .inner {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -3352,7 +3353,7 @@ height: 20px;
 width: 90%;
 }
 
-li a:active, li a span:active, li a svg:active{
+li div:active, li div span:active, li div svg:active{
   animation: shrinkAnimation 0.5s;
 }
 
@@ -3675,16 +3676,16 @@ padding: 0px;
     .sidebar-cafe-header{
       position: absolute;
       left: 10px;
-      top: 10px;
+      top: 15px;
       right: 160px;
-      height: 35px;
+      height: 40px;
       z-index: 10;
       padding: 0px;
       margin: 0px;
       color: antiquewhite;
       font-size: 40px;
       display: flex;
-      align-items: center;
+      align-items: end;
       
     }
 
@@ -3867,7 +3868,7 @@ padding: 0px;
     @media only screen and (max-width: 675px) {
       .sidebar-cafe-header{
         font-size: 4vw;
-
+        top: 10px
       }
 
       .zone-cafe-info{
@@ -3958,10 +3959,22 @@ padding: 0px;
       font-size: 6vw;
     }
     .sidebar-cafe-header{
-      font-size: 3vw;
-
+      right: 120px;
+      align-items: center;
     }
 
+    .sidebar-cafe-rating{
+      width: 57px;
+      font-size: x-small;
+      height: 20px;
+      top: 20px;
+      border-radius: 5px;
+    }
+
+    .background-stars{
+      top: 5px;
+    }
+    
   }
 
   @media only screen and (max-height: 725px) {
@@ -4030,12 +4043,19 @@ padding: 0px;
   text-align: right;
 }
 
+.heatmap-label{
+  display: none;
+}
 @media only screen and (max-width: 265px) {
   .rating-stars-div{
     left: 120px;
     right: auto;
     width: 100px;
   }
+}
+.MuiFormControlLabel-label{
+  width: 0.1px;
+  height: 0.1px;
 }
   /*
 total responsiveness
@@ -4061,6 +4081,7 @@ x - fix slider for firefox
 x- align items in top zone window
 x-fixed legend
 x - LHS not tucked in
+x - shrink buttons instead of drawer header for cafes
 
 
 header transparent
@@ -4070,11 +4091,11 @@ drawer in and out animation and lip
 mobile layout flip?
 tut at small sizes
 reformat css
+graph adjusting res at lower pixels
 
 
 
 lighthouse testing and changes
-shrink buttons instead of drawer header for cafes
 
 
 randalls island no cafes needs styling and NaN

@@ -29,8 +29,9 @@ function FilterNav({activeButtons, setActiveButtons, handleLayerChange }) {
         // console.log(activeButtons);
       };
         return (
-    <nav className="filter-nav" role="filter">
-      <ul>
+    // <nav className="filter-nav" role="filter">
+     <nav className="filter-nav" >
+    <ul>
         {/* <li>
           <a
             href="#"
@@ -42,54 +43,54 @@ function FilterNav({activeButtons, setActiveButtons, handleLayerChange }) {
           </a>
         </li> */}
         <li>
-          <a
-            href="#"
+          <div
+            // href="#"
             onClick={() => handleClick(3)}
             className={activeButtons.includes(3) ? 'active' : ''}
           >
             <span className="inner"></span>
             <FontAwesomeIcon icon={faBus} />
-          </a>
+          </div>
         </li>
         <li>
-          <a
-            href="#"
+          <div
+            // href="#"
             onClick={() => handleClick(2)}
             className={activeButtons.includes(2) ? 'active' : ''}
           >
             <span className="inner"></span>
             <FontAwesomeIcon icon={faSubway} />
-          </a>
+          </div>
         </li>
         <li>
-          <a
-            href="#"
+          <div
+            // href="#"
             onClick={() => handleClick(1)}
             className={activeButtons.includes(1) ? 'active' : ''}
           >
             <span className="inner"></span>
             <FontAwesomeIcon icon={faChair} />
-          </a>
+          </div>
         </li>
         <li>
-          <a
-            href="#"
+          <div
+            // href="#"
             onClick={() => handleClick(4)}
             className={activeButtons.includes(4) ? 'active' : ''}
           >
             <span className="inner"></span>
             <FontAwesomeIcon icon={faCoffee} />
-          </a>
+          </div>
         </li>
         <li>
-          <a
-            href="#"
+          <div
+            // href="#"
             onClick={() => handleClick(5)}
             className={activeButtons.includes(5) ? 'active' : ''}
           >
             <span className="inner"></span>
             <FontAwesomeIcon icon={faBicycle} />
-          </a>
+          </div>
         </li>
       </ul>
     </nav>
