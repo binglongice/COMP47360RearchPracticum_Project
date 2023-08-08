@@ -32,57 +32,59 @@ code {
   border: none !important;
   box-shadow: none !important;
 }
-
-
-
-
-  
-/** CSS FOR BUTTTONS **/
-
 .filter-nav {
   padding: 0px;
   margin-left: 0; /* Add this line to remove the left margin */
   z-index: 20px;
+  display: flex;
+  justify-content: center;
 }
-
 nav li {
   float: none;
-  font-size: 2em;
   margin-right: 40px;
   line-height: 80px;
   position: relative;
   text-align: center;
   list-style-type: none; /*Hide bullets*/
   padding: 5px;
-}
-
-nav li div {
-  position: relative;
-  display: block;
+  margin: 10px;
+  padding: 0px;
   width: 40px;
   height: 40px;
+  pointer-events: auto;
+  font-size: medium;
+  line-height: normal;
+  cursor: pointer;
+}
+nav li div {
+  position: relative;
   border-radius: 50%;
   overflow: hidden; /* Ensure the image stays within the circular shape */
   border: 2px solid transparent; /* Set an initial transparent border */
-  transition: border-color 0.1s; /* Add transition for the border color change */ 
-  background-color: #1f1f1f; 
   font-size: 18px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: antiquewhite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  transition: 0.3s ease;
 }
-
 nav li div img {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  /* border: 2px solid #20826c; Add the border property with the desired color */
   border-radius: 50%;
   width: 25px;
   height: 25px;
-
 }
 nav li div:hover {
   border-color: #00FF00; /* Change the border color on hover */
+  color: antiquewhite;
 }
 nav li div .inner {
   position: absolute;
@@ -99,39 +101,29 @@ nav li div .inner {
   justify-content: center;
   align-items: center;
 }
-
 a .inner *{
   color: antiquewhite;
 }
-
-nav li div:hover {
-  color: antiquewhite;
-}
-
 nav li div:hover .inner {
   width: 76px;
   height: 76px;
   margin: -38px 0 0 -38px;
 }
-
 .filter-nav-container {
   position: absolute;
   top: 15%;
   left: -35px;
   z-index: 1;
 }
-
 nav li div.active {
   border-color: #00FF00;
   color: antiquewhite;
 }
-
 nav li div.active .inner {
   width: 76px;
   height: 76px;
   margin: -38px 0 0 -38px;
 }
-
 .legend {
   background-color: #555555;
   color: #F2F4F3;
@@ -144,54 +136,56 @@ nav li div.active .inner {
   left: 35vw;
   top: 40vh;
 }
+
 .legend span {
   margin: 0 0 10px;
   text-align: center;
   color: white;
 }
-
 .legend p {
   margin: 0 0 10px;
   text-align: center;
   color: white;
 }
+.legend h4 {
+  margin: 0 0 10px;
+  text-align: center;
+  color: white;
+}
+.heatmap-analytics {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  align-items: center;
+  position: absolute;
+  top: 15%;  
+  left: 10%; 
+  z-index: 1;
+  gap: 20px;
+  pointer-events: none; /* Set the overlay to be non-clickable by default */
 
-/* .legend div span {
-  border-radius: 50%;
-  display: inline-block;
-  height: 15px;
-  margin-right: 5px;
-  width: 10vh;
-  } */
-
-  .heatmap-analytics {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; 
-    align-items: center;
-    position: absolute;
-    top: 15%;  
-    left: 10%; 
-    z-index: 1;
-    gap: 20px;
-    pointer-events: none; /* Set the overlay to be non-clickable by default */
-
-  }
-  
+}
 .HeatMapBox {
-  background-color: #1f1f1f;
   color: #F2F4F3;
   border-radius: 3px;
-  bottom: 30px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  /* position: absolute; */
-  /* left: 12.5vh; */
-  /* bottom: 8vh; */
+  position: absolute;
+  right: 0px;
+  top: 75px;
+  bottom: 50px;
+  width: 45px;
+  padding: 0px;
+  overflow: hidden;
+  visibility: visible;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  width: 300px;
   z-index: 1;
-  pointer-events: none; /* Allow the button to be clickable */
-  }
+  pointer-events: none;
+}
+  
 
   .HeatMapBox div{
     pointer-events: auto;
@@ -1003,40 +997,15 @@ background-color: #444444;
   pointer-events: none;
   
 }
-.filter-nav{
-  display: flex;
-  justify-content: center;
-}
+
 .filter-nav ul{
   padding: 0px;
   margin: 0px;
   width: 50px;
   list-style-type: none;
 }
-nav li{
-  margin: 10px;
-  padding: 0px;
-  width: 40px;
-  height: 40px;
-  pointer-events: auto;
-}
-nav li{
-  font-size: medium;
-  line-height: normal;
-  cursor: pointer;
 
-}
-nav li div{
-  width: 100%;
-  height: 100%;
-  border: none;
-  background-color: antiquewhite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555555;
-  transition: 0.3s ease;
-}
+
 
 li div svg{
   z-index: 20;
@@ -1060,21 +1029,7 @@ a .inner:active{
 
 
 
-nav li div .inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  margin: 0;
-  background-color: #555555;
-  color: antiquewhite;
-  border-radius: 50%;
-  transition: all 0.1s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 
 
 
@@ -1101,22 +1056,6 @@ nav li div .inner {
   z-index: 1000;
   display: none;
 
-}
-
-.HeatMapBox {
-  background-color: transparent;
-  color: #F2F4F3;
-  border-radius: 3px;
-  bottom: 30px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  z-index: 1;
-  pointer-events: auto; /* Allow the button to be clickable */
-  position: absolute;
-  right: 0px;
-  top: 75px;
-  width: 300px;
 }
 
 
@@ -1313,7 +1252,7 @@ nav li div .inner {
   height: 20px;
   color: #555555;
   position: absolute;
-  left: 15px;
+  margin-left: 15px;
 }
 
 .sidebar-zone-rating div{
@@ -1810,162 +1749,8 @@ bike map pngs big and obscure
 
 
 
-  
-/** CSS FOR BUTTTONS **/
 
-.filter-nav {
-  padding: 0px;
-  margin-left: 0; /* Add this line to remove the left margin */
-  z-index: 20px;
-}
 
-nav li {
-  float: none;
-  font-size: 2em;
-  margin-right: 40px;
-  line-height: 80px;
-  position: relative;
-  text-align: center;
-  list-style-type: none; /*Hide bullets*/
-  padding: 5px;
-}
-
-nav li div {
-  position: relative;
-  display: block;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden; /* Ensure the image stays within the circular shape */
-  border: 2px solid transparent; /* Set an initial transparent border */
-  transition: border-color 0.1s; /* Add transition for the border color change */ 
-  background-color: #1f1f1f; 
-  font-size: 18px;
-}
-
-nav li div img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  /* border: 2px solid #20826c; Add the border property with the desired color */
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-
-}
-nav li div:hover {
-  border-color: #00FF00; /* Change the border color on hover */
-}
-nav li div .inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  margin: 0;
-  background-color: #555555;
-  color: antiquewhite;
-  border-radius: 50%;
-  transition: all 0.1s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-a .inner *{
-  color: antiquewhite;
-}
-
-nav li div:hover {
-  color: antiquewhite;
-}
-
-nav li div:hover .inner {
-  width: 76px;
-  height: 76px;
-  margin: -38px 0 0 -38px;
-}
-
-.filter-nav-container {
-  position: absolute;
-  top: 15%;
-  left: -35px;
-  z-index: 1;
-}
-
-nav li div.active {
-  border-color: #00FF00;
-  color: antiquewhite;
-}
-
-nav li div.active .inner {
-  width: 76px;
-  height: 76px;
-  margin: -38px 0 0 -38px;
-}
-
-.legend {
-  background-color: #555555;
-  color: #F2F4F3;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  z-index: 1;
-  position: relative;
-  left: 35vw;
-  top: 40vh;
-}
-.legend h4 {
-  margin: 0 0 10px;
-  text-align: center;
-  color: white;
-}
-
-.legend p {
-  margin: 0 0 10px;
-  text-align: center;
-  color: white;
-}
-
-/* .legend div span {
-  border-radius: 50%;
-  display: inline-block;
-  height: 15px;
-  margin-right: 5px;
-  width: 10vh;
-  } */
-
-  .heatmap-analytics {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; 
-    align-items: center;
-    position: absolute;
-    top: 15%;  
-    left: 10%; 
-    z-index: 1;
-    gap: 20px;
-    pointer-events: none; /* Set the overlay to be non-clickable by default */
-
-  }
-  
-.HeatMapBox {
-  background-color: #1f1f1f;
-  color: #F2F4F3;
-  border-radius: 3px;
-  bottom: 30px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  /* position: absolute; */
-  /* left: 12.5vh; */
-  /* bottom: 8vh; */
-  z-index: 1;
-  pointer-events: none; /* Allow the button to be clickable */
-  }
 
   .HeatMapBox div{
     pointer-events: auto;
@@ -2776,40 +2561,17 @@ background-color: #444444;
   pointer-events: none;
   
 }
-.filter-nav{
-  display: flex;
-  justify-content: center;
-}
+
 .filter-nav ul{
   padding: 0px;
   margin: 0px;
   width: 50px;
   list-style-type: none;
 }
-nav li{
-  margin: 10px;
-  padding: 0px;
-  width: 40px;
-  height: 40px;
-  pointer-events: auto;
-}
-nav li{
-  font-size: medium;
-  line-height: normal;
-  cursor: pointer;
 
-}
-nav li div{
-  width: 100%;
-  height: 100%;
-  border: none;
-  background-color: antiquewhite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555555;
-  transition: 0.3s ease;
-}
+
+
+
 
 li div svg{
   z-index: 20;
@@ -2833,21 +2595,6 @@ a .inner:active{
 
 
 
-nav li div .inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  margin: 0;
-  background-color: #555555;
-  color: antiquewhite;
-  border-radius: 50%;
-  transition: all 0.1s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 
 
@@ -2874,20 +2621,6 @@ nav li div .inner {
   z-index: 1000;
   display: none;
 
-}
-.HeatMapBox{
-  position: absolute;
-  right: 0px;
-  top: 75px;
-  bottom: 50px;
-  width: 45px;
-  padding: 0px;
-  overflow: hidden;
-  visibility: visible;
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  width: 300px;
 }
 
 
@@ -3076,7 +2809,8 @@ nav li div .inner {
   height: 20px;
   color: #555555;
   position: absolute;
-  left: 15px;
+  display: flex;
+  justify-content: center;
 }
 
 .sidebar-zone-rating div{
@@ -4020,6 +3754,7 @@ padding: 0px;
   position: absolute;
   left: 0px;
   height: 90%;
+  top: 10px;
 }
 
 .rating-stars-div{
@@ -4028,7 +3763,7 @@ padding: 0px;
   right: 0px;
   height: 90%;
   text-align: right;
- 
+  top: 10px;
 
 }
 
@@ -4054,8 +3789,9 @@ padding: 0px;
   }
 }
 .MuiFormControlLabel-label{
-  width: 0.1px;
-  height: 0.1px;
+  width: 0.00000001px;
+  height: 0.0000001px;
+  color: transparent;
 }
   /*
 total responsiveness
@@ -4082,6 +3818,7 @@ x- align items in top zone window
 x-fixed legend
 x - LHS not tucked in
 x - shrink buttons instead of drawer header for cafes
+x- lighthouse testing and changes
 
 
 header transparent
@@ -4093,9 +3830,9 @@ tut at small sizes
 reformat css
 graph adjusting res at lower pixels
 
+Lighthouse performance fix
 
 
-lighthouse testing and changes
 
 
 randalls island no cafes needs styling and NaN

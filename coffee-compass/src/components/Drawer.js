@@ -95,7 +95,7 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
     const shuttleVans = [];
 
     for (let i = 0; i < vanCount; i++) {
-      shuttleVans.push(<FontAwesomeIcon icon={faShuttleVan} key={i} />);
+      shuttleVans.push(<FontAwesomeIcon icon={faBus} key={i} />);
     }
 
     return shuttleVans;
