@@ -395,11 +395,19 @@ text-align: center;
   color: #ffffff; /* White */
   font-size: 12px;
 }
-.sidebar-header, .suggestion-sidebar-header {
+.sidebar-header, .suggestion-sidebar-header{
   font-size: 2.5rem; 
-  color: #F2F4F3; 
   text-align: center;
-  padding-bottom: 1rem;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 10;
+  padding: 0px;
+  margin: 0px;
+  color: antiquewhite;
+  height: 40px;
+  display: flex;
+  align-items: center;
 }
 .rank-info {
   font-size: 0.8rem; 
@@ -888,9 +896,10 @@ a .inner:active{
   font-size: x-large;
 }
 .takeOutButton svg{
+  font-size: xx-large;
   position: absolute;
-  left: 15px;
-  top: 12.5px ;
+  top: 10px;
+  left: 10px;
 }
 .takeOutButton span{
   position: absolute;
@@ -1000,26 +1009,28 @@ a .inner:active{
   color: #555555;
   font-size: medium;
   position: absolute;
+  background-color: antiquewhite;
+  border-radius: 50px;
+  top: 10px;
+  width: 190px;
   height: 40px;
-  right: 105px;
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: antiquewhite;
-  border-radius: 50px;
-  width: 175px;
-  top: 10px;
+  right: 50px;
 }
 .sidebar-zone-rating p{
   margin: 0px;
   padding: 0px;
   text-align: center;
-  align-items: center;
-  height: 20px;
   color: #555555;
   position: absolute;
-  display: flex;
   margin-left: 15px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 .sidebar-zone-rating div{
   margin-bottom: 15px;
@@ -1044,7 +1055,6 @@ a .inner:active{
   object-fit: cover;
   border-radius: 10px;
 }
-
 .cafe-info-ul{
   position: absolute;
   right: 10px;
@@ -1054,9 +1064,6 @@ a .inner:active{
   font-size: 15px;
   color: antiquewhite;
 }
-
-
-
 .sidebar-toggle.right, .sidebar-help-button{
   position: absolute;
   right: 5px;
@@ -1071,12 +1078,10 @@ a .inner:active{
   align-items: center;
   justify-content: center;
 }
-
 .sidebar-help-button{
   right: 55px;
   rotate: none;
 }
-
 .sidebar-toggle.right p{
   margin: 0px;
   padding: 0px;
@@ -1085,13 +1090,9 @@ a .inner:active{
   height: 25px;
   color: #555555;
 }
-
-
-
 .rank-info{
-  display: none;
+  display: block;
 }
-
 .chart-container{
   position: absolute;
   left: 0px;
@@ -1106,7 +1107,6 @@ a .inner:active{
   background-color: transparent;
   padding: 0px;
 }
-
 .chart-container canvas{
   position: absolute;
   left: 15px;
@@ -1116,21 +1116,14 @@ a .inner:active{
   width: auto;
   max-height: 200px;
   min-height: 200px;
-
 }
-
 .chart-container label{
   color: antiquewhite;
   margin-bottom: 10px;
 }
-
 .chart-container input{
   margin-bottom: 15px;
-
 }
-
-
-
 .cafe-info{
   position: absolute;
   right: 5px;
@@ -1141,37 +1134,23 @@ a .inner:active{
   overflow: auto;
 }
 
-.cafe-info::-webkit-scrollbar {
+.cafe-info::-webkit-scrollbar 
+.sidebar-content::-webkit-scrollbar,
+#right::-webkit-scrollbar{
   width: 5px;
 }
- 
-.cafe-info::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
-}
- 
-.cafe-info::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
-  outline: 1px solid slategrey;
-  border-radius: 5px;
-
-}
-
-#right::-webkit-scrollbar {
-  width: 5px;
-}
- 
+.cafe-info::-webkit-scrollbar-track 
+.sidebar-content::-webkit-scrollbar-track, 
 #right::-webkit-scrollbar-track {
   box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
 }
- 
-#right::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
+.cafe-info::-webkit-scrollbar-thumb 
+.sidebar-content::-webkit-scrollbar-thumb,
+#right::-webkit-scrollbar-thumb{
+    background-color: darkgrey;
   outline: 1px solid slategrey;
   border-radius: 5px;
 }
-
-
-
 
 #zone-cafe-title{
   width: 150px;
@@ -1181,7 +1160,6 @@ a .inner:active{
   font-size: 30px;
   margin: 0px;
 }
-
 #av-cafe-rating{
   height: 50px;
   border-radius: 50px;
@@ -1197,17 +1175,14 @@ a .inner:active{
   margin: 0px;
   text-align: right;
 }
-
 .zone-cafe{
   width: 100%;
   height: 100px;
   display: flex;
   align-items:start;
   justify-content: left;
-  
   border-top: 2px solid antiquewhite;
 }
-
 .zone-cafe img{
   width: 50%;
   position: relative;
@@ -1216,9 +1191,7 @@ a .inner:active{
   top: 5px;
   bottom: 5px;
   object-fit: cover;
-
 }
-
 .zone-cafe p{
   position: absolute;
   left: 52%;
@@ -1228,24 +1201,19 @@ a .inner:active{
   margin: 0px;
   margin-top: 5px;
 }
-
-
 .zone-info{
   position: absolute;
   top: 60px;
   left: 5px;
   right: 5px;
   bottom: 5px;
-
+  height: 270px;
 }
-
 .sidebar-toggle.right{
-
   display: flex;
   align-items: center;
   justify-content: center;
  }
-
 .zone-info *{
   margin: 0px;
   padding: 0px;
@@ -1253,20 +1221,16 @@ a .inner:active{
   flex-wrap: wrap;
   justify-content: flex-start;
   color: antiquewhite;
-
 }
 .zone-item{
   width: 31% ;
   min-width: 240px;
-  height: 226px;
   margin: 10px;
   margin-top: 0px;
-  border-top: 3px solid antiquewhite;
-
-  border-bottom: 3px solid antiquewhite;
   float: left;
+  height: 190px;
+  border: none;
 }
-
 .zone-item h2{
 font-size: 23px;
 position: static;
@@ -1277,22 +1241,18 @@ font-size: 18px;
 margin: 0px;
 padding: 0px;
 height: 20px;
-width: 90%;
+width: 100%;
 }
-
 @media only screen and (max-width: 926px) {
   .zone-item{
   width: 45%;
   }
 }
-
 @media only screen and (max-width: 627px) {
   .zone-item{
     width: 95%;
     }
 }
-
-
 .legend{
   position: absolute;
   right: auto;
@@ -1303,45 +1263,24 @@ width: 90%;
   align-items: center;
   justify-content: center;
   left: auto;
-color: antiquewhite;
-pointer-events: auto;
-padding: 0px;
+  color: antiquewhite;
+  pointer-events: auto;
+  padding: 0px;
 }
-
 .legend svg{
   margin-top: 10px;
 }
-
 .legend span{
   position: absolute;
   bottom: 5px;
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .cafe-name {
   cursor: pointer;
 }
-
 .cafe-name:hover {
   color: #B6B8B9;
   text-decoration: underline;
 }
-
 .mode-selection {
   background-color: #1f1f1f;
   color: #F2F4F3;
@@ -1354,22 +1293,18 @@ padding: 0px;
   z-index: 1;
 }
 
-
 @media only screen and (max-width: 575px) {
   .BusynessSliderBox{
     left: 75px;
     width: auto;
   }
   }
-
   @media only screen and (max-width: 675px) {
-
     .chart-container{
       width: 90%;
       top: 40px;
       height: 240px;
     }
-
     .cafe-info{
       top: 270px;
       width: 90%;
@@ -1377,19 +1312,48 @@ padding: 0px;
       right: 15px;
       height: 260px;
     }
-
     .sidebar-content{
       overflow: auto;
     }
   }
-
   @media only screen and (max-width: 615px) {
+    .cafe-img, .cafe-info-ul{
+      width: 95%;
+    }
+    .cafe-img{
+      height: 200px;
+      top: 55px;
+      left: 5px;
+    }
+    .cafe-info-ul{
+      top: 245px;
+      left: 5px;
+      margin: 0px;
+      padding: 0px;
+    }
+    .buttonSuggestion{
+      right: 5px;
+      width: 60px;
+      left: auto;
+    }
+    .buttonSuggestion span{
+      display: none;
+    }
+    .takeOutButton{
+      width: 60px;
+      right: auto;
+    }
+    .takeOutButton span{
+      display: none;
+    }
+    .takeout-box-container{
+      top: 135px;
+      left: 5px;
+    }
     .legend{
       top: 140px;
     }
-
   }
-
   @media only screen and (max-width: 435px) {
     .BusynessSliderBox{
       top: 0px;
@@ -1432,7 +1396,6 @@ padding: 0px;
 
     }
       
-
 .welcome {
   display: flex;
   justify-content: center;
@@ -1446,7 +1409,6 @@ padding: 0px;
   background: rgba(0, 0, 0, 0.5);
   z-index: 10000;
 }
-
 .Welcome-Text {
   margin-right: 20px;
   color: antiquewhite;
@@ -1456,7 +1418,6 @@ padding: 0px;
   align-self: center; /* aligns the text vertically centered in the flex container */
   justify-self: start; /* aligns the text at the start of its grid area */
 }
-
 .Welcome-Button {
   background-color: #555555;
   color: antiquewhite;
@@ -1467,484 +1428,36 @@ padding: 0px;
   cursor: pointer;
   margin-right: 10px; /* add space to the right of each button */
 }
-
 .Welcome-Button:hover {
   background-color: #393939;
 }
 /*///////////////////////////////////////////////////////////////////////////*/
-
-
-
-
-
-
-.sidebar-header, .suggestion-sidebar-header{
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  z-index: 10;
-  padding: 0px;
-  margin: 0px;
-  color: antiquewhite;
-}
-
-
-
-
-.cafe-img {
-  position: absolute;
-  left: 15px;
-  top: 69px;
-  height: auto;
-  bottom: 15px;
-  width: 50%;
-  max-height: 215px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.cafe-info-ul{
-  position: absolute;
-  right: 10px;
-  left: 50%;
-  width: auto;
-  top: 50px;
-  font-size: 15px;
-  color: antiquewhite;
-}
-
-
-
-.sidebar-toggle.right, .sidebar-help-button{
-  position: absolute;
-  right: 5px;
-  left: auto;
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
-  top: 10px;
-  background-color: antiquewhite;
-  color: #555555;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sidebar-help-button{
-  right: 55px;
-  rotate: none;
-}
-
-.sidebar-toggle.right p{
-  margin: 0px;
-  padding: 0px;
-  text-align: center;
-  align-items: center;
-  height: 25px;
-  color: #555555;
-}
-
-
-
-.rank-info{
-  display: block;
-}
-
-.chart-container{
-  position: absolute;
-  left: 0px;
-  top: 60px;
-  bottom: 0px;
-  right: auto;
-  width: 45%;
-  max-width: none;
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  background-color: transparent;
-  padding: 0px;
-}
-
-.chart-container canvas{
-  position: absolute;
-  left: 15px;
-  right: 15px;
-  top: 10px;
-  bottom: 50px;
-  width: auto;
-  max-height: 200px;
-  min-height: 200px;
-
-}
-
-.chart-container label{
-  color: antiquewhite;
-  margin-bottom: 10px;
-}
-
-.chart-container input{
-  margin-bottom: 15px;
-
-}
-
-
-
-.cafe-info{
-  position: absolute;
-  right: 5px;
-  width: 50%;
-  left: auto;
-  bottom: 0px;
-  top: 60px;
-  overflow: auto;
-}
-
-.cafe-info::-webkit-scrollbar 
-.sidebar-content::-webkit-scrollbar 
-
-{
-  width: 5px;
-}
- 
-.cafe-info::-webkit-scrollbar-track 
-.sidebar-content::-webkit-scrollbar-track 
-  {
-  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
-}
- 
-.cafe-info::-webkit-scrollbar-thumb 
-.sidebar-content::-webkit-scrollbar-thumb {
-    background-color: darkgrey;
-  outline: 1px solid slategrey;
-  border-radius: 5px;
-
-}#right::-webkit-scrollbar {
-  width: 5px;
-}
- 
-#right::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
-}
- 
-#right::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
-  outline: 1px solid slategrey;
-  border-radius: 5px;
-}
-
-
-
-
-
-
-
-
-
-
-
-#zone-cafe-title{
-  width: 150px;
-  height: 50px;
-  border-radius: 50px;
-  color: antiquewhite;
-  font-size: 30px;
-  margin: 0px;
-}
-
-#av-cafe-rating{
-  height: 50px;
-  border-radius: 50px;
-  position: absolute;
-  right: 0px; 
-  left: 150px;
-  width: auto;
-  top: 0px;
-  height: 50px;
-  border-radius: 50px;
-  color: antiquewhite;
-  font-size: 30px;
-  margin: 0px;
-  text-align: right;
-}
-
-.zone-cafe{
-  width: 100%;
-  height: 100px;
-  display: flex;
-  align-items:start;
-  justify-content: left;
-  
-  border-top: 2px solid antiquewhite;
-}
-
-.zone-cafe img{
-  width: 50%;
-  position: relative;
-  height: 90px;
-  left: 0px;
-  top: 5px;
-  bottom: 5px;
-  object-fit: cover;
-
-}
-
-.zone-cafe p{
-  position: absolute;
-  left: 52%;
-  text-align: left;  
-  color: antiquewhite;
-  font-size: 22px;
-  margin: 0px;
-  margin-top: 5px;
-}
-
-
-.zone-info{
-  position: absolute;
-  top: 60px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-
-}
-
-.sidebar-toggle.right{
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
- }
-
-.zone-info *{
-  margin: 0px;
-  padding: 0px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  color: antiquewhite;
-
-}
-.zone-item{
-  width: 31% ;
-  min-width: 240px;
-  height: 226px;
-  margin: 10px;
-  margin-top: 0px;
-  border-top: 3px solid antiquewhite;
-
-  border-bottom: 3px solid antiquewhite;
-  float: left;
-}
-
-.zone-item h2{
-font-size: 23px;
-position: static;
-margin-top: 5px;
-}
 .rating-text-div{
 font-size: 18px;
 margin: 0px;
 padding: 0px;
-height: 20px;
-width: 90%;
+width: 50%;
+position: absolute;
+left: 0px;
+height: 90%;
+top: 10px;
 }
-
 li div:active, li div span:active, li div svg:active{
   animation: shrinkAnimation 0.5s;
 }
-
 .MuiFormGroup-root label:active{
   animation: shrinkAnimation 0.5s;
 }
-
-
-
-@media only screen and (max-width: 926px) {
-  .zone-item{
-  width: 45%;
-  }
-}
-
-@media only screen and (max-width: 627px) {
-  .zone-item{
-    width: 95%;
-    }
-}
-
-.legend{
-  position: absolute;
-  right: auto;
-  top: 80px;
-  width: 197.5px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  left: auto;
-color: antiquewhite;
-pointer-events: auto;
-padding: 0px;
-}
-
-.legend svg{
-  margin-top: 10px;
-}
-
-.legend h4{
-  position: absolute;
-  bottom: 5px;
-
-}
-
-
-
-
-
-
-
-.cafe-name {
-  cursor: pointer;
-}
-
-.cafe-name:hover {
-  color: #B6B8B9;
-  text-decoration: underline;
-}
-
-.mode-selection {
-  background-color: #1f1f1f;
-  color: #F2F4F3;
-  border-radius: 3px;
-  /* bottom: 30px; */
-  left: 50px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  z-index: 1;
-}
-
-.takeOutButton svg{
-  font-size: xx-large;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-}
-
 .exit-option, .duration-option, .mode-option{
   transition: 0.3s ease;
 }
-
 .exit-option:hover, .submit-button:hover, .duration-option:hover, .mode-option:hover{
   background-color: #444444;
   color: antiquewhite;
 }
-
 .buttonSuggestion:active{
   animation: shrinkAnimation 0.5s;
 }
-
-.filter_row{
-  cursor: pointer;
-}
-
-.sidebar-zone-rating{
-  width: 190px;
-  height: 40px;
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  right: 50px;
-}
-
-.sidebar-zone-rating p {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-
-
-@media only screen and (max-width: 575px) {
-  .BusynessSliderBox{
-    left: 75px;
-    width: auto;
-  }
-  }
-
-  @media only screen and (max-width: 675px) {
-
-    .chart-container{
-      width: 90%;
-      top: 40px;
-      height: 240px;
-    }
-
-    .cafe-info{
-      top: 270px;
-      width: 90%;
-      left: 15px;
-      right: 15px;
-      height: 260px;
-    }
-
-    .sidebar-content{
-      overflow: auto;
-    }
-
-   
-  }
-
-  @media only screen and (max-width: 615px) {
-    
-
-    .cafe-img, .cafe-info-ul{
-      width: 95%;
-
-    }
-
-    
-    .cafe-img{
-      height: 200px;
-      top: 55px;
-      left: 5px;
-    }
-    .cafe-info-ul{
-      top: 245px;
-      left: 5px;
-      margin: 0px;
-      padding: 0px;
-    }
-
-    .buttonSuggestion{
-      right: 5px;
-      width: 60px;
-      left: auto;
-    }
-
-    .buttonSuggestion span{
-      display: none;
-    }
-
-    
-    .takeOutButton{
-      width: 60px;
-      right: auto;
-    }
-
-    .takeOutButton span{
-      display: none;
-    }
-    
-    .takeout-box-container{
-      top: 135px;
-      left: 5px;
-    }
-
-    
-  
-  }
 
   @media only screen and (max-width: 480px) {
     .BusynessSliderBox{
@@ -2018,19 +1531,10 @@ padding: 0px;
     }
 
 
-
-    .rating-text-div p{
-      width: 100%;
-    }
     
-    .zone-info{
-      height: 270px;
-    }
+    
 
-    .zone-item{
-      height: 190px;
-      border: none;
-    }
+    
 
     .rating-container{
       height: 150px;
@@ -2191,11 +1695,7 @@ padding: 0px;
     top: 10px
   }
 
-  .sidebar-header, .suggestion-sidebar-header{
-    height: 40px;
-    display: flex;
-    align-items: center;
-  }
+
 
   .zone-cafe-info{
     position: absolute;
@@ -2402,13 +1902,7 @@ padding: 0px;
   width: 100%;
   height: 140px;
 }
-.rating-text-div{
-  width: 50%;
-  position: absolute;
-  left: 0px;
-  height: 90%;
-  top: 10px;
-}
+
 
 .rating-stars-div{
   width: 50%;
@@ -2488,7 +1982,7 @@ reformat css
 graph adjusting res at lower pixels
 
 Lighthouse performance fix
-
+remove css chat comments, search for / icons to find
 
 
 
