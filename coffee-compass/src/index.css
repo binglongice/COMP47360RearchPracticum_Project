@@ -1554,7 +1554,7 @@ nav li a .inner {
   color: antiquewhite;
 
 }
-.zone-info div{
+.zone-item{
   width: 31% ;
   min-width: 240px;
   height: 226px;
@@ -1566,12 +1566,12 @@ nav li a .inner {
   float: left;
 }
 
-.zone-info div h2{
+.zone-item h2{
 font-size: 23px;
 position: static;
 margin-top: 5px;
 }
-.zone-info div p{
+.rating-text-div p{
 font-size: 18px;
 margin: 0px;
 padding: 0px;
@@ -1580,13 +1580,13 @@ width: 90%;
 }
 
 @media only screen and (max-width: 926px) {
-  .zone-info div{
+  .zone-item{
   width: 45%;
   }
 }
 
 @media only screen and (max-width: 627px) {
-  .zone-info div{
+  .zone-item{
     width: 95%;
     }
 }
@@ -2765,7 +2765,7 @@ background-color: #444444;
   top: 75px;
   bottom: 50px;
   width: 50px;
-  left: 5px;
+  left: 0px;
   background-color:  transparent;
   bottom: 50px;
   display: flex;
@@ -3327,7 +3327,7 @@ nav li a .inner {
   color: antiquewhite;
 
 }
-.zone-info div{
+.zone-item{
   width: 31% ;
   min-width: 240px;
   height: 226px;
@@ -3339,12 +3339,12 @@ nav li a .inner {
   float: left;
 }
 
-.zone-info div h2{
+.zone-item h2{
 font-size: 23px;
 position: static;
 margin-top: 5px;
 }
-.zone-info div p{
+.rating-text-div{
 font-size: 18px;
 margin: 0px;
 padding: 0px;
@@ -3363,13 +3363,13 @@ li a:active, li a span:active, li a svg:active{
 
 
 @media only screen and (max-width: 926px) {
-  .zone-info div{
+  .zone-item{
   width: 45%;
   }
 }
 
 @media only screen and (max-width: 627px) {
-  .zone-info div{
+  .zone-item{
     width: 95%;
     }
 }
@@ -3631,7 +3631,7 @@ padding: 0px;
 
 
 
-    .zone-info div p{
+    .rating-text-div p{
       width: 100%;
     }
     
@@ -3639,12 +3639,12 @@ padding: 0px;
       height: 270px;
     }
 
-    .zone-info div{
+    .zone-item{
       height: 190px;
       border: none;
     }
 
-    .zone-info div div{
+    .rating-container{
       height: 150px;
       width: 100%;
       position: relative;
@@ -3826,7 +3826,7 @@ padding: 0px;
         font-size: 4.0vw;
 
       }
-      .zone-info div h2{
+      .zone-item h2{
 
         font-size: 2.6vw
        }
@@ -3945,9 +3945,7 @@ padding: 0px;
     
 
     @media only screen and (max-width: 325px) {
-      .legend{
-        width: 110px;
-      }
+      
 
       svg text{
         display: none;
@@ -3976,7 +3974,7 @@ padding: 0px;
       flex-wrap: nowrap;
     }
     .filter-nav-container{
-      top: 236px;
+      top: 245px;
       align-items: start;
       bottom: 50px;
       overflow: hidden;
@@ -3986,14 +3984,59 @@ padding: 0px;
     .filter-nav{
       position: absolute;
       top: 0px;
+      left: 5px;
       bottom: 0px;
       overflow-y: auto;
       direction: rtl; /* Set direction to right-to-left */
 
     }
+
+    
   }
 
+  .filter-nav ul li {
+    margin-top: 0px;
+  }
 
+.rating-container{
+  width: 100%;
+  height: 140px;
+}
+.rating-text-div{
+  width: 50%;
+  position: absolute;
+  left: 0px;
+  height: 90%;
+}
+
+.rating-stars-div{
+  width: 50%;
+  position: absolute;
+  right: 0px;
+  height: 90%;
+  text-align: right;
+ 
+
+}
+
+.rating-stars-div p{
+  width: 100%;
+  font-size: 18px;
+  display:flex;
+  justify-content:right;
+
+}
+.rating-stars{
+  text-align: right;
+}
+
+@media only screen and (max-width: 265px) {
+  .rating-stars-div{
+    left: 120px;
+    right: auto;
+    width: 100px;
+  }
+}
   /*
 total responsiveness
 x -reload button
@@ -4015,7 +4058,9 @@ x- title png
 x - fix map buttons scrollbars
 x - fix LHS overflow
 x - fix slider for firefox
-
+x- align items in top zone window
+x-fixed legend
+x - LHS not tucked in
 
 
 header transparent
@@ -4028,7 +4073,6 @@ reformat css
 
 
 
-align items in top zone window
 lighthouse testing and changes
 shrink buttons instead of drawer header for cafes
 

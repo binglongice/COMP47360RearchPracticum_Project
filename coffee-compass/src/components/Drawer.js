@@ -452,30 +452,40 @@ function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, year
             #{index + 1} {zone.properties.zone}
           </h2>
           <div className="rating-container">
-            {/* <p>
-              <span className="rating-text"><b>Selection: </b></span>
-              <span className='rating-stars'>#{zone.properties.current_rank}</span>
-            </p> */}
+            <div className='rating-text-div'>
             <p>
               <span className="rating-text">Busyness: </span>
-              <span className='rating-stars'>{calculateShoePrints(zone.properties.busyness_rank)}</span>
             </p>
             <p>
               <span className="rating-text">Crime: </span>
-              <span className='rating-stars'>{calculateHandcuffs(zone.properties.crime_rank)}</span>
             </p>
             <p>
               <span className="rating-text">Property: </span>
-              <span className='rating-stars'>{calculateHome(zone.properties.prices_rank)}</span>
             </p>
             <p>
               <span className="rating-text">Transit:</span> 
-              <span className='rating-stars'>{calculateShuttleVan(zone.properties.transport_rank)}</span>
             </p>
             <p>
               <span className="rating-text">Cafe Density:</span> 
+            </p>
+            </div>
+            <div className='rating-stars-div'>
+            <p>
+              <span className='rating-stars'>{calculateShoePrints(zone.properties.busyness_rank)}</span>
+            </p>
+            <p>
+              <span className='rating-stars'>{calculateHandcuffs(zone.properties.crime_rank)}</span>
+            </p>
+            <p>
+              <span className='rating-stars'>{calculateHome(zone.properties.prices_rank)}</span>
+            </p>
+            <p>
+              <span className='rating-stars'>{calculateShuttleVan(zone.properties.transport_rank)}</span>
+            </p>
+            <p>
               <span className='rating-stars'>{calculateCoffee(zone.properties.cafe_rank)}</span>
             </p>
+            </div>
           </div>
         </div>
       ))}
