@@ -2765,7 +2765,7 @@ background-color: #444444;
   top: 75px;
   bottom: 50px;
   width: 50px;
-  left: 0px;
+  left: 5px;
   background-color:  transparent;
   bottom: 50px;
   display: flex;
@@ -2896,7 +2896,7 @@ nav li a .inner {
 }
 .HeatMapBox div{
   position: absolute;
-  right: 10px;
+  right: 5px;
 }
 
 .HeatMapBox div label{
@@ -3555,7 +3555,7 @@ padding: 0px;
   
   }
 
-  @media only screen and (max-width: 435px) {
+  @media only screen and (max-width: 480px) {
     .BusynessSliderBox{
       top: 0px;
       height: 120px;
@@ -3757,15 +3757,25 @@ padding: 0px;
 .sidebar-content{
   overflow-x: hidden;
 }
-    .sidebar-content::-webkit-scrollbar {
+    .sidebar-content::-webkit-scrollbar,
+    .filter-nav::-webkit-scrollbar,
+    .HeatMapBox div::-webkit-scrollbar
+
+
+    {
     width: 5px;
   }
    
-  .sidebar-content::-webkit-scrollbar-track {
+  .sidebar-content::-webkit-scrollbar-track,
+  .filter-nav::-webkit-scrollbar-track,
+  .HeatMapBox div::-webkit-scrollbar-track
+   {
     box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
   }
    
-  .sidebar-content::-webkit-scrollbar-thumb {
+  .sidebar-content::-webkit-scrollbar-thumb,
+  .filter-nav::-webkit-scrollbar-thumb,
+  .HeatMapBox div::-webkit-scrollbar-thumb {
     background-color: darkgrey;
     outline: 1px solid slategrey;
     border-radius: 5px;
@@ -3838,6 +3848,12 @@ padding: 0px;
         right: 250px;
       }
       
+    }
+
+    @media only screen and (max-width: 260px) {
+      .row{
+        width: 130px;
+      }
     }
 
     @media only screen and (max-width: 200px) {
@@ -3962,13 +3978,18 @@ padding: 0px;
     .filter-nav-container{
       top: 236px;
       align-items: start;
+      bottom: 50px;
+      overflow: hidden;
 
     }
 
     .filter-nav{
+      position: absolute;
       top: 0px;
       bottom: 0px;
       overflow-y: auto;
+      direction: rtl; /* Set direction to right-to-left */
+
     }
   }
 
@@ -3991,6 +4012,9 @@ x - drawer rating func
 x - cafe drawer resp, maybe fix the image upto min width and have reviews scroll
   replace cafe drawer with stars. 
 x- title png
+x - fix map buttons scrollbars
+x - fix LHS overflow
+x - fix slider for firefox
 
 
 
@@ -4000,17 +4024,16 @@ link to essentials
 drawer in and out animation and lip
 mobile layout flip?
 tut at small sizes
+reformat css
 
 
 
 align items in top zone window
 lighthouse testing and changes
-fix slider for firefox
 shrink buttons instead of drawer header for cafes
 
 
 randalls island no cafes needs styling and NaN
 
-fix map buttons scrollbars
-fix LHS overflow
+
 */
