@@ -136,7 +136,6 @@ nav li div.active .inner {
   left: 35vw;
   top: 40vh;
 }
-
 .legend span {
   margin: 0 0 10px;
   text-align: center;
@@ -185,17 +184,13 @@ nav li div.active .inner {
   z-index: 1;
   pointer-events: none;
 }
-  
-
-  .HeatMapBox div{
+.HeatMapBox div{
     pointer-events: auto;
-  }
-
+}
 .HeatMapBox h3 {
   padding: 0;
   margin: 0
 }
-
 .takeout-box-container {
   background-color: #1f1f1f;
   color: #F2F4F3;
@@ -209,139 +204,86 @@ nav li div.active .inner {
   bottom: 5vh;
   z-index: 1;
 }
-/* I want the radio buttons to be next to each other in the same line */
-
 .takeout-box-container input {
   display: inline-block;
   margin: 0 0 10px;
   width: 10px;
   height: 10px;
- 
   vertical-align: middle;
-
-  }
-
+}
 .takeout-box-container label {
+display: inline-block;
+margin: 0 0 10px;
+padding: 10px;
+text-align: center;
+}
+.takeout-box-container button {
+display: inline-block;
+margin: 0 0 10px;
+padding: 10px;
+text-align: center;
+}
+.session {
+  margin-bottom: 20px;
+  padding-top: 10px;
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  pointer-events: auto;
+}
+.row {
+  height: 12px;
+  width: 100%;
+}
+:root {
+  --custom-lightness: 35%; /*  initial value of 'lightness' */
+}
+.colors {
+  background: linear-gradient(
+    to right,
+    hsl(120, 100%, var(--custom-lightness)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 5%)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 10%)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 15%)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 20%)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 22.5%))
+  );
+  margin-bottom: 5px;
+}
+.label-first {
   display: inline-block;
-  margin: 0 0 10px;
-  padding: 10px;
+  width: 33.3333%;
+  box-sizing: border-box;
+  text-align: left;
+}
+.label-middle {
+  display: inline-block;
+  width: 33.3333%;
+  box-sizing: border-box;
   text-align: center;
-  }
-
-
-  .takeout-box-container button {
-    display: inline-block;
-    margin: 0 0 10px;
-    padding: 10px;
-    text-align: center;
-    }
-  
-
-    .session {
-      margin-bottom: 20px;
-      padding-top: 10px;
-      font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-
-    }
-
-    .session h3 {
-      margin: 0 0 10px;
-      text-align: center;
-    }
-    
-    .row {
-      height: 12px;
-      width: 100%;
-    
-    }
-
-    :root {
-      --custom-lightness: 35%; /*  initial value of 'lightness' */
-    }
-    
-    
-    .colors {
-      background: linear-gradient(
-        to right,
-        hsl(120, 100%, var(--custom-lightness)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 5%)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 10%)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 15%)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 20%)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 22.5%))
-      );
-      margin-bottom: 5px;
-    }
-        
-    /* label for the heatmap legend, in the session div */
-    /* There are three labels, one should be directly in the middle and the other two on their respective ends*/
-    
-    /* .label {
-      display: inline-block;
-      width: 33.3333%;
-      padding-left: 15px;
-      box-sizing: border-box;
-      text-align: center;
-    } */
-
-
-    .label-first {
-      display: inline-block;
-      width: 33.3333%;
-      box-sizing: border-box;
-      text-align: left;
-    }
-    
-    .label-middle {
-      display: inline-block;
-      width: 33.3333%;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    
-    .label-last {
-      display: inline-block;
-      width: 33.3333%;
-      box-sizing: border-box;
-      text-align: right;
-    }
-
-
-    .BusynessSliderBox {
-      background-color: #1f1f1f;
-      border-radius: 3px;
-      bottom: 30px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      padding: 10px;
-      /* position: absolute;
-      left: 10vh;
-      bottom: 52vh; */
-      z-index: 1;
-      color: #F2F4F3;
-      pointer-events: auto; /* Allow the button to be clickable */
-
-    }
-
-    .BusynessSliderBox h2 {
-      font-size: 14px;
-      line-height: 20px;
-      margin-bottom: 10px;
-    }
-
-
-/* browsers except firefox
-    input[type="range"]::-webkit-slider-runnable-track {
-      background: #00FF00;
-    }
-    input[type="range"]::-moz-range-track {
-      background: #20826c;
-      height: 0.5rem;
-    }
- */
-
-/* chart container */
-
-
+}
+.label-last {
+  display: inline-block;
+  width: 33.3333%;
+  box-sizing: border-box;
+  text-align: right;
+}
+.BusynessSliderBox {
+  background-color: #1f1f1f;
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  /* position: absolute;
+  left: 10vh;
+  bottom: 52vh; */
+  z-index: 1;
+  color: #F2F4F3;
+  pointer-events: none; /* Allow the button to be clickable */
+}
+.BusynessSliderBox h2 {
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
 .chart-container {
   background-color: #1f1f1f; /* Lighter Green */
   color: #F2F4F3; /* Darker Text */
@@ -355,45 +297,37 @@ nav li div.active .inner {
   /* width: calc(100% - 20px); Subtract padding from width */
   max-width: calc(285px - 20px); /* Set max-width to match .sidebar-content width (subtracting the padding) */
 }
-
-/* side bar */
-
 .sidebar {
-  max-height: 94vh; /* or any other value that suits your needs */
+  max-height: 94vh; 
   overflow-y: auto;
   border-radius: 10px; 
   top: 3vh;
   bottom: 3vh;
-  /* add a shadow*/
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  background-color: #1f1f1f; /* Dark Teal Primary Color */
-  color: #F2F4F3; /* Off-White Text */
-
-
-}
-
-.rounded-rect {
-  background: #1f1f1f; /* Starbucks Green */
+  transition: transform 1s;
+  z-index: 1;
+  width: 300px;
+  height: 100%;
+  background-color: #1f1f1f; 
   color: #F2F4F3; /* White */
-  border-radius: 10px;
-  /* box-shadow: 0 0 50px -25px black; */
 }
-
+.rounded-rect {
+  background: #1f1f1f;
+  color: #F2F4F3; 
+  border-radius: 10px;
+}
 .flex-center {
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .flex-center.left {
   left: 0px;
 }
-
 .flex-center.right {
   right: 0px;
 }
-
 .sidebar-content {
   position: relative;
   width: 95%;
@@ -415,53 +349,34 @@ nav li div.active .inner {
   justify-content: center;
   align-items: center;
   color: #F2F4F3; /* White */
-}
-   
+} 
 .sidebar-toggle.left {
   right: -1.5em;
 }
-   
 .sidebar-toggle.right {
   position: absolute;
   top: -2vh; /* adjust this value to move up/down */
   right: 30vh; /* adjust this value to move left/right */
   color: red;
-}
-   
+}  
 .sidebar-toggle:hover {
   cursor: pointer;
-}
-   
-.sidebar {
-  transition: transform 1s;
-  z-index: 1;
-  width: 300px;
-  height: 100%;
-  background-color: #1f1f1f; /* Starbucks Green */
-  color: #F2F4F3; /* White */
-}
-   
+} 
 .left.collapsed {
   transform: translateX(-295px);
-}
-   
+} 
 .right.collapsed {
   transform: translateX(295px);
 }
-
 .collapsed {
   width: 0;
   overflow: hidden;
-}
-
-
-  
+} 
 .mapboxgl-popup-content {
   background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
-
 .my-custom-popup {
   max-width: 200px;
   padding: 10px;
@@ -472,30 +387,25 @@ nav li div.active .inner {
   border-radius: 5px;
   text-align: center;
 }
-
 .my-custom-popup .large-text {
   color: #ffffff; /* White */
   font-size: 16px;
 }
-
 .my-custom-popup .small-text {
   color: #ffffff; /* White */
   font-size: 12px;
 }
-
-.sidebar-header {
-  font-size: 2.5rem; /* Adjust as needed */
-  color: #F2F4F3; /* Adjust as needed */
+.sidebar-header, .suggestion-sidebar-header {
+  font-size: 2.5rem; 
+  color: #F2F4F3; 
   text-align: center;
-  padding-bottom: 1rem; /* Space below the header */
+  padding-bottom: 1rem;
 }
-
 .rank-info {
   font-size: 0.8rem; 
   color: #B6B8B9; 
   text-align: center;
 }
-
 .HeatMapButton {
   background-color: #1f1f1f;
   color: #F2F4F3;
@@ -506,18 +416,11 @@ nav li div.active .inner {
   cursor: pointer;
   border: none;
   transition: background-color 0.3s ease;
-  /* position: absolute;
-  left: 15vh;  
-  bottom: 28vh;   */
-  z-index: 11;
-  
+  z-index: 11;  
 }
-
 .HeatMapButton:hover {
   background-color: #393939;
 }
-
-
 .buttonSuggestion {
   background-color: #292929;
   color: #F2F4F3;
@@ -530,18 +433,19 @@ nav li div.active .inner {
   transition: background-color 0.3s ease;
   z-index: 20;
   pointer-events: auto;
+  display: flex;
+  align-items: center;
+  visibility: visible;
+  overflow: hidden;
 }
-
 .buttonSuggestion:disabled {
   background-color: #292929;
   color: #666666;
   cursor: not-allowed;
 }
-
 .buttonSuggestion:hover {
   background-color: #393939;
 }
-
 .submit-button {
   background-color: #292929;
   color: #F2F4F3;
@@ -555,7 +459,6 @@ nav li div.active .inner {
   z-index: 2;
   position: relative;
 }
-
 .remove-button {
   background-color: #292929;
   color: #F2F4F3;
@@ -569,17 +472,12 @@ nav li div.active .inner {
   z-index: 2;
   position: relative;
 }
-
-
 .submit-button:hover {
   background-color: #393939;
 }
-
 .remove-button:hover {
   background-color: #393939;
 }
-
-
 .takeOutButton {
   background-color: #1f1f1f;
   color: #F2F4F3;
@@ -595,16 +493,9 @@ nav li div.active .inner {
   right: 47vh;
   bottom: 50vh;
 }
-
 .takeOutButton:hover {
   background-color: #393939;
-
 }
-
-/* style my helpButton so its at the top right of the page */
-
-
-
 .helpButton {
   background-color: #1f1f1f;
   color: #F2F4F3;
@@ -620,7 +511,6 @@ nav li div.active .inner {
   left: 5vh;
   top: 0vh;
 }
-
 .helpButton:hover {
   background-color: #393939;
 }
@@ -642,9 +532,7 @@ nav li div.active .inner {
   transition: background-color 0.3s ease;
   z-index: 500;
   text-align: center;
-
 }
-
 .backdrop {
   position: fixed;
   top: 0;
@@ -654,7 +542,6 @@ nav li div.active .inner {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 499;
 }
-
 .ExitButton {
   background-color: #1f1f1f;
   color: #F2F4F3;
@@ -669,33 +556,9 @@ nav li div.active .inner {
   position: absolute;
   left: 550%;
 }
-
 .ExitButton:hover {
   background-color: #393939;
 }
-
-.cafe-info {
-  font-size: 0.8rem; /* Adjust as needed */
-  color: #B6B8B9; /* Adjust as needed */
-  text-align: center;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*New from Nick*/
 header{
   position: absolute;
   top: 0px;
@@ -726,7 +589,6 @@ header{
 #compass-btn:hover, #page-toggle:hover{
   transform: rotate(360deg);
 }
-
 @keyframes shrinkAnimation {
   0% {
     transform: scale(1);
@@ -735,11 +597,9 @@ header{
     transform: scale(0.5);
   }
 }
-
 #compass-btn:active, #page-toggle:active{
   animation: shrinkAnimation 0.5s;
 }
-
 #compass-btn img, #page-toggle img{
   width: 100%;
   aspect-ratio: 1/1;
@@ -754,10 +614,7 @@ header{
   align-items: center;
   font-size: xx-large;
   color: antiquewhite;
-
 }
-
-
 .heatmap-analytics{
   position: absolute;
   right: 0px;
@@ -766,6 +623,9 @@ header{
   width: 100%;
   height: 100%;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center
 }
 .BusynessSliderBox{
   position: absolute;
@@ -775,9 +635,7 @@ header{
   padding: 0px;
   max-width: 600px;
   right: 110px;
-
   left: auto;
-
   background-color: transparent;
   box-shadow: none;
   min-width: 200px;
@@ -787,8 +645,6 @@ header{
   .BusynessSliderBox{
     left: auto;
   }
-
-
 }
 
 .BusynessSliderBox h3 {
@@ -807,7 +663,6 @@ header{
   margin: 0px;
   padding: 0px;
 }
-
 .row{
   width: auto;
   position: absolute;
@@ -838,26 +693,18 @@ header{
   /* Remove the default styling on WebKit browsers (Chrome, Safari) */
   -webkit-appearance: none;
   cursor: pointer;
-
 }
-
 .row::-webkit-slider-thumb:active, .row::-webkit-slider-thumb:hover  {
     background-color: #333333;
 }
-
-
-/* Optionally, style the value indicator */
 .row::-moz-range-thumb {
-  /* For Firefox */
   width: 20px;
   height: 20px;
   background-color: #555555; /* Green */
   border: 2px solid #555555; /* Green */
   border-radius: 50%;
-  /* Remove the default styling on Firefox */
   -moz-appearance: none;
 }
-/* Optionally, style the value indicator */
 .row::-ms-thumb {
   /* For Edge */
   width: 20px;
@@ -868,8 +715,6 @@ header{
   /* Remove the default styling on Edge */
   appearance: none;
 }
-
-
 .session h2{
   position: absolute;
   right: 0px;
@@ -878,8 +723,6 @@ header{
   color: antiquewhite;
   text-align: center;
 }
-
-
 .filter_row{
   position: absolute;
   top: 5px;
@@ -895,7 +738,7 @@ header{
   color: #555555;
   transition: 0.3s ease;
   cursor: pointer;
-
+  pointer-events: auto;
 }
 .filter_row:hover{
   background-color: #333333;
@@ -907,9 +750,7 @@ header{
   font-size: xx-large;
   margin: 0px;
   margin-bottom: 2px;
-
 }
-
 .filter_row button{
   width: 100%;
   height: 100%;
@@ -921,14 +762,9 @@ header{
   transition: 0.3s ease;
   color: #555555
 }
-
 .filter_row button:hover{
 background-color: #444444;
 }
-.filter_row input, .filter_row label{
-}
-
-
 .helpButton{
   background-color: antiquewhite;
   position: absolute;
@@ -941,16 +777,13 @@ background-color: #444444;
   color: #555555;
   font-size: xx-large;
 }
-
 .helpButton:active{
   animation: shrinkAnimation 0.3s;
 }
-
 #page-toggle{
   left: auto;
   right: 10px;
 }
-
 .buttonSuggestion{
   background-color: #555555;
   color: antiquewhite;
@@ -963,25 +796,19 @@ background-color: #444444;
   align-items: center;
   font-size: x-large;
 }
-
 .buttonSuggestion span{
   font-size: xx-large;
   margin-left: 10px;
 }
-
-
 .buttonSuggestion svg {
   position: absolute;
   right: 15px;
 }
-
 @media only screen and (max-width: 810px) {
   #title{
     display: none;
   }
 }
-
-
 .filter-nav-container{
   position: absolute;
   top: 75px;
@@ -995,45 +822,28 @@ background-color: #444444;
   align-items: center;
   z-index: 10;
   pointer-events: none;
-  
 }
-
 .filter-nav ul{
   padding: 0px;
   margin: 0px;
   width: 50px;
   list-style-type: none;
 }
-
-
-
 li div svg{
   z-index: 20;
 }
-
 .nav li div:hover{
   background-color: #555555;
   color: antiquewhite
 }
-
 a .inner:active{
   animation: shrinkAnimation 0.3s;
 
 }
-
 .nav li div:active{
   animation: shrinkAnimation 0.3s;
   color: white;
 }
-
-
-
-
-
-
-
-
-
 .filter-heatmap-container{
   position: absolute;
   top: 75px;
@@ -1045,44 +855,25 @@ a .inner:active{
   justify-content: center;
   align-items: center;
   z-index: 10;
-
 }
-
-
 .HeatMapButton{
   position: absolute;
   left: 0%;
   top: 50%;
   z-index: 1000;
   display: none;
-
 }
-
-
-
-.buttonSuggestion {
-  display: flex;
-  align-items: center;
-  visibility: visible;
-  overflow: hidden;
-}
-
-
-
 .HeatMapBox h3{
   display: none;
 }
 .HeatMapBox div{
   position: absolute;
-  right: 10px;
+  right: 5px;
 }
-
 .HeatMapBox div label{
   margin: 0px;
   margin-bottom: 10px;
 }
-
-
 .takeOutButton, .takeout-box-container{
   position: absolute;
   right: auto;
@@ -1096,7 +887,6 @@ a .inner:active{
   color: antiquewhite;
   font-size: x-large;
 }
-
 .takeOutButton svg{
   position: absolute;
   left: 15px;
@@ -1108,20 +898,15 @@ a .inner:active{
   top: 15px;
   font-size: xx-large;
 }
-
-
 .mode-selection-header, .duration-selection-header, .exit-header {
   display: none;
 }
-
-
 .button-container{
   width: 40px;
   height: 40px;
   left: 5px;
   position: absolute;
 }
-
 .duration-selection-options{
   width: 40px;
   height: 40px;
@@ -1130,7 +915,6 @@ a .inner:active{
   top: 0px;
   left: auto;
 }
-
 .mode-selection-options{
   width: 40px;
   height: 40px;
@@ -1139,7 +923,6 @@ a .inner:active{
   top: 0px;
   left: auto;
 }
-
 .exit-options {
   width: 40px;
   height: 40px;
@@ -1148,12 +931,10 @@ a .inner:active{
   top: 0px;
   left: auto;
 }
-
 .exit-option {
   left: auto;
   right: 0px;
 }
-
 .mode-selection-options button, .duration-selection-options button, .button-container button, .exit-options button{
   width: 40px;
   height: 40px;
@@ -1170,32 +951,19 @@ a .inner:active{
   padding: 0px;
   margin: 0px;
 }
-
 .mode-option{
   left: auto;
   right: 0px;
 }
-
 .duration-selection-options button{
   font-size: medium;
   right: 50px;
 }
-
 .button-container button{
   font-size: 40px;
   left: 0px;
   right: auto
 }
-
-/* .button-container button.{
-
-} */
-
-
-/* .legend{
-  display: none;
-} */
-
 #right{
   position: absolute;
   bottom: 0px;
@@ -1204,10 +972,10 @@ a .inner:active{
   left: 0px;
   width: auto;
   height: 300px;
-  z-index: 11;
+  z-index: 30;
   background-color: #555555;
+  box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, 0.5);
 }
-
 .sidebar-content{
   position: absolute;
   width: auto;
@@ -1228,7 +996,6 @@ a .inner:active{
   margin: 0px;
   color: antiquewhite;
 }
-
 .sidebar-zone-rating{
   color: #555555;
   font-size: medium;
@@ -1243,7 +1010,6 @@ a .inner:active{
   width: 175px;
   top: 10px;
 }
-
 .sidebar-zone-rating p{
   margin: 0px;
   padding: 0px;
@@ -1252,25 +1018,21 @@ a .inner:active{
   height: 20px;
   color: #555555;
   position: absolute;
+  display: flex;
   margin-left: 15px;
 }
-
 .sidebar-zone-rating div{
   margin-bottom: 15px;
 }
-
 #score{
   position: absolute;
   left: 70px;
 }
-
-
 .sidebar-content h2{
   position: absolute;
   left: 50%;
   top: 10px;
 }
-
 .cafe-img {
   position: absolute;
   left: 15px;
@@ -1531,11 +1293,6 @@ width: 90%;
 }
 
 
-.heatmap-analytics{
-  display: flex;
-  align-items: center;
-  justify-content: center
-}
 .legend{
   position: absolute;
   right: auto;
@@ -1564,26 +1321,15 @@ padding: 0px;
 
 
 
-/*
-total responsiveness
-x -reload button
-x -fixed slider length, padding on slider text
-link to essentials
-hover and click animations on takeout
-fix takeout button stylign
-X -  remove taxi button
-x - style legend
-style map buttons
-drawer responsiveness
-drawer rating func
-cafe drawer resp, maybe fix the image upto min width and have reviews scroll
-  replace cafe drawer with stars. 
-x - check map clickable
-check firefox, edge, chrome and safari
-drawer in and out animation and lip
-mobile layout flip?
-bike map pngs big and obscure
-*/
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1646,7 +1392,6 @@ bike map pngs big and obscure
 
   @media only screen and (max-width: 435px) {
     .BusynessSliderBox{
-      background-color: #555555;
       top: 0px;
       height: 125px;
       left: 0px;
@@ -1721,1061 +1466,18 @@ bike map pngs big and obscure
   border-radius: 5px;
   cursor: pointer;
   margin-right: 10px; /* add space to the right of each button */
-
-
-
-  
-  /* .buttonSuggestion {
-    background-color: #292929;
-    color: #F2F4F3;
-    border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    padding: 10px;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.3s ease;
-    z-index: 2;
-    pointer-events: auto;
-  } */
-  
 }
 
 .Welcome-Button:hover {
   background-color: #393939;
 }
+/*///////////////////////////////////////////////////////////////////////////*/
 
 
 
 
 
 
-
-
-  .HeatMapBox div{
-    pointer-events: auto;
-  }
-
-.HeatMapBox h3 {
-  padding: 0;
-  margin: 0
-}
-
-.takeout-box-container {
-  background-color: #1f1f1f;
-  color: #F2F4F3;
-  border-radius: 3px;
-  bottom: 30px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  position: absolute;
-  right: 40vh;
-  bottom: 5vh;
-  z-index: 1;
-}
-/* I want the radio buttons to be next to each other in the same line */
-
-.takeout-box-container input {
-  display: inline-block;
-  margin: 0 0 10px;
-  width: 10px;
-  height: 10px;
- 
-  vertical-align: middle;
-
-  }
-
-.takeout-box-container label {
-  display: inline-block;
-  margin: 0 0 10px;
-  padding: 10px;
-  text-align: center;
-  }
-
-
-  .takeout-box-container button {
-    display: inline-block;
-    margin: 0 0 10px;
-    padding: 10px;
-    text-align: center;
-    }
-  
-
-    .session {
-      margin-bottom: 20px;
-      padding-top: 10px;
-      font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-
-    }
-
-    .session h3 {
-      margin: 0 0 10px;
-      text-align: center;
-    }
-    
-    .row {
-      height: 12px;
-      width: 100%;
-    
-    }
-
-    :root {
-      --custom-lightness: 35%; /*  initial value of 'lightness' */
-    }
-    
-    
-    .colors {
-      background: linear-gradient(
-        to right,
-        hsl(120, 100%, var(--custom-lightness)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 5%)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 10%)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 15%)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 20%)),
-        hsl(120, 100%, calc(var(--custom-lightness) - 22.5%))
-      );
-      margin-bottom: 5px;
-    }
-        
-    /* label for the heatmap legend, in the session div */
-    /* There are three labels, one should be directly in the middle and the other two on their respective ends*/
-    
-    /* .label {
-      display: inline-block;
-      width: 33.3333%;
-      padding-left: 15px;
-      box-sizing: border-box;
-      text-align: center;
-    } */
-
-
-    .label-first {
-      display: inline-block;
-      width: 33.3333%;
-      box-sizing: border-box;
-      text-align: left;
-    }
-    
-    .label-middle {
-      display: inline-block;
-      width: 33.3333%;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    
-    .label-last {
-      display: inline-block;
-      width: 33.3333%;
-      box-sizing: border-box;
-      text-align: right;
-    }
-
-
-    .BusynessSliderBox {
-      background-color: #1f1f1f;
-      border-radius: 3px;
-      bottom: 30px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      padding: 10px;
-      /* position: absolute;
-      left: 10vh;
-      bottom: 52vh; */
-      z-index: 1;
-      color: #F2F4F3;
-      pointer-events: auto; /* Allow the button to be clickable */
-
-    }
-
-    .BusynessSliderBox h2 {
-      font-size: 14px;
-      line-height: 20px;
-      margin-bottom: 10px;
-    }
-
-
-/* browsers except firefox
-    input[type="range"]::-webkit-slider-runnable-track {
-      background: #00FF00;
-    }
-    input[type="range"]::-moz-range-track {
-      background: #20826c;
-      height: 0.5rem;
-    }
- */
-
-/* chart container */
-
-
-.chart-container {
-  background-color: #1f1f1f; /* Lighter Green */
-  color: #F2F4F3; /* Darker Text */
-  /* border-radius: 3px; */
-  /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); */
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  position: absolute;
-  bottom: 0vh;
-  z-index: 10;
-  /* width: calc(100% - 20px); Subtract padding from width */
-  max-width: calc(285px - 20px); /* Set max-width to match .sidebar-content width (subtracting the padding) */
-}
-
-/* side bar */
-
-.sidebar {
-  max-height: 94vh; /* or any other value that suits your needs */
-  overflow-y: auto;
-  border-radius: 10px; 
-  top: 3vh;
-  bottom: 3vh;
-  /* add a shadow*/
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  background-color: #1f1f1f; /* Dark Teal Primary Color */
-  color: #F2F4F3; /* Off-White Text */
-
-
-}
-
-.rounded-rect {
-  background: #1f1f1f; /* Starbucks Green */
-  color: #F2F4F3; /* White */
-  border-radius: 10px;
-  /* box-shadow: 0 0 50px -25px black; */
-}
-
-.flex-center {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.flex-center.left {
-  left: 0px;
-}
-
-.flex-center.right {
-  right: 0px;
-}
-
-.sidebar-content {
-  position: relative;
-  width: 95%;
-  height: 95%;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 32px;
-  color: #F2F4F3; /* White */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Align elements to the top */
-  align-items: center; /* Center horizontally */
-}   
-.sidebar-toggle {
-  position: absolute;
-  width: 1.3em;
-  height: 1.3em;
-  overflow: visible;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #F2F4F3; /* White */
-}
-   
-.sidebar-toggle.left {
-  right: -1.5em;
-}
-   
-.sidebar-toggle.right {
-  position: absolute;
-  top: -2vh; /* adjust this value to move up/down */
-  right: 30vh; /* adjust this value to move left/right */
-  color: red;
-}
-   
-.sidebar-toggle:hover {
-  cursor: pointer;
-}
-   
-.sidebar {
-  transition: transform 1s;
-  z-index: 1;
-  width: 300px;
-  height: 100%;
-  background-color: #1f1f1f; /* Starbucks Green */
-  color: #F2F4F3; /* White */
-}
-   
-.left.collapsed {
-  transform: translateX(-295px);
-}
-   
-.right.collapsed {
-  transform: translateX(295px);
-}
-
-.collapsed {
-  width: 0;
-  overflow: hidden;
-}
-
-
-  
-.mapboxgl-popup-content {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.my-custom-popup {
-  max-width: 200px;
-  padding: 10px;
-  background-color: #1f1f1f; /* Starbucks Green */
-  color: #ffffff; /* White */
-  font: 14px/20px 'Arial', sans-serif;
-  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-  text-align: center;
-}
-
-.my-custom-popup .large-text {
-  color: #ffffff; /* White */
-  font-size: 16px;
-}
-
-.my-custom-popup .small-text {
-  color: #ffffff; /* White */
-  font-size: 12px;
-}
-
-.sidebar-header, .suggestion-sidebar-header {
-  font-size: 2.5rem; /* Adjust as needed */
-  color: #F2F4F3; /* Adjust as needed */
-  text-align: center;
-  padding-bottom: 1rem; /* Space below the header */
-}
-
-.rank-info {
-  font-size: 0.8rem; 
-  color: #B6B8B9; 
-  text-align: center;
-}
-
-.HeatMapButton {
-  background-color: #1f1f1f;
-  color: #F2F4F3;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  /* position: absolute;
-  left: 15vh;  
-  bottom: 28vh;   */
-  z-index: 11;
-  
-}
-
-.HeatMapButton:hover {
-  background-color: #393939;
-}
-
-
-.buttonSuggestion {
-  background-color: #292929;
-  color: #F2F4F3;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  z-index: 20;
-  pointer-events: auto;
-}
-
-.buttonSuggestion:disabled {
-  background-color: #292929;
-  color: #666666;
-  cursor: not-allowed;
-}
-
-.buttonSuggestion:hover {
-  background-color: #393939;
-}
-
-.submit-button {
-  background-color: #292929;
-  color: #F2F4F3;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  z-index: 2;
-  position: relative;
-}
-
-.remove-button {
-  background-color: #292929;
-  color: #F2F4F3;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  z-index: 2;
-  position: relative;
-}
-
-
-.submit-button:hover {
-  background-color: #393939;
-}
-
-.remove-button:hover {
-  background-color: #393939;
-}
-
-
-.takeOutButton {
-  background-color: #1f1f1f;
-  color: #F2F4F3;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  z-index: 1;
-  position: absolute;
-  right: 47vh;
-  bottom: 50vh;
-}
-
-.takeOutButton:hover {
-  background-color: #393939;
-
-}
-
-/* style my helpButton so its at the top right of the page */
-
-
-
-.helpButton {
-  background-color: #1f1f1f;
-  color: #F2F4F3;
-  border-radius: 10%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  z-index: 20;
-  position: fixed;
-  left: 5vh;
-  top: 0vh;
-}
-
-.helpButton:hover {
-  background-color: #393939;
-}
-.HelpBoxContainer {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
-  height: 50%;
-  background-color: #1f1f1f;
-  color: #F2F4F3;
-  border-radius: 10%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  z-index: 500;
-  text-align: center;
-
-}
-
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 499;
-}
-
-.ExitButton {
-  background-color: #1f1f1f;
-  color: #F2F4F3;
-  border-radius: 10%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  z-index: 500;
-  position: absolute;
-  left: 550%;
-}
-
-.ExitButton:hover {
-  background-color: #393939;
-}
-
-.cafe-info {
-  font-size: 0.8rem; /* Adjust as needed */
-  color: #B6B8B9; /* Adjust as needed */
-  text-align: center;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*New from Nick*/
-header{
-  position: absolute;
-  top: 0px;
-  height: 75px;
-  width: 100%;
-  background-color: #555555;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  
-}
-#compass-btn, #page-toggle{
-  position: absolute;
-  left: 10px;
-  width: 50px;
-  aspect-ratio: 1/1;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.5s ease;
-  z-index: 10;
-  cursor: pointer;
-}
-#page-toggle{
-  width: 40px;
-}
-#compass-btn:hover, #page-toggle:hover{
-  transform: rotate(360deg);
-}
-
-@keyframes shrinkAnimation {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0.5);
-  }
-}
-
-#compass-btn:active, #page-toggle:active{
-  animation: shrinkAnimation 0.5s;
-}
-
-#compass-btn img, #page-toggle img{
-  width: 100%;
-  aspect-ratio: 1/1;
-}
-#title{
-  position: absolute;
-  left: 75px;
-  height: 50px;
-  width: 300px;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  font-size: xx-large;
-  color: antiquewhite;
-
-}
-
-
-.heatmap-analytics{
-  position: absolute;
-  right: 0px;
-  left: auto;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-.BusynessSliderBox{
-  position: absolute;
-  top: 12.5px;
-  width: 400px;
-  height: 50px;
-  padding: 0px;
-  max-width: 600px;
-  right: 110px;
-
-  left: auto;
-
-  background-color: transparent;
-  box-shadow: none;
-  min-width: 200px;
-}
-
-@media only screen and (max-width: 760px) {
-  .BusynessSliderBox{
-    left: auto;
-  }
-
-
-}
-
-.BusynessSliderBox h3 {
-  display: none;
-}
-.session{
-  position: absolute;
-  height: 50px;
-  width: auto;
-  top: 0px;
-  left: 0px;
-  right: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0px;
-  padding: 0px;
-}
-.row{
-  width: auto;
-  position: absolute;
-  left: 0px;
-  right: 90px;
-  color: antiquewhite;
-  background-color: antiquewhite;
-  /* Add rounded corners */
-  border-radius: 5px;
-  /* Remove the default styling on WebKit browsers (Chrome, Safari) */
-  -webkit-appearance: none;
-}
-.row::-webkit-slider-runnable-track {
-  background-color: antiquewhite; /* Green */
-  border-radius: 20px;
-  height: 10px;
-}
-.row::-webkit-slider-thumb {
-  /* Set the width and height to your preferred values */
-  width: 25px;
-  height: 25px;
-  position: relative;
-  top: -7.5px;
-  /* Change the color of the thumb */
-  background-color: #888888; /* Green */
-  /* Add a border and rounded corners for aesthetics */
-  border-radius: 50%;
-  /* Remove the default styling on WebKit browsers (Chrome, Safari) */
-  -webkit-appearance: none;
-  cursor: pointer;
-
-}
-
-.row::-webkit-slider-thumb:active, .row::-webkit-slider-thumb:hover  {
-    background-color: #333333;
-}
-/* Optionally, style the value indicator */
-.row::-moz-range-thumb {
-  /* For Firefox */
-  width: 20px;
-  height: 20px;
-  background-color: #4CAF50; /* Green */
-  border: 2px solid #4CAF50; /* Green */
-  border-radius: 50%;
-  /* Remove the default styling on Firefox */
-  -moz-appearance: none;
-}
-/* Optionally, style the value indicator */
-.row::-ms-thumb {
-  /* For Edge */
-  width: 20px;
-  height: 20px;
-  background-color: #4CAF50; /* Green */
-  border: 2px solid #4CAF50; /* Green */
-  border-radius: 50%;
-  /* Remove the default styling on Edge */
-  appearance: none;
-}
-
-
-.session h2{
-  position: absolute;
-  right: 0px;
-  width: 80px;
-  margin: 0px;
-  color: antiquewhite;
-  text-align: center;
-}
-
-
-.filter_row{
-  position: absolute;
-  top: 5px;
-  right: 0px;
-  width: 40px;
-  height: 40px;
-  overflow: hidden;
-  background-color: antiquewhite;
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555555;
-  transition: 0.3s ease;
-  cursor: pointer;
-
-}
-.filter_row:hover{
-  background-color: #333333;
-}
-.filter_row:active{
-  animation: shrinkAnimation 0.3s;
-}
-.filter_row h2{
-  font-size: xx-large;
-  margin: 0px;
-  margin-bottom: 2px;
-
-}
-
-.filter_row button{
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-  border: 0px;
-  font-size: 30px;
-  background-color: antiquewhite;
-  transition: 0.3s ease;
-  color: #555555
-}
-
-.filter_row button:hover{
-background-color: #444444;
-}
-.filter_row input, .filter_row label{
-}
-
-
-.helpButton{
-  background-color: antiquewhite;
-  position: absolute;
-  top: 17.5px;
-  width: 40px;
-  height: 40px;
-  right: 60px;
-  left: auto;
-  border-radius: 40px;
-  color: #555555;
-  font-size: xx-large;
-}
-
-.helpButton:active{
-  animation: shrinkAnimation 0.3s;
-}
-
-#page-toggle{
-  left: auto;
-  right: 10px;
-}
-
-.buttonSuggestion{
-  background-color: #555555;
-  color: antiquewhite;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 197.5px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  font-size: x-large;
-}
-
-.buttonSuggestion span{
-  font-size: xx-large;
-  margin-left: 10px;
-}
-
-
-.buttonSuggestion svg {
-  position: absolute;
-  right: 15px;
-}
-
-@media only screen and (max-width: 810px) {
-  #title{
-    display: none;
-  }
-}
-
-
-
-.filter-nav-container{
-  position: absolute;
-  top: 75px;
-  bottom: 50px;
-  width: 50px;
-  left: 0px;
-  background-color:  transparent;
-  bottom: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-  pointer-events: none;
-  
-}
-
-.filter-nav ul{
-  padding: 0px;
-  margin: 0px;
-  width: 50px;
-  list-style-type: none;
-}
-
-
-
-
-
-li div svg{
-  z-index: 20;
-}
-
-.nav li div:hover{
-  background-color: #555555;
-  color: antiquewhite
-}
-
-a .inner:active{
-  animation: shrinkAnimation 0.3s;
-
-}
-
-.nav li div:active{
-  animation: shrinkAnimation 0.3s;
-  color: white;
-}
-
-
-
-
-
-
-
-
-.filter-heatmap-container{
-  position: absolute;
-  top: 75px;
-  bottom: 50px;
-  width: 50px;
-  right: 5px;
-  bottom: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-
-}
-
-
-.HeatMapButton{
-  position: absolute;
-  left: 0%;
-  top: 50%;
-  z-index: 1000;
-  display: none;
-
-}
-
-
-
-.HeatMapBox h3{
-  display: none;
-}
-.HeatMapBox div{
-  position: absolute;
-  right: 5px;
-}
-
-.HeatMapBox div label{
-  margin: 0px;
-  margin-bottom: 10px;
-}
-
-
-.takeOutButton, .takeout-box-container{
-  position: absolute;
-  right: auto;
-  left: 5px;
-  width: 197.5px; /* From 147.5px to 197.5px */
-  top: 80px;
-  height: 50px;
-  padding: 0px;
-  background-color: #555555;
-  z-index: 15;
-  color: antiquewhite;
-  font-size: x-large;
-}
-
-.takeOutButton svg{
-  position: absolute;
-  left: 15px;
-  top: 12.5px ;
-}
-.takeOutButton span{
-  position: absolute;
-  right: 20px;
-  top: 15px;
-  font-size: xx-large;
-}
-
-
-.mode-selection-header, .duration-selection-header, .exit-header {
-  display: none;
-}
-
-
-.button-container{
-  width: 40px;
-  height: 40px;
-  left: 5px;
-  position: absolute;
-}
-
-.duration-selection-options{
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  right: 52.5px;
-  top: 0px;
-  left: auto;
-}
-
-.mode-selection-options{
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  right: 5px;
-  top: 0px;
-  left: auto;
-}
-
-.exit-options {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  right: 100px;
-  top: 0px;
-  left: auto;
-}
-
-.exit-option {
-  left: auto;
-  right: 0px;
-}
-
-.mode-selection-options button, .duration-selection-options button, .button-container button, .exit-options button{
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
-  background-color: antiquewhite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555555;
-  font-size:x-large;
-  position: absolute;
-  top: 5px;
-  left: 0px;
-  padding: 0px;
-  margin: 0px;
-}
-
-.mode-option{
-  left: auto;
-  right: 0px;
-}
-
-.duration-selection-options button{
-  font-size: medium;
-  right: 50px;
-}
-
-.button-container button{
-  font-size: 40px;
-  left: 0px;
-  right: auto
-}
-
-/* .button-container button.{
-
-} */
-
-
-/* .legend{
-  display: none;
-} */
-
-#right{
-  position: absolute;
-  bottom: 0px;
-  top: auto;
-  right: 0px;
-  left: 0px;
-  width: auto;
-  height: 300px;
-  z-index: 30;
-  background-color: #555555;
-  box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, 0.5);
-}
-
-.sidebar-content{
-  position: absolute;
-  width: auto;
-  height: auto;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  background-color: transparent;
-
-}
 .sidebar-header, .suggestion-sidebar-header{
   position: absolute;
   left: 10px;
@@ -2786,50 +1488,10 @@ a .inner:active{
   color: antiquewhite;
 }
 
-.sidebar-zone-rating{
-  color: #555555;
-  font-size: medium;
-  position: absolute;
-  height: 40px;
-  right: 105px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: antiquewhite;
-  border-radius: 50px;
-  width: 175px;
-  top: 10px;
-}
-
-.sidebar-zone-rating p{
-  margin: 0px;
-  padding: 0px;
-  text-align: center;
-  align-items: center;
-  height: 20px;
-  color: #555555;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-}
-
-.sidebar-zone-rating div{
-  margin-bottom: 15px;
-}
-
-#score{
-  position: absolute;
-  left: 70px;
-}
 
 
-.sidebar-content h2{
-  position: absolute;
-  left: 50%;
-  top: 10px;
-}
 
-.cafe-img{
+.cafe-img {
   position: absolute;
   left: 15px;
   top: 69px;
@@ -3109,12 +1771,6 @@ li div:active, li div span:active, li div svg:active{
     }
 }
 
-
-.heatmap-analytics{
-  display: flex;
-  align-items: center;
-  justify-content: center
-}
 .legend{
   position: absolute;
   right: auto;
@@ -3358,9 +2014,6 @@ padding: 0px;
    
     
 
-    .HeatMapBox div{
-      position: absolute;
-    }
 
     }
 
@@ -3791,6 +2444,10 @@ padding: 0px;
 .MuiFormControlLabel-label{
   width: 0.00000001px;
   height: 0.0000001px;
+  color: transparent;
+}
+
+.busyness-label{
   color: transparent;
 }
   /*

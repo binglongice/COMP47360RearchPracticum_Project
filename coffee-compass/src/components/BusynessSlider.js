@@ -88,7 +88,7 @@ const BusynessSlider = ({selectedTimeFrame, setSelectedTimeFrame, activeIndex, s
               <label className = "test22">{displayValue}</label>
             </h2>
             <input id="busyness-slider" className='row' type='range' min='0' max={maxRange} step='1' value={activeIndex} onChange={handleSliderChange} />
-            <label htmlFor="busyness-slider">BusynessSlider</label>
+            <label className="busyness-label" htmlFor="busyness-slider">BusynessSlider</label>
           </div>
           <div className='filter_row'>
             <button onClick={handleTimeframeChange} style={{borderRadius: '50px'}}>
