@@ -813,6 +813,7 @@ header{
   margin: 0px;
   padding: 0px;
 }
+
 .row{
   width: auto;
   position: absolute;
@@ -826,7 +827,7 @@ header{
   -webkit-appearance: none;
 }
 .row::-webkit-slider-runnable-track {
-  background-color: antiquewhite; /* Green */
+  background-color: antiquewhite; 
   border-radius: 20px;
   height: 10px;
 }
@@ -849,13 +850,15 @@ header{
 .row::-webkit-slider-thumb:active, .row::-webkit-slider-thumb:hover  {
     background-color: #333333;
 }
+
+
 /* Optionally, style the value indicator */
 .row::-moz-range-thumb {
   /* For Firefox */
   width: 20px;
   height: 20px;
-  background-color: #4CAF50; /* Green */
-  border: 2px solid #4CAF50; /* Green */
+  background-color: #555555; /* Green */
+  border: 2px solid #555555; /* Green */
   border-radius: 50%;
   /* Remove the default styling on Firefox */
   -moz-appearance: none;
@@ -865,8 +868,8 @@ header{
   /* For Edge */
   width: 20px;
   height: 20px;
-  background-color: #4CAF50; /* Green */
-  border: 2px solid #4CAF50; /* Green */
+  background-color: #555555; /* Green */
+  border: 2px solid #555555; /* Green */
   border-radius: 50%;
   /* Remove the default styling on Edge */
   appearance: none;
@@ -1329,7 +1332,7 @@ nav li a .inner {
   top: 10px;
 }
 
-.sidebar-content img{
+.cafe-img {
   position: absolute;
   left: 15px;
   top: 69px;
@@ -1736,11 +1739,7 @@ bike map pngs big and obscure
       
     }
 
-    .filter-nav{
-      position: absolute;
-      top: 215px;
-    }
-    
+   
 
     .HeatMapBox div{
       position: absolute;
@@ -1969,7 +1968,6 @@ nav li a.active .inner {
 
   .HeatMapBox div{
     pointer-events: auto;
-    top: 225px
   }
 
 .HeatMapBox h3 {
@@ -3096,7 +3094,7 @@ nav li a .inner {
   top: 10px;
 }
 
-.sidebar-content img{
+.cafe-img{
   position: absolute;
   left: 15px;
   top: 69px;
@@ -3514,6 +3512,8 @@ padding: 0px;
       width: 95%;
 
     }
+
+    
     .cafe-img{
       height: 200px;
       top: 55px;
@@ -3521,7 +3521,7 @@ padding: 0px;
     }
     .cafe-info-ul{
       top: 245px;
-      left: 20px;
+      left: 5px;
       margin: 0px;
       padding: 0px;
     }
@@ -3620,10 +3620,7 @@ padding: 0px;
       
     }
 
-    .filter-nav{
-      position: absolute;
-      top: 215px;
-    }
+   
     
 
     .HeatMapBox div{
@@ -3953,9 +3950,9 @@ padding: 0px;
 
   }
 
-  @media only screen and (max-height: 600px) {
+  @media only screen and (max-height: 725px) {
     .HeatMapBox div{
-      top: 120px;
+      top: 170px;
       bottom: 0px;
       overflow-y: auto;
       flex-direction: none;
@@ -3963,7 +3960,9 @@ padding: 0px;
       flex-wrap: nowrap;
     }
     .filter-nav-container{
-      top: 185px;
+      top: 236px;
+      align-items: start;
+
     }
 
     .filter-nav{
@@ -3987,29 +3986,31 @@ x - top-zone drawer responsive
 x - emojis for zone ratings
 
 +/- for legend
-
+x- drawer responsiveness
+x - drawer rating func
+x - cafe drawer resp, maybe fix the image upto min width and have reviews scroll
+  replace cafe drawer with stars. 
+x- title png
 
 
 
 header transparent
 text truncated for cafe review
-align items in top zone window
-half --- link to essentials
-half --- style map buttons
-drawer responsiveness
-x - drawer rating func
-cafe drawer resp, maybe fix the image upto min width and have reviews scroll
-  replace cafe drawer with stars. 
-
-check firefox, edge, chrome and safari
+link to essentials
 drawer in and out animation and lip
 mobile layout flip?
-bike map pngs big and obscure
-title png
-page sometimes reloads on takeaway button
-style all scrollbars
-randalls island no cafes needs styling and NaN
-selection not working for zone window stuff
-faint background stars for zone ratingsboth drawers
 tut at small sizes
+
+
+
+align items in top zone window
+lighthouse testing and changes
+fix slider for firefox
+shrink buttons instead of drawer header for cafes
+
+
+randalls island no cafes needs styling and NaN
+
+fix map buttons scrollbars
+fix LHS overflow
 */

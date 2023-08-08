@@ -3,7 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faCoffee, faVanShuttle, faHandcuffs, faShoePrints, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faDollarSign, faCoffee, faVanShuttle, faHandcuffs, faShoePrints, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton}) => {
     // const [header, setHeader] = useState('Busyness');
@@ -77,8 +77,8 @@ const HeatMapBox = ({checked, setChecked, handleHeatMap, setFindSuggestionButton
                 <FormControlLabel
                     control={
                         <Checkbox
-                            icon={<FontAwesomeIcon icon={faHome} style={{ fontSize: '18px', color: '#555555' }} />}
-                            checkedIcon={<FontAwesomeIcon icon={faHome} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
+                            icon={<FontAwesomeIcon icon={faDollarSign} style={{ fontSize: '18px', color: '#555555' }} />}
+                            checkedIcon={<FontAwesomeIcon icon={faDollarSign} style={{ fontSize: '18px', color: 'antiquewhite' }} />}
                             checked={checked.prices}
                             onChange={handleCheckChange}
                             name="prices"
