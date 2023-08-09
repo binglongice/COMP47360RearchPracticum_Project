@@ -30,7 +30,7 @@ const steps = [
 },
 {
   target: ".legend",
-  content: "The legend is currently showing us busyness. Colors near 0 are less busy, colors near 1 are more busy. For cafe owners, darker is better.",
+  content: "The legend is currently showing us busyness. Lighter colors are less busy and darker colors are more busy. For cafe owners, darker is better.",
 },
 {
   target: ".formgroup",

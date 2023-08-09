@@ -144,7 +144,7 @@ function Map({ selectedIndex, addNextStep, setRun, setRunTakeOut}) {
       console.log("This is prices: ", prices);
   
       let sortedKeysBusyness = Object.keys(busynessData).sort((a, b) => busynessData[b][activeIndex] - busynessData[a][activeIndex]);
-      let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[b] - prices[a]);
+      let sortedKeysPrices = Object.keys(prices).sort((a, b) => prices[a] - prices[b]); //sort so that zone with lowest price is first
       let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[a] - crimeData[b]); //sort so that zone with highest crime is first
       let sortedKeysCrimeLow = Object.keys(crimeData).sort((a, b) => crimeData[a] - crimeData[b]); //sort so that zone with lowest crime is first
       let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
