@@ -187,6 +187,7 @@ nav li div.active .inner {
 .HeatMapBox div{
     pointer-events: auto;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 .HeatMapBox h3 {
   padding: 0;
@@ -1285,102 +1286,102 @@ width: 100%;
     width: auto;
   }
   }
-  @media only screen and (max-width: 675px) {
-    .chart-container{
-      width: 90%;
-      top: 40px;
-      height: 240px;
-    }
-    .cafe-info{
-      top: 270px;
-      width: 90%;
-      left: 15px;
-      right: 15px;
-      height: 260px;
-    }
-    .sidebar-content{
-      overflow: auto;
-    }
+@media only screen and (max-width: 675px) {
+  .chart-container{
+    width: 90%;
+    top: 40px;
+    height: 240px;
   }
-  @media only screen and (max-width: 615px) {
-    .cafe-img, .cafe-info-ul{
-      width: 95%;
-    }
-    .cafe-img{
-      height: 200px;
-      top: 55px;
-      left: 5px;
-    }
-    .cafe-info-ul{
-      top: 245px;
-      left: 5px;
-      margin: 0px;
-      padding: 0px;
-    }
-    .buttonSuggestion{
-      right: 5px;
-      width: 60px;
-      left: auto;
-    }
-    .buttonSuggestion span{
-      display: none;
-    }
-    .takeOutButton{
-      width: 60px;
-      right: auto;
-    }
-    .takeOutButton span{
-      display: none;
-    }
-    .takeout-box-container{
-      top: 135px;
-      left: 5px;
-    }
-    /* .legend{
-      top: 140px;
-    } */
+  .cafe-info{
+    top: 270px;
+    width: 90%;
+    left: 15px;
+    right: 15px;
+    height: 260px;
   }
-  @media only screen and (max-width: 435px) {
-    .BusynessSliderBox{
-      top: 0px;
-      height: 125px;
-      left: 0px;
-      right: 0px;
-      width: auto;
-      z-index: 20;
-    }
+  .sidebar-content{
+    overflow: auto;
+  }
+}
+@media only screen and (max-width: 615px) {
+  .cafe-img, .cafe-info-ul{
+    width: 95%;
+  }
+  .cafe-img{
+    height: 200px;
+    top: 55px;
+    left: 5px;
+  }
+  .cafe-info-ul{
+    top: 245px;
+    left: 5px;
+    margin: 0px;
+    padding: 0px;
+  }
+  .buttonSuggestion{
+    right: 5px;
+    width: 60px;
+    left: auto;
+  }
+  .buttonSuggestion span{
+    display: none;
+  }
+  .takeOutButton{
+    width: 60px;
+    right: auto;
+  }
+  .takeOutButton span{
+    display: none;
+  }
+  .takeout-box-container{
+    top: 135px;
+    left: 5px;
+  }
+  /* .legend{
+    top: 140px;
+  } */
+}
+@media only screen and (max-width: 435px) {
+  .BusynessSliderBox{
+    top: 0px;
+    height: 125px;
+    left: 0px;
+    right: 0px;
+    width: auto;
+    z-index: 20;
+  }
 
-    .HeatMapBox{
-      left: 0px;
-      right: 0px;
-      width: auto;
-    }
-    .buttonSuggestion{
-      top: 60px;
-      left: 0px;
-      right: 0px;
-      width: auto;
-    }
+  .HeatMapBox{
+    left: 0px;
+    right: 0px;
+    width: auto;
+  }
+  .buttonSuggestion{
+    top: 60px;
+    left: 0px;
+    right: 0px;
+    width: auto;
+  }
 
-    .takeOutButton, .takeout-box-container{
-      top: 190px;
-      right: 0px;
-      left: 0px;
-      width: auto;
-    }
+  .takeOutButton, .takeout-box-container{
+    top: 190px;
+    right: 0px;
+    left: 0px;
+    width: auto;
+  }
 
-    .legend{
-      top: 245px;
-      
-    }
+  .legend{
+    top: 245px;
+    
+  }
 
-   
+  
 
-    .HeatMapBox div{
-      position: absolute;
-    }
+  .HeatMapBox div{
+    position: absolute;
+  }
 
-    }
+  }
       
 .welcome {
   display: flex;
@@ -1962,4 +1963,6 @@ personal writeup
 video plan
 feedback from the lads
 mid width the takeout buttons overlap the legend
+
+transparent gaussian blur behind divs or else gradient
 */
