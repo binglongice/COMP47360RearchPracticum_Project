@@ -1996,7 +1996,7 @@ li div:active, li div span:active, li div svg:active{
 }
 .cafe-info::-webkit-scrollbar-track 
 .sidebar-content::-webkit-scrollbar-track, 
-#right::-webkit-scrollbar-track {
+#right div::-webkit-scrollbar-track {
   box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
 }
 .cafe-info::-webkit-scrollbar-thumb 
