@@ -4,7 +4,7 @@ import { ApiContext } from '../context/ApiContext';
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faShoePrints, faHandcuffs, faDollarSign, faShuttleVan, faBus, faCoffee, faArrowDown, faQuestion, faStarHalf } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faShoePrints, faHandcuffs, faDollarSign, faBus, faCoffee, faArrowDown, faStarHalf } from '@fortawesome/free-solid-svg-icons';
 
 
 function Drawer ({getMap, rightSidebar, setRightSidebar, dayData, weekData, yearData, objectID, name, busynessRank, crimeRank, propertyRank, transitRank, combinedRank, cafeRank, cafeId, cafe_url, cafe_name, cafe_rating, cafeClick, setCafeClick, zoneInfo, zoneFlag, setZoneFlag, suggestionFlag, setSelectedImage, setSelectedName, setSelectedRating, setCurrentObjectId, setSideBarName, setZoneBusynessRank, setZoneCrimeRank, setZonePropertyRank, setZoneCombinedRank, setZoneTransportRank, setCafeDensity, setChartFlag, newGeoJson}) {

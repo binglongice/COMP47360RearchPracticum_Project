@@ -1,4 +1,3 @@
-import zIndex from '@mui/material/styles/zIndex';
 import React, { useState, useEffect, useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
 import MapContext from '../context/MapContext';

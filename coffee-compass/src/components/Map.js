@@ -1,24 +1,18 @@
 import React, { useRef, useEffect, useState, useContext } from 'react';
-import mapboxgl from 'mapbox-gl'; 
+import mapboxgl from 'mapbox-gl';
 // import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import Navbar from './Navbar';
 // import { fetchData } from '../api/Api';
 import FilterNav from './FilterNav';
 import { ApiContext } from '../context/ApiContext.js';
-import CafeDrawer from './CafeDrawer';
 import Legend from './Legend';
 import HeatMapBox from './HeatMapBox';
 import TakeOutBox from './TakeOutBox';
 import MapContext from '../context/MapContext';
 import BusynessSlider from './BusynessSlider';
-import LineChart from './LineChart';
 import Drawer from './Drawer';
-import HeatMapButton from './HeatMapButton';
 import TakeOutButton from './TakeOutButton';
 import HelpButton from './HelpButton';
 import HelpBox from './HelpBox';
-import ModeSelection from './ModeSelection';
-import { Link, useNavigate } from 'react-router-dom';
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF4MTczOCIsImEiOiJjbGoybXdvc3QxZGZxM2xzOTRpdGtqbmMzIn0.ZLAd2HM1pH6fm49LnVzK5g';
