@@ -37,7 +37,8 @@ code {
   margin-left: 0;
   z-index: 20px;
   display: flex;
-  justify-content: center;
+  width: 40px;
+  justify-content: right;
 }
 nav li {
   float: none;
@@ -114,6 +115,7 @@ nav li div:hover .inner {
   top: 15%;
   left: -35px;
   z-index: 1;
+  justify-content:left;
 }
 nav li div.active {
   border-color: #00FF00;
@@ -645,11 +647,7 @@ header{
   min-width: 200px;
 }
 
-@media only screen and (max-width: 760px) {
-  .BusynessSliderBox{
-    left: auto;
-  }
-}
+
 
 .BusynessSliderBox h3 {
   display: none;
@@ -800,11 +798,7 @@ background-color: #444444;
   position: absolute;
   right: 15px;
 }
-@media only screen and (max-width: 810px) {
-  #title{
-    display: none;
-  }
-}
+
 .filter-nav-container{
   position: absolute;
   top: 75px;
@@ -1231,16 +1225,7 @@ padding: 0px;
 height: 20px;
 width: 100%;
 }
-@media only screen and (max-width: 926px) {
-  .zone-item{
-  width: 45%;
-  }
-}
-@media only screen and (max-width: 627px) {
-  .zone-item{
-    width: 95%;
-    }
-}
+
 .legend{
   position: absolute;
   right: auto;
@@ -1280,108 +1265,7 @@ width: 100%;
   z-index: 1;
 }
 
-@media only screen and (max-width: 575px) {
-  .BusynessSliderBox{
-    left: 75px;
-    width: auto;
-  }
-  }
-@media only screen and (max-width: 675px) {
-  .chart-container{
-    width: 90%;
-    top: 40px;
-    height: 240px;
-  }
-  .cafe-info{
-    top: 270px;
-    width: 90%;
-    left: 15px;
-    right: 15px;
-    height: 260px;
-  }
-  .sidebar-content{
-    overflow: auto;
-  }
-}
-@media only screen and (max-width: 615px) {
-  .cafe-img, .cafe-info-ul{
-    width: 95%;
-  }
-  .cafe-img{
-    height: 200px;
-    top: 55px;
-    left: 5px;
-  }
-  .cafe-info-ul{
-    top: 245px;
-    left: 5px;
-    margin: 0px;
-    padding: 0px;
-  }
-  .buttonSuggestion{
-    right: 5px;
-    width: 60px;
-    left: auto;
-  }
-  .buttonSuggestion span{
-    display: none;
-  }
-  .takeOutButton{
-    width: 60px;
-    right: auto;
-  }
-  .takeOutButton span{
-    display: none;
-  }
-  .takeout-box-container{
-    top: 135px;
-    left: 5px;
-  }
-  /* .legend{
-    top: 140px;
-  } */
-}
-@media only screen and (max-width: 435px) {
-  .BusynessSliderBox{
-    top: 0px;
-    height: 125px;
-    left: 0px;
-    right: 0px;
-    width: auto;
-    z-index: 20;
-  }
 
-  .HeatMapBox{
-    left: 0px;
-    right: 0px;
-    width: auto;
-  }
-  .buttonSuggestion{
-    top: 60px;
-    left: 0px;
-    right: 0px;
-    width: auto;
-  }
-
-  .takeOutButton, .takeout-box-container{
-    top: 190px;
-    right: 0px;
-    left: 0px;
-    width: auto;
-  }
-
-  .legend{
-    top: 245px;
-    
-  }
-
-  
-
-  .HeatMapBox div{
-    position: absolute;
-  }
-
-  }
       
 .welcome {
   display: flex;
@@ -1445,76 +1329,7 @@ li div:active, li div span:active, li div svg:active{
   animation: shrinkAnimation 0.5s;
 }
 
-  @media only screen and (max-width: 480px) {
-    .BusynessSliderBox{
-      top: 0px;
-      height: 120px;
-      left: 0px;
-      right: 0px;
-      width: auto;
-      z-index: 20;
-    }
-
-    .filter_row {
-      right: 110px;
-      top: 18px;
-      position: absolute;
-      left: auto;
-    }
-
-    .session{
-      top: 80px;
-      width: 100%;
-      background-color: #444444;
-      
-    }
-
-
-
-    .HeatMapBox{
-      left: 0px;
-      right: 0px;
-      width: auto;
-    }
-    
-    .takeOutButton, .takeout-box-container{
-      top: 190px;
-      right: 0px;
-      left: 0px;
-      width: auto;
-    }
-    .takeOutButton{
-      width: 60px;
-      right: auto;
-      top: 135px;
-    }
-
-    .buttonSuggestion{
-      right: 5px;
-      width: 55px;
-      left: auto;
-      top: 60px;
-    }
-
-    .buttonSuggestion span{
-      display: none;
-    }
-
-    .takeOutButton span{
-      display: none;
-    }
-
-
-    .legend{
-      top: 135px;
-      
-    }
-
-   
-    
-
-
-    }
+ 
 
 .rating-container{
   width: 100%;
@@ -1681,164 +1496,353 @@ li div:active, li div span:active, li div svg:active{
   }
 
 
+/*DRAWER WIDTH & SECONDARY STYLING ONLY*/
+  @media only screen and (max-width: 950px) {
 
-    @media only screen and (max-width: 950px) {
-
-      .sidebar-cafe-header{
-        font-size: 4.0vw;
-
-      }
-      .zone-item h2{
-
-        font-size: 2.6vw
-       }
-    }
-
-    @media only screen and (max-width: 875px) {
-      .sidebar-header, .suggestion-sidebar-header{
-        font-size: 4vw;
-      }
-    }
-    @media only screen and (max-width: 660px) {
-      .sidebar-header{
-        font-size: 3vw;
-        right: 250px;
-      }
-
-      .suggestion-sidebar-header{
-        font-size: 3vw;
-        right: 250px;
-      }
-      
-    }
-
-    @media only screen and (max-width: 260px) {
-      .row{
-        width: 130px;
-      }
-    }
-
-    @media only screen and (max-width: 200px) {
-      .sidebar-cafe-header{
-        font-size: 8.0vw;
-        height: 40px;
-        display: flex;
-        align-items: end;      }
-
-    }
-    @media only screen and (max-width: 675px) {
-      .sidebar-cafe-header{
-        font-size: 4vw;
-        top: 10px
-      }
-
-      .zone-cafe-info{
-        top: 280px;
-        left: 5px;
-        
-      }
-    }
-    @media only screen and (max-width: 625px) {
-      .zone-info div h2{
-
-        font-size: 5.4vw
-       }
-
-
-    }
-
-    @media only screen and (max-width: 360px) {
-
-      .zone-cafe-info{
-        top: 325px
-      }
-    }
-
-    @media only screen and (max-width: 360px) {
-        .sidebar-header{
-          top: 60px;
-          right: 10px;
-          width: auto;
-          font-size: 6vw;
-        }
-
-        .suggestion-sidebar-header{
-          top: 0px;
-          right: 50px;
-          width: auto;
-          font-size: 6vw;
-        }
-
-        .chart-container{
-          top: 90px;
-        }
-
-        .sidebar-zone-rating{
-          width: 175px;
-          left: 5px;
-          right: auto;
-        }
-
-        .sidebar-zone-rating p{
-         left: 5px;
-        }
-    }
-
-    @media only screen and (max-width: 350px) {
-      #zone-cafe-title{
-        margin-bottom: 40px;
-      }
-      #av-cafe-rating{
-        top: 40px;
-        left: 0px;
-        right: auto;
-      }
-
-      .zone-cafe .cafe-name{
-        font-size: 15px;
-      }
-
-      .zone-cafe-rating{
-        width: 75px;
-        font-size: small;
-        height: 20px;
-      }
-    }
-    
-
-    @media only screen and (max-width: 325px) {
-      
-
-      svg text{
-        display: none;
-      }
-    }
-
-    @media only screen and (max-width: 300px) {
-
-    .zone-info div p{
-      font-size: 6vw;
-    }
     .sidebar-cafe-header{
-      right: 120px;
-      align-items: center;
+      font-size: 4.0vw;
+    }
+    .zone-item h2{
+      font-size: 2.6vw
+      }
+  }
+  @media only screen and (max-width: 926px) {
+    .zone-item{
+    width: 45%;
+    }
+  }
+  @media only screen and (max-width: 875px) {
+    .sidebar-header, .suggestion-sidebar-header{
+      font-size: 4vw;
+    }
+  }
+  @media only screen and (max-width: 810px) {
+    #title{
+      display: none;
+    }
+  }  
+  @media only screen and (max-width: 760px) {
+    .BusynessSliderBox{
+      left: auto;
+    }
+  }
+
+  @media only screen and (max-width: 675px) {
+    .sidebar-cafe-header{
+      font-size: 4vw;
+      top: 10px
+      
+    }
+    .zone-cafe-info{
+      top: 280px;
+      left: 5px;  
+    }
+    .chart-container{
+      width: 90%;
+      top: 40px;
+      height: 240px;
+    }
+    .cafe-info{
+      top: 270px;
+      width: 90%;
+      left: 15px;
+      right: 15px;
+      height: 260px;
+    }
+    .sidebar-content{
+      overflow: auto;
+    }
+  }
+  @media only screen and (max-width: 660px) {
+    .sidebar-header{
+      font-size: 3vw;
+      right: 250px;
     }
 
-    .sidebar-cafe-rating{
-      width: 57px;
-      font-size: x-small;
-      height: 20px;
-      top: 20px;
-      border-radius: 5px;
-    }
-
-    .background-stars{
-      top: 5px;
+    .suggestion-sidebar-header{
+      font-size: 3vw;
+      right: 250px;
     }
     
   }
+  @media only screen and (max-width: 627px) {
+    .zone-item{
+      width: 95%;
+      }
+  }
+  @media only screen and (max-width: 625px) {
+    .zone-info div h2{
 
-  @media only screen and (max-height: 725px) {
+      font-size: 5.4vw
+      }
+
+
+  }
+  @media only screen and (max-width: 615px) {
+    .cafe-img, .cafe-info-ul{
+      width: 95%;
+    }
+    .cafe-img{
+      height: 200px;
+      top: 55px;
+      left: 5px;
+    }
+    .cafe-info-ul{
+      top: 245px;
+      left: 5px;
+      margin: 0px;
+      padding: 0px;
+    }
+    .buttonSuggestion{
+      right: 5px;
+      width: 60px;
+      left: auto;
+    }
+    .buttonSuggestion span{
+      display: none;
+    }
+    .takeOutButton{
+      width: 60px;
+      right: auto;
+    }
+    .takeOutButton span{
+      display: none;
+    }
+    .takeout-box-container{
+      top: 135px;
+      left: 5px;
+    }
+    /* .legend{
+      top: 140px;
+    } */
+  
+    /* @media only screen and (max-height: 535px) {
+      .filter-nav{
+        width: 45px;
+      }
+    }
+    @media only screen and (max-height: 400px) {
+        #compass-btn, #compass-btn img,#page-toggle, #page-toggle img{
+        width: 30px;
+        height: 30px;
+      }
+    
+      #compass-btn{
+        top: 5px;
+        left: 5px;
+        
+      }
+      #page-toggle {
+        top: 5px;
+        right: 5px;
+      }
+    
+      .helpButton{
+        top: 5px;
+        right: 40px;
+        width: 30px;
+        height: 30px;
+        font-size: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    
+      .BusynessSliderBox{
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        width: auto;
+        height: 75px;
+      }
+      .session{
+        width: 95%;
+        left: 2.5%;
+      }
+      .filter_row{
+        top: 5px; 
+        right: 75px;
+        width: 30px;
+        height: 30px;
+      }
+    
+      .filter_row button{
+        font-size: 20px;
+      }
+    
+      .session{
+        height: 30px;
+        top: 40px;
+      }
+    
+      .legend{
+        top: 80px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        background-color: #444444;
+      }
+    
+      .legend svg{
+        height: 20px;
+        margin-top: 0px;
+      }
+      .legend svg text{
+        display: none;
+      }
+      .legend span{
+          bottom: 0px;
+          margin-bottom: 5px;
+      }
+    
+      .takeOutButton{
+        top: 80px;
+        height: 30px;
+        width: 50px;
+      }
+      .takeOutButton svg {
+        font-size: 25px;
+        top: 2px;
+        left: 10px;
+      }
+    
+      .buttonSuggestion{
+        top: 5px;
+        height: 30px;
+        width: 50px;
+      }
+    
+      .takeout-box-container{
+        top: 115px;
+        height: 35px;
+      }
+    
+      .button-container button, .exit-options button, .duration-selection-options button, .mode-selection-options button{
+        width: 30px;
+        height: 30px;
+        top: 2.5px
+      }
+      
+      .mode-selection-options button{
+        font-size: 18px;
+        right: 0px;
+        left: auto;
+      }
+      .duration-selection-options {
+        right: 35px;
+        left: auto;
+        width: 30px;
+      }
+    
+      .exit-options{
+        width: 30px;
+        right: 65px
+      }
+    
+      .filter-nav-container{
+        top: 155px;
+        ;
+      }
+    
+      .filter-nav{
+        width: 50px;
+      }
+    
+      .HeatMapBox div{
+        top: 80px;
+        max-height: 240px;
+      }
+    
+    } */
+    
+  }
+  @media only screen and (max-width: 575px) {
+    .BusynessSliderBox{
+      left: 75px;
+      width: auto;
+    }
+    }
+  @media only screen and (max-width: 480px) {
+    #page-toggle{
+      top:5px;
+      right: 5px;
+      width: 30px;
+    }
+    #page-toggle img{
+      width: 30px;
+      height: 30px;
+    }
+    .helpButton{
+      top: 5px;
+      right: 40px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .filter_row{
+      right: 75px;
+      top: 5px;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      left: auto;
+    }
+    .filter_row button{
+      font-size: 25px;
+    }
+    .session{
+      top: 40px;
+      right: 5px;
+      left: 80px;
+      width: auto;
+      height: 30px;
+      
+    }
+    .BusynessSliderBox{
+      top: 0px;
+      height: 120px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+      z-index: 20;
+    }
+    .HeatMapBox{
+      left: 0px;
+      right: 0px;
+      width: auto;
+    }
+    .takeOutButton, .takeout-box-container{
+      top: 135px;
+      right: 0px;
+      left: 0px;
+      width: auto;
+    }
+    .takeOutButton{
+      width: 60px;
+      right: auto;
+      top: 80px;
+    }
+    .buttonSuggestion{
+      right: 0px;
+      width: 55px;
+      left: auto;
+      top: 5px;
+    }
+    .buttonSuggestion span{
+      display: none;
+    }
+    .takeOutButton span{
+      display: none;
+    }
+    .legend{
+      top: 80px;
+      background-color: #444444;
+      
+    }
+}
+  /* @media only screen and (max-height: 725px) {
     .HeatMapBox div{
       top: 170px;
       bottom: 0px;
@@ -1846,15 +1850,15 @@ li div:active, li div span:active, li div svg:active{
       flex-direction: none;
       -webkit-flex-wrap: none;
       flex-wrap: nowrap;
+      height: 240px;
     }
     .filter-nav-container{
       top: 245px;
       align-items: start;
       bottom: 50px;
       overflow: hidden;
-
     }
-
+  
     .filter-nav{
       position: absolute;
       top: 0px;
@@ -1862,10 +1866,197 @@ li div:active, li div span:active, li div svg:active{
       bottom: 0px;
       overflow-y: auto;
       direction: rtl; 
+      justify-content: left;
+      overflow-x: hidden;
+    }
+  } */
+  
+  @media only screen and (max-width: 435px) {
+    .BusynessSliderBox{
+      top: 0px;
+      height: 125px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+      z-index: 20;
+    }
+  
+    .HeatMapBox{
+      left: 0px;
+      right: 0px;
+      width: auto;
+    }
+    /* .buttonSuggestion{
+      top: 60px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+    } */
+  
+    /* .takeOutButton, .takeout-box-container{
+      top: 190px;
+      right: 0px;
+      left: 0px;
+      width: auto;
+    } */
+  
+    /* .legend{
+      top: 245px;
+      
+    } */
+  
+    
+  
+    .HeatMapBox div{
+      position: absolute;
+    }
+  
+    }
+  @media only screen and (max-width: 360px) {
+      .sidebar-header{
+        top: 60px;
+        right: 10px;
+        width: auto;
+        font-size: 6vw;
+      }
+      .zone-cafe-info{
+        top: 325px
+      }
 
+      .suggestion-sidebar-header{
+        top: 0px;
+        right: 50px;
+        width: auto;
+        font-size: 6vw;
+      }
+
+      .chart-container{
+        top: 90px;
+      }
+
+      .sidebar-zone-rating{
+        width: 175px;
+        left: 5px;
+        right: auto;
+      }
+
+      .sidebar-zone-rating p{
+        left: 5px;
+      }
+  }
+
+  @media only screen and (max-width: 350px) {
+    #zone-cafe-title{
+      margin-bottom: 40px;
+    }
+    #av-cafe-rating{
+      top: 40px;
+      left: 0px;
+      right: auto;
     }
 
-    
+    .zone-cafe .cafe-name{
+      font-size: 15px;
+    }
+
+    .zone-cafe-rating{
+      width: 75px;
+      font-size: small;
+      height: 20px;
+    }
+  }
+  @media only screen and (max-width: 325px) {
+    svg text{
+      display: none;
+    }
+    #compass-btn {
+      top: 5px;
+      left: 5px;
+      height: 30px;
+      width: 30px;
+    }
+    #compass-btn img{
+      width: 30px;
+      height: 30px;
+    }
+
+    .session{
+      left: 5px;
+    }
+  }
+  @media only screen and (max-width: 300px) {
+
+    #right div{
+      overflow-x: hidden;
+    }
+    .cafe-info::-webkit-scrollbar 
+.sidebar-content::-webkit-scrollbar,
+#right::-webkit-scrollbar{
+  width: 5px;
+}
+.cafe-info::-webkit-scrollbar-track 
+.sidebar-content::-webkit-scrollbar-track, 
+#right::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+}
+.cafe-info::-webkit-scrollbar-thumb 
+.sidebar-content::-webkit-scrollbar-thumb,
+#right::-webkit-scrollbar-thumb{
+    background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 5px;
+}
+  .zone-info div p{
+    font-size: 6vw;
+  }
+  .sidebar-cafe-header{
+    right: 120px;
+    align-items: center;
+  }
+
+  .sidebar-cafe-rating{
+    width: 57px;
+    font-size: x-small;
+    height: 20px;
+    top: 20px;
+    border-radius: 5px;
+  }
+
+  .background-stars{
+    top: 5px;
+  }
+  
+  .rating-container{
+    width: 90;
+  }
+  .zone-info{
+    left: 0px;
+    right: 0px;
+  }
+  .zone-item{
+    margin-left: 0px;
+    width: 90%;
+  }
+}
+  @media only screen and (max-width: 265px) {
+    .rating-stars-div{
+      left: 120px;
+      right: auto;
+      width: 100px;
+    }
+  }
+  @media only screen and (max-width: 260px) {
+    .row{
+      width: 130px;
+    }
+  }
+  @media only screen and (max-width: 200px) {
+    .sidebar-cafe-header{
+      font-size: 8.0vw;
+      height: 40px;
+      display: flex;
+      align-items: end;      }
+
   }
 
   .filter-nav ul li {
@@ -1899,13 +2090,7 @@ li div:active, li div span:active, li div svg:active{
 .heatmap-label{
   display: none;
 }
-@media only screen and (max-width: 265px) {
-  .rating-stars-div{
-    left: 120px;
-    right: auto;
-    width: 100px;
-  }
-}
+
 .MuiFormControlLabel-label{
   width: 0.00000001px;
   height: 0.0000001px;
@@ -1915,6 +2100,128 @@ li div:active, li div span:active, li div svg:active{
 .busyness-label{
   color: transparent;
 }
+/* 
+@media only screen and (max-height: 400px) {
+  @media only screen and (max-width: 325px) {
+    #compass-btn, #compass-btn img,#page-toggle, #page-toggle img{
+    width: 30px;
+    height: 30px;
+  }
+
+  #compass-btn{
+    top: 5px;
+    left: 5px;
+    
+  }
+  #page-toggle {
+    top: 5px;
+    right: 5px;
+  }
+
+  .helpButton{
+    top: 5px;
+    right: 40px;
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .filter_row{
+    top: 5px; 
+    right: 75px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .filter_row button{
+    font-size: 20px;
+  }
+
+  .session{
+    height: 30px;
+    top: 40px;
+  }
+
+  .legend{
+    top: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    background-color: #444444;
+  }
+
+  .legend svg{
+    height: 20px;
+    margin-top: 0px;
+  }
+  .legend span{
+      bottom: 0px;
+      margin-bottom: 5px;
+  }
+
+  .takeOutButton{
+    top: 80px;
+    height: 30px;
+    width: 50px;
+  }
+  .takeOutButton svg {
+    font-size: 25px;
+    top: 2px;
+    left: 10px;
+  }
+
+  .buttonSuggestion{
+    top: 5px;
+    height: 30px;
+    width: 50px;
+  }
+
+  .takeout-box-container{
+    top: 115px;
+    height: 35px;
+  }
+
+  .button-container button, .exit-options button, .duration-selection-options button, .mode-selection-options button{
+    width: 30px;
+    height: 30px;
+    top: 2.5px
+  }
+  
+  .mode-selection-options button{
+    font-size: 18px;
+    right: 0px;
+    left: auto;
+  }
+  .duration-selection-options {
+    right: 35px;
+    left: auto;
+    width: 30px;
+  }
+
+  .exit-options{
+    width: 30px;
+    right: 65px
+  }
+
+  .filter-nav-container{
+    top: 155px;
+  }
+
+  .filter-nav{
+    width: 50px;
+  }
+
+  .HeatMapBox div{
+    top: 80px;
+    max-height: 240px;
+  }
+}
+} */
+
+
   /*
 total responsiveness
 x -reload button
@@ -1964,5 +2271,10 @@ video plan
 feedback from the lads
 mid width the takeout buttons overlap the legend
 
+fix RHS over-scroll
 transparent gaussian blur behind divs or else gradient
+
+
+fix top rankings drawer at min width of 240px
+max height media queries for main items
 */
