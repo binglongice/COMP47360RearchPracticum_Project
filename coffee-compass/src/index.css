@@ -1198,7 +1198,7 @@ a .inner:active{
   left: 5px;
   right: 5px;
   bottom: 5px;
-  height: 270px;
+  height: 220px;
 }
 .sidebar-toggle.right{
   display: flex;
@@ -1500,7 +1500,7 @@ li div:active, li div span:active, li div svg:active{
     left: 50%;
     right: 0px;
     top: 70px;
-    height: 240px;
+    height: 220px;
     overflow-y: auto;
   }
 
