@@ -77,25 +77,25 @@ WSGI_APPLICATION = "yelp_integration.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-ALLOWED_HOSTS = ['172.17.0.2','137.43.49.39','127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['172.17.0.2','137.43.49.39','127.0.0.1', 'localhost', 'csi6220-2-vm4.ucd.ie']
 
 DATABASES = {
-  #  'default': {
-   #    'ENGINE': 'django.db.backends.postgresql',
-    #    'NAME': 'postgres',
-     #   'USER': 'postgres',
-      #  'PASSWORD': 'ahorsewithnoName2',
-       # 'HOST': 'database-2.c5bqixkyfabd.eu-west-2.rds.amazonaws.com',
-        #'PORT': '5432',
+    'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'ahorsewithnoName2',
+        'HOST': 'database-2.c5bqixkyfabd.eu-west-2.rds.amazonaws.com',
+    'PORT': '5432',
      
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "cafes_manhattan",
-        "USER": "postgres",
-        "PASSWORD": "password",
-        "HOST": "localhost",
-        "PORT": "5432",
-    },
+   # "default": {
+      #  "ENGINE": "django.db.backends.postgresql",
+      #  "NAME": "cafes_manhattan",
+      #  "USER": "postgres",
+      #  "PASSWORD": "password",
+      #  "HOST": "localhost",
+      #  "PORT": "5432",
+   # },
 
     #adding in a test database
    # 'TEST': {
@@ -106,7 +106,7 @@ DATABASES = {
         #'HOST': 'localhost',
         #'PORT': '5432',
     }
-#}
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -152,8 +152,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://localhost:6379/0',
-        #'LOCATION': 'redis://redis://137.43.49.39:6379/0',
+        #'LOCATION': 'redis://localhost:6379/0',
+        #'LOCATION': 'redis://137.43.49.39:6379/0',
+        'LOCATION': 'redis://csi6220-2-vm4.ucd.ie:6379/0',
 
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
@@ -168,15 +169,18 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 #REDIS_HOST = '137.43.49.39'   # Replace 'your_redis_host' with the actual Redis host
-REDIS_HOST = '127.0.0.1'
+REDIS_HOST = 'csi6220-2-vm4.ucd.ie'   # Replace 'your_redis_host' with the actual Redis host
+#REDIS_HOST = '127.0.0.1'
 REDIS_PORT = 6379                # Replace '6379' with the actual Redis port number
 REDIS_DB = 0                     # Replace '0' with the actual Redis database number you want to use
 
 # celery settings
-CELERY_BROKER_URL = 'redis://localhost:6379'
+#CELERY_BROKER_URL = 'redis://localhost:6379'
 #CELERY_BROKER_URL = 'redis://137.43.49.39:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://csi6220-2-vm4.ucd.ie:6379'
+#CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 #CELERY_RESULT_BACKEND = 'redis://137.43.49.39:6379'
+CELERY_RESULT_BACKEND = 'redis://csi6220-2-vm4.ucd.ie:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'

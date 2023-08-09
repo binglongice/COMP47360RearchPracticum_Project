@@ -21,8 +21,8 @@ from datetime import date
 from collections import Counter 
 
 
-REDIS_HOST = '127.0.0.1'
-REDIS_PORT = '6379'
+#REDIS_HOST = '127.0.0.1'
+#REDIS_PORT = '6379'
 
 @api_view(['GET'])
 def predictions_api(request, location):
@@ -51,7 +51,7 @@ def cafes_api(request, location):
         redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
         # Create a key with Yelp API and current date
-        redis_key = f"Yelp_API:{date.today()}:{location}, cafes"
+        redis_key = f"Yelp_API:{date.today()}:{location}"
 
         # Check if the data is already cached in Redis
         cached_data = redis_client.get(redis_key)
@@ -63,7 +63,7 @@ def cafes_api(request, location):
             serializer = Cafe_DB_Serializer(cafes_list, many=True)
             return Response(serializer.data)
 
-        if Cafe.objects.count() >= 1:
+        if Cafe.objects.count() == 1000:
             cafes_list = Cafe.objects.all()
             serializer = Cafe_DB_Serializer(cafes_list, many=True)
             print(Cafe.objects.count(), "cafes.")
@@ -153,7 +153,7 @@ def bars_api(request, location):
             serializer = Bars_DB_Serializer(bars_list, many=True)
             return Response(serializer.data)
 
-        if Bars.objects.count() >= 1:
+        if Bars.objects.count() == 1000:
             bars_list = Bars.objects.all()
             serializer = Bars_DB_Serializer(bars_list, many=True)
             print(Bars.objects.count(), "bars.")
@@ -258,7 +258,7 @@ def restaurants_api(request, location):
             serializer = Restaurants_DB_Serializer(restaurants_list, many=True)
             return Response(serializer.data)
 
-        if Restaurants.objects.count() >= 1:
+        if Restaurants.objects.count() == 1000:
             restaurants_list = Restaurants.objects.all()
             serializer = Restaurants_DB_Serializer(restaurants_list, many=True)
             print(Restaurants.objects.count(), "restaurants.")
