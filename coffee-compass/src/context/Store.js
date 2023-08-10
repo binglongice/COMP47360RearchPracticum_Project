@@ -66,7 +66,8 @@ function Store({ children }) {
   const fetchData = () => {
     console.log('Before calling getCafesByLocation');
     return axios
-      .get(`http://127.0.0.1:8000/yelp_api/api/cafes/${location}/`)
+      //.get(`http://127.0.0.1:8000/yelp_api/api/cafes/${location}/`)
+      .get(`https://csi6220-2-vm4.ucd.ie/api/yelp_api/api/cafes/${location}/`)
       .then((response) => {
         const responseData = response.data;
         console.log('Received data:', responseData);
@@ -82,7 +83,8 @@ function Store({ children }) {
 
   const fetchDataBars = () => {
     return axios
-    .get(`http://127.0.0.1:8000/yelp_api/api/bars/${location}/`)
+    //.get(`http://127.0.0.1:8000/yelp_api/api/bars/${location}/`)
+    .get(`https://csi6220-2-vm4.ucd.ie/api/yelp_api/api/bars/${location}/`)
     .then((response) => {
       const responseData = response.data;
       console.log('Received data:', responseData);
@@ -97,7 +99,8 @@ function Store({ children }) {
 
 const fetchDataRestaurants = () => {
   return axios
-  .get(`http://127.0.0.1:8000/yelp_api/api/restaurants/${location}/`)
+  //.get(`http://127.0.0.1:8000/yelp_api/api/restaurants/${location}/`)
+  .get(`https://csi6220-2-vm4.ucd.ie/api/yelp_api/api/restaurants/${location}/`)
   .then((response) => {
     const responseData = response.data;
     console.log('Received data:', responseData);
@@ -114,7 +117,8 @@ const fetchDataRestaurants = () => {
 
   const fetchReviews = (id) => {
     return axios
-      .get(`http://127.0.0.1:8000/yelp_api/api/reviews/${id}/`)
+      //.get(`http://127.0.0.1:8000/yelp_api/api/reviews/${id}/`)
+      .get(`https://csi6220-2-vm4.ucd.ie/api/yelp_api/api/reviews/${id}/`)
       .then((response) => {
         const reviewData = response.data;
         console.log('Received reviews:', reviewData);
@@ -147,7 +151,9 @@ const fetchDataRestaurants = () => {
     const todayDate = getFormattedDate();
     console.log('input to 24 hour API - day/month/week_of_year', todayDate);
 
-    fetch(`http://127.0.0.1:8000/yelp_api/pickle_views/model-output/${todayDate}/`)
+    //fetch(`http://127.0.0.1:8000/yelp_api/pickle_views/model-output/${todayDate}/`)
+    fetch(`https://csi6220-2-vm4.ucd.ie/api/yelp_api/pickle_views/model-output/${todayDate}/`)
+    
     .then(response => response.json())
     .then(data => {
       console.log('API data', data);
@@ -160,7 +166,8 @@ const fetchDataRestaurants = () => {
 
     //return the month endpoint
     useEffect(() => {
-      fetch('http://127.0.0.1:8000/yelp_api/pickle_views/monthly/')
+     // fetch('http://127.0.0.1:8000/yelp_api/pickle_views/monthly/')
+      fetch('`https://csi6220-2-vm4.ucd.ie/api/yelp_api/pickle_views/monthly/')
         .then(response => response.json())
         .then(data => {
           console.log('Month data', data);
@@ -174,7 +181,8 @@ const fetchDataRestaurants = () => {
   useEffect(() => {
     const currentWeek = getWeek();
     console.log("current week", currentWeek);
-    fetch(`http://127.0.0.1:8000/yelp_api/pickle_views/weekly/${currentWeek}/`)
+    //fetch(`http://127.0.0.1:8000/yelp_api/pickle_views/weekly/${currentWeek}/`)
+    fetch(`https://csi6220-2-vm4.ucd.ie/api/yelp_api/pickle_views/weekly/${currentWeek}/`)
     .then(response => response.json())
     .then(data => {
       console.log('Week data', data);
@@ -327,13 +335,13 @@ useEffect(() => {
       console.log("This is the test key", key, value)
       averageRating[key] = value / cafeDensity[key];
     }
-    console.log("sploosh", averageRating) 
+
     setAverageRating(averageRating);
   } 
 
   useEffect(() => {
     if (sortedCafes.length > 65 && cafeDensity !== {}) {
-      console.log("I hate this", sortedCafes, cafeDensity)
+
 
       getAverageRating(sortedCafes, cafeDensity);
     }

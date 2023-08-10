@@ -142,7 +142,7 @@ function Map({ selectedIndex, addNextStep, setRun, setRunTakeOut}) {
       let sortedKeysCrime = Object.keys(crimeData).sort((a, b) => crimeData[a] - crimeData[b]); //sort so that zone with highest crime is first
       let sortedKeysCrimeLow = Object.keys(crimeData).sort((a, b) => crimeData[a] - crimeData[b]); //sort so that zone with lowest crime is first
       let sortedKeysTransport = Object.keys(transportData).sort((a, b) => transportData[b] - transportData[a]); 
-      let sortedKeysCafes = Object.keys(cafeDensity).sort((a, b) => cafeDensity[b] - cafeDensity[a]);
+      let sortedKeysCafes = Object.keys(cafeDensity).sort((a, b) => cafeDensity[a] - cafeDensity[b]);
       let combined = {};
       let current = {};
       
@@ -1261,7 +1261,6 @@ useEffect(() => {
     const suggestZone = (activeMaps) => {
       //if a single checkbox is checked, return the zone with the highest rank for that heatmap
       if (activeMaps.busyness && !activeMaps.cafeDensity && !activeMaps.crimeData && !activeMaps.prices && !activeMaps.transportData) {
-        console.log("fuck busyness", busynessRank);
         let foundZone = [busynessRank[0], busynessRank[1], busynessRank[2]]
         return foundZone;
       }
