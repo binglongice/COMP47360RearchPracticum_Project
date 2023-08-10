@@ -1,0 +1,2390 @@
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.map-container {
+  width: 100vw;
+  height: 100vh;
+  pointer-events: auto;
+  top: 0px;
+  z-index: 1;
+  height: auto;
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
+
+}
+.nav-bar {
+  height: 5vh;
+}
+.mapboxgl-popup {
+  max-width: 200px;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.filter-nav {
+  padding: 0px;
+  margin-left: 0;
+  z-index: 20px;
+  display: flex;
+  width: 40px;
+  justify-content: right;
+}
+nav li {
+  float: none;
+  margin-right: 40px;
+  line-height: 80px;
+  position: relative;
+  text-align: center;
+  list-style-type: none; 
+  padding: 5px;
+  margin: 10px;
+  padding: 0px;
+  width: 40px;
+  height: 40px;
+  pointer-events: auto;
+  font-size: medium;
+  line-height: normal;
+  cursor: pointer;
+}
+nav li div {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden; 
+  border: 2px solid transparent; 
+  font-size: 18px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: antiquewhite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  transition: 0.3s ease;
+}
+nav li div img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}
+nav li div:hover {
+  border-color: #00FF00;
+  color: antiquewhite;
+}
+nav li div .inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin: 0;
+  background-color: #555555;
+  color: antiquewhite;
+  border-radius: 50%;
+  transition: all 0.1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+a .inner *{
+  color: antiquewhite;
+}
+nav li div:hover .inner {
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
+}
+.filter-nav-container {
+  position: absolute;
+  top: 15%;
+  left: -35px;
+  z-index: 1;
+  justify-content:left;
+}
+nav li div.active {
+  border-color: #00FF00;
+  color: antiquewhite;
+}
+nav li div.active .inner {
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
+}
+.legend {
+  background-color: #555555;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  z-index: 1;
+  position: relative;
+  left: 35vw;
+  top: 40vh;
+  opacity: 0.85;
+}
+.legend span {
+  margin: 0 0 10px;
+  text-align: center;
+  color: white;
+}
+.legend p {
+  margin: 0 0 10px;
+  text-align: center;
+  color: white;
+}
+.legend h4 {
+  margin: 0 0 10px;
+  text-align: center;
+  color: white;
+}
+.heatmap-analytics {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  align-items: center;
+  position: absolute;
+  top: 15%;  
+  left: 10%; 
+  z-index: 6;
+  gap: 20px;
+  pointer-events: none;
+
+}
+.HeatMapBox {
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  position: absolute;
+  right: 0px;
+  top: 75px;
+  bottom: 50px;
+  width: 45px;
+  padding: 0px;
+  overflow: hidden;
+  visibility: visible;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  width: 300px;
+  z-index: 5;
+  pointer-events: none;
+}
+.HeatMapBox div{
+    pointer-events: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.HeatMapBox h3 {
+  padding: 0;
+  margin: 0
+}
+.takeout-box-container {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  right: 40vh;
+  bottom: 5vh;
+  z-index: 1;
+}
+.takeout-box-container input {
+  display: inline-block;
+  margin: 0 0 10px;
+  width: 10px;
+  height: 10px;
+  vertical-align: middle;
+}
+.takeout-box-container label {
+display: inline-block;
+margin: 0 0 10px;
+padding: 10px;
+text-align: center;
+}
+.takeout-box-container button {
+display: inline-block;
+margin: 0 0 10px;
+padding: 10px;
+text-align: center;
+}
+.session {
+  margin-bottom: 20px;
+  padding-top: 10px;
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  pointer-events: auto;
+}
+.row {
+  height: 12px;
+  width: 100%;
+}
+:root {
+  --custom-lightness: 35%; 
+}
+.colors {
+  background: linear-gradient(
+    to right,
+    hsl(120, 100%, var(--custom-lightness)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 5%)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 10%)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 15%)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 20%)),
+    hsl(120, 100%, calc(var(--custom-lightness) - 22.5%))
+  );
+  margin-bottom: 5px;
+}
+.label-first {
+  display: inline-block;
+  width: 33.3333%;
+  box-sizing: border-box;
+  text-align: left;
+}
+.label-middle {
+  display: inline-block;
+  width: 33.3333%;
+  box-sizing: border-box;
+  text-align: center;
+}
+.label-last {
+  display: inline-block;
+  width: 33.3333%;
+  box-sizing: border-box;
+  text-align: right;
+}
+.BusynessSliderBox {
+  background-color: #1f1f1f;
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 6;
+  color: #F2F4F3;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.BusynessSliderBox h2 {
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+.chart-container {
+  background-color: #1f1f1f; 
+  color: #F2F4F3;
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  bottom: 0vh;
+  z-index: 10;
+  max-width: calc(285px - 20px);
+}
+.sidebar {
+  max-height: 94vh; 
+  overflow-y: auto;
+  border-radius: 10px; 
+  top: 3vh;
+  bottom: 3vh;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: transform 1s;
+  z-index: 1;
+  width: 300px;
+  height: 100%;
+  background-color: #1f1f1f; 
+  color: #F2F4F3;
+}
+.rounded-rect {
+  background: #1f1f1f;
+  color: #F2F4F3; 
+  border-radius: 10px;
+}
+.flex-center {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex-center.left {
+  left: 0px;
+}
+.flex-center.right {
+  right: 0px;
+}
+.sidebar-content {
+  position: relative;
+  width: 95%;
+  height: 95%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 32px;
+  color: #F2F4F3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center; 
+}   
+.sidebar-toggle {
+  position: absolute;
+  width: 1.3em;
+  height: 1.3em;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #F2F4F3; 
+} 
+.sidebar-toggle.left {
+  right: -1.5em;
+}
+.sidebar-toggle.right {
+  position: absolute;
+  top: -2vh; 
+  right: 30vh;
+  color: red;
+}  
+.sidebar-toggle:hover {
+  cursor: pointer;
+} 
+.left.collapsed {
+  transform: translateX(-295px);
+} 
+.right.collapsed {
+  transform: translateX(295px);
+}
+.collapsed {
+  width: 0;
+  overflow: hidden;
+} 
+.mapboxgl-popup-content {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.my-custom-popup {
+  max-width: 200px;
+  padding: 10px;
+  background-color: #1f1f1f; 
+  color: #ffffff; 
+  font: 14px/20px 'Arial', sans-serif;
+  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  text-align: center;
+}
+.my-custom-popup .large-text {
+  color: #ffffff; 
+  font-size: 16px;
+}
+.my-custom-popup .small-text {
+  color: #ffffff;
+  font-size: 12px;
+}
+.sidebar-header, .suggestion-sidebar-header{
+  font-size: 2.5rem; 
+  text-align: center;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 10;
+  padding: 0px;
+  margin: 0px;
+  color: antiquewhite;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.rank-info {
+  font-size: 0.8rem; 
+  color: #B6B8B9; 
+  text-align: center;
+}
+.HeatMapButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 11;  
+}
+.HeatMapButton:hover {
+  background-color: #393939;
+}
+.buttonSuggestion {
+  background-color: #292929;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 20;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  visibility: visible;
+  overflow: hidden;
+}
+.buttonSuggestion:disabled {
+  background-color: #292929;
+  color: #666666;
+  cursor: not-allowed;
+}
+.buttonSuggestion:hover {
+  background-color: #393939;
+}
+.submit-button {
+  background-color: #292929;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+.remove-button {
+  background-color: #292929;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+.submit-button:hover {
+  background-color: #393939;
+}
+.remove-button:hover {
+  background-color: #393939;
+}
+.takeOutButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 1;
+  position: absolute;
+  right: 47vh;
+  bottom: 50vh;
+}
+.takeOutButton:hover {
+  background-color: #393939;
+}
+.helpButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 10%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 20;
+  position: fixed;
+  left: 5vh;
+  top: 0vh;
+}
+.helpButton:hover {
+  background-color: #393939;
+}
+.HelpBoxContainer {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 10%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 500;
+  text-align: center;
+}
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 499;
+}
+.ExitButton {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 10%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  z-index: 500;
+  position: absolute;
+  left: 550%;
+}
+.ExitButton:hover {
+  background-color: #393939;
+}
+header{
+  position: absolute;
+  top: 0px;
+  height: 75px;
+  width: 100%;
+  background-color: #555555;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 4;
+  opacity: 0.85;
+}
+#compass-btn, #page-toggle{
+  position: absolute;
+  left: 10px;
+  width: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease;
+  z-index: 10;
+  cursor: pointer;
+}
+#page-toggle{
+  width: 40px;
+}
+#compass-btn:hover, #page-toggle:hover{
+  transform: rotate(360deg);
+}
+@keyframes shrinkAnimation {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.5);
+  }
+}
+#compass-btn:active, #page-toggle:active{
+  animation: shrinkAnimation 0.5s;
+}
+#compass-btn img, #page-toggle img{
+  width: 100%;
+  aspect-ratio: 1/1;
+}
+#title{
+  position: absolute;
+  left: 75px;
+  height: 50px;
+  width: 300px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-size: xx-large;
+  color: antiquewhite;
+}
+.heatmap-analytics{
+  position: absolute;
+  right: 0px;
+  left: auto;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.BusynessSliderBox{
+  position: absolute;
+  top: 12.5px;
+  width: 400px;
+  height: 50px;
+  padding: 0px;
+  max-width: 600px;
+  right: 110px;
+  left: auto;
+  background-color: transparent;
+  box-shadow: none;
+  min-width: 200px;
+  opacity: 0.85;
+}
+
+
+
+.BusynessSliderBox h3 {
+  display: none;
+}
+.session{
+  position: absolute;
+  height: 50px;
+  width: auto;
+  top: 0px;
+  left: 0px;
+  right: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
+  padding: 0px;
+}
+.row{
+  width: auto;
+  position: absolute;
+  left: 0px;
+  right: 90px;
+  color: antiquewhite;
+  background-color: antiquewhite;
+  border-radius: 5px;
+  -webkit-appearance: none;
+}
+.row::-webkit-slider-runnable-track {
+  background-color: antiquewhite; 
+  border-radius: 20px;
+  height: 10px;
+}
+.row::-webkit-slider-thumb {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  top: -7.5px;
+  background-color: #888888; 
+  border-radius: 50%;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+.row::-webkit-slider-thumb:active, .row::-webkit-slider-thumb:hover  {
+    background-color: #333333;
+}
+.row::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: #555555;
+  border: 2px solid #555555;
+  border-radius: 50%;
+  -moz-appearance: none;
+}
+.row::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: #555555; 
+  border: 2px solid #555555; 
+  border-radius: 50%;
+  appearance: none;
+}
+.session h2{
+  position: absolute;
+  right: 0px;
+  width: 80px;
+  margin: 0px;
+  color: antiquewhite;
+  text-align: center;
+}
+.filter_row{
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  background-color: antiquewhite;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  transition: 0.3s ease;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.filter_row:hover{
+  background-color: #333333;
+}
+.filter_row:active{
+  animation: shrinkAnimation 0.3s;
+}
+.filter_row h2{
+  font-size: xx-large;
+  margin: 0px;
+  margin-bottom: 2px;
+}
+.filter_row button{
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  font-size: 30px;
+  background-color: antiquewhite;
+  transition: 0.3s ease;
+  color: #555555
+}
+.filter_row button:hover{
+background-color: #444444;
+}
+.helpButton{
+  background-color: antiquewhite;
+  position: absolute;
+  top: 17.5px;
+  width: 40px;
+  height: 40px;
+  right: 60px;
+  left: auto;
+  border-radius: 40px;
+  color: #555555;
+  font-size: xx-large;
+  opacity: 0.85;
+}
+.helpButton:active{
+  animation: shrinkAnimation 0.3s;
+}
+#page-toggle{
+  left: auto;
+  right: 10px;
+}
+.buttonSuggestion{
+  background-color: #555555;
+  color: antiquewhite;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 197.5px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  font-size: x-large;
+  opacity: 0.85;
+}
+.buttonSuggestion span{
+  font-size: xx-large;
+  margin-left: 10px;
+}
+.buttonSuggestion svg {
+  position: absolute;
+  right: 15px;
+}
+
+.filter-nav-container{
+  position: absolute;
+  top: 75px;
+  bottom: 50px;
+  width: 50px;
+  left: 0px;
+  background-color:  transparent;
+  bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+}
+.filter-nav ul{
+  padding: 0px;
+  margin: 0px;
+  width: 50px;
+  list-style-type: none;
+  opacity: 0.85;
+}
+li div svg{
+  z-index: 20;
+}
+.nav li div:hover{
+  background-color: #555555;
+  color: antiquewhite
+}
+a .inner:active{
+  animation: shrinkAnimation 0.3s;
+
+}
+.nav li div:active{
+  animation: shrinkAnimation 0.3s;
+  color: white;
+}
+.filter-heatmap-container{
+  position: absolute;
+  top: 75px;
+  bottom: 50px;
+  width: 50px;
+  right: 5px;
+  bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+.HeatMapButton{
+  position: absolute;
+  left: 0%;
+  top: 50%;
+  z-index: 1000;
+  display: none;
+}
+.HeatMapBox h3{
+  display: none;
+}
+.HeatMapBox div{
+  position: absolute;
+  right: 5px;
+  opacity: 0.85;
+}
+.HeatMapBox div label{
+  margin: 0px;
+  margin-bottom: 10px;
+}
+.takeOutButton, .takeout-box-container{
+  position: absolute;
+  right: auto;
+  left: 5px;
+  width: 197.5px;
+  top: 80px;
+  height: 50px;
+  padding: 0px;
+  background-color: #555555;
+  z-index: 15;
+  color: antiquewhite;
+  font-size: x-large;
+  opacity: 0.9;
+}
+.takeOutButton svg{
+  font-size: xx-large;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.takeOutButton span{
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: xx-large;
+}
+.mode-selection-header, .duration-selection-header, .exit-header {
+  display: none;
+}
+.button-container{
+  width: 40px;
+  height: 40px;
+  left: 5px;
+  position: absolute;
+}
+.duration-selection-options{
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 52.5px;
+  top: 0px;
+  left: auto;
+}
+.mode-selection-options{
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  left: auto;
+}
+.exit-options {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 100px;
+  top: 0px;
+  left: auto;
+}
+.exit-option {
+  left: auto;
+  right: 0px;
+}
+.mode-selection-options button, .duration-selection-options button, .button-container button, .exit-options button{
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  background-color: antiquewhite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  font-size:x-large;
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  padding: 0px;
+  margin: 0px;
+}
+.mode-option{
+  left: auto;
+  right: 0px;
+}
+.duration-selection-options button{
+  font-size: medium;
+  right: 50px;
+}
+.button-container button{
+  font-size: 40px;
+  left: 0px;
+  right: auto
+}
+#right{
+  position: absolute;
+  bottom: 0px;
+  top: auto;
+  right: 0px;
+  left: 0px;
+  width: auto;
+  height: 300px;
+  z-index: 30;
+  background-color: #555555;
+  box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, 0.5);
+}
+.sidebar-content{
+  position: absolute;
+  width: auto;
+  height: auto;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: transparent;
+
+}
+.sidebar-header{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 10;
+  padding: 0px;
+  margin: 0px;
+  color: antiquewhite;
+}
+.sidebar-zone-rating{
+  color: #555555;
+  font-size: medium;
+  position: absolute;
+  background-color: antiquewhite;
+  border-radius: 50px;
+  top: 10px;
+  width: 190px;
+  height: 40px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 50px;
+}
+.sidebar-zone-rating p{
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  color: #555555;
+  position: absolute;
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.sidebar-zone-rating div{
+  margin-bottom: 15px;
+}
+#score{
+  position: absolute;
+  left: 70px;
+}
+.sidebar-content h2{
+  position: absolute;
+  left: 50%;
+  top: 10px;
+}
+.cafe-img {
+  position: absolute;
+  left: 15px;
+  top: 69px;
+  height: auto;
+  bottom: 15px;
+  width: 50%;
+  max-height: 215px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.cafe-info-ul{
+  position: absolute;
+  right: 10px;
+  left: 50%;
+  width: auto;
+  top: 50px;
+  font-size: 15px;
+  color: antiquewhite;
+}
+.sidebar-toggle.right, .sidebar-help-button{
+  position: absolute;
+  right: 5px;
+  left: auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  top: 10px;
+  background-color: antiquewhite;
+  color: #555555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-help-button{
+  right: 55px;
+  rotate: none;
+}
+.sidebar-toggle.right p{
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  align-items: center;
+  height: 25px;
+  color: #555555;
+}
+.rank-info{
+  display: block;
+}
+.chart-container{
+  position: absolute;
+  left: 0px;
+  top: 60px;
+  bottom: 0px;
+  right: auto;
+  width: 45%;
+  max-width: none;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  background-color: transparent;
+  padding: 0px;
+}
+.chart-container canvas{
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  top: 10px;
+  bottom: 50px;
+  width: auto;
+  max-height: 200px;
+  min-height: 200px;
+}
+.chart-container label{
+  color: antiquewhite;
+  margin-bottom: 10px;
+}
+.chart-container input{
+  margin-bottom: 15px;
+}
+.cafe-info{
+  position: absolute;
+  right: 5px;
+  width: 50%;
+  left: auto;
+  bottom: 0px;
+  top: 60px;
+  overflow: auto;
+}
+
+.cafe-info::-webkit-scrollbar 
+.sidebar-content::-webkit-scrollbar,
+#right::-webkit-scrollbar{
+  width: 5px;
+}
+.cafe-info::-webkit-scrollbar-track 
+.sidebar-content::-webkit-scrollbar-track, 
+#right::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+}
+.cafe-info::-webkit-scrollbar-thumb 
+.sidebar-content::-webkit-scrollbar-thumb,
+#right::-webkit-scrollbar-thumb{
+    background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 5px;
+}
+
+#zone-cafe-title{
+  width: 150px;
+  height: 50px;
+  border-radius: 50px;
+  color: antiquewhite;
+  font-size: 30px;
+  margin: 0px;
+}
+#av-cafe-rating{
+  height: 50px;
+  border-radius: 50px;
+  position: absolute;
+  right: 0px; 
+  left: 150px;
+  width: auto;
+  top: 0px;
+  height: 50px;
+  border-radius: 50px;
+  color: antiquewhite;
+  font-size: 30px;
+  margin: 0px;
+  text-align: right;
+}
+.zone-cafe{
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items:start;
+  justify-content: left;
+  border-top: 2px solid antiquewhite;
+}
+.zone-cafe img{
+  width: 50%;
+  position: relative;
+  height: 90px;
+  left: 0px;
+  top: 5px;
+  bottom: 5px;
+  object-fit: cover;
+}
+.zone-cafe p{
+  position: absolute;
+  left: 52%;
+  text-align: left;  
+  color: antiquewhite;
+  font-size: 22px;
+  margin: 0px;
+  margin-top: 5px;
+}
+.zone-info{
+  position: absolute;
+  top: 60px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  height: 220px;
+}
+.sidebar-toggle.right{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+.zone-info *{
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  color: antiquewhite;
+}
+.zone-item{
+  width: 31% ;
+  min-width: 240px;
+  margin: 10px;
+  margin-top: 0px;
+  float: left;
+  height: 190px;
+  border: none;
+}
+.zone-item h2{
+font-size: 23px;
+position: static;
+margin-top: 5px;
+}
+.rating-text-div p{
+font-size: 18px;
+margin: 0px;
+padding: 0px;
+height: 20px;
+width: 100%;
+}
+
+.legend{
+  position: absolute;
+  right: auto;
+  top: 80px;
+  width: 197.5px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: auto;
+  color: antiquewhite;
+  pointer-events: auto;
+  padding: 0px;
+}
+.legend svg{
+  margin-top: 10px;
+}
+.legend span{
+  position: absolute;
+  bottom: 5px;
+}
+.cafe-name {
+  cursor: pointer;
+}
+.cafe-name:hover {
+  color: #B6B8B9;
+  text-decoration: underline;
+}
+.mode-selection {
+  background-color: #1f1f1f;
+  color: #F2F4F3;
+  border-radius: 3px;
+  left: 50px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  z-index: 1;
+}
+
+
+      
+.welcome {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+}
+.Welcome-Text {
+  margin-right: 20px;
+  color: antiquewhite;
+  width: 30vw;
+  height: 20vh;
+  font-size: 18px; 
+  align-self: center; 
+  justify-self: start;
+}
+.Welcome-Button {
+  background-color: #555555;
+  color: antiquewhite;
+  border: none;
+  padding: 20px 20px;
+  font-size: 16px; 
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px; 
+}
+.Welcome-Button:hover {
+  background-color: #393939;
+}
+.rating-text-div{
+font-size: 18px;
+margin: 0px;
+padding: 0px;
+width: 50%;
+position: absolute;
+left: 0px;
+height: 90%;
+top: 10px;
+}
+li div:active, li div span:active, li div svg:active{
+  animation: shrinkAnimation 0.5s;
+}
+.MuiFormGroup-root label:active{
+  animation: shrinkAnimation 0.5s;
+}
+.exit-option, .duration-option, .mode-option{
+  transition: 0.3s ease;
+}
+.exit-option:hover, .submit-button:hover, .duration-option:hover, .mode-option:hover{
+  background-color: #444444;
+  color: antiquewhite;
+}
+.buttonSuggestion:active{
+  animation: shrinkAnimation 0.5s;
+}
+
+ 
+
+.rating-container{
+  width: 100%;
+  position: relative;
+  top: 0px;
+  border-top: 2px solid antiquewhite;
+  border-bottom: 2px solid antiquewhite;
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+  margin-top: 10px;
+  width: 100%;
+  height: 140px;
+}
+.cafe-info-ul li{
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+.zone-info div h2{
+  font-size: 1.7vw;
+  height: fit-content;
+}
+.sidebar-cafe-header{
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  right: 160px;
+  height: 40px;
+  z-index: 10;
+  padding: 0px;
+  margin: 0px;
+  color: antiquewhite;
+  font-size: 40px;
+  display: flex;
+  align-items: end;
+}
+/*///////////////////////////////////////////////////////*/
+
+    .sidebar-cafe-rating{
+      position: absolute;
+      right: 50px;
+      background-color: antiquewhite;
+      color: #444444;
+      top: 11px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      font-size: large;
+      width: 20;
+    }
+
+    .zone-cafe-rating{
+      width: 125px;
+      background-color: antiquewhite;
+      height: 30px;
+      display: flex;
+      color: #444444;
+      align-items: center;
+      margin-top: 0px;border-radius: 10px;
+
+  }
+
+  .zone-cafe-rating svg{
+    z-index: 20;
+  }
+
+  .zone-background-stars{
+    position: absolute;
+  }
+
+  #av-cafe-rating{
+    text-align: left;
+    height: 35px;
+    width: 190px;
+    position: absolute;
+    right: 0px;
+    left: auto;
+  }
+
+
+  .zone-av-cafe-rating{
+    width: 125px;
+      background-color: antiquewhite;
+      height: 30px;
+      display: flex;
+      color: #444444;
+      align-items: center;
+      margin-top: 0px;border-radius: 10px;
+      font-size: 22px;
+      position: absolute;
+      right: 0px;
+      top: 0px
+    }
+
+    .zone-av-cafe-rating svg{
+      z-index: 20;
+    }
+.zone-av-background-stars{
+  position: absolute;
+}
+
+
+
+.sidebar-content{
+  overflow-x: hidden;
+}
+    .sidebar-content::-webkit-scrollbar,
+    .filter-nav::-webkit-scrollbar,
+    .HeatMapBox div::-webkit-scrollbar
+
+
+    {
+    width: 5px;
+  }
+   
+  .sidebar-content::-webkit-scrollbar-track,
+  .filter-nav::-webkit-scrollbar-track,
+  .HeatMapBox div::-webkit-scrollbar-track
+   {
+    box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+  }
+   
+  .sidebar-content::-webkit-scrollbar-thumb,
+  .filter-nav::-webkit-scrollbar-thumb,
+  .HeatMapBox div::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+    border-radius: 5px;
+  }
+
+  .zone-cafe-info::-webkit-scrollbar {
+    width: 5px;
+  }
+   
+  .zone-cafe-info::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+  }
+   
+  .zone-cafe-info::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+    border-radius: 5px;
+  
+  }
+  
+  .background-stars{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 10px
+  }
+
+
+
+  .zone-cafe-info{
+    position: absolute;
+    left: 50%;
+    right: 0px;
+    top: 70px;
+    height: 220px;
+    overflow-y: auto;
+  }
+
+
+/*DRAWER WIDTH & SECONDARY STYLING ONLY*/
+  @media only screen and (max-width: 950px) {
+
+    .sidebar-cafe-header{
+      font-size: 4.0vw;
+    }
+    .zone-item h2{
+      font-size: 2.6vw
+      }
+  }
+  @media only screen and (max-width: 926px) {
+    .zone-item{
+    width: 45%;
+    }
+  }
+  @media only screen and (max-width: 875px) {
+    .sidebar-header, .suggestion-sidebar-header{
+      font-size: 4vw;
+    }
+  }
+  @media only screen and (max-width: 810px) {
+    #title{
+      display: none;
+    }
+  }  
+  @media only screen and (max-width: 760px) {
+    .BusynessSliderBox{
+      left: auto;
+    }
+  }
+
+  @media only screen and (max-width: 675px) {
+    .sidebar-cafe-header{
+      font-size: 4vw;
+      top: 10px
+      
+    }
+    .zone-cafe-info{
+      top: 280px;
+      left: 5px;  
+    }
+    .chart-container{
+      width: 90%;
+      top: 40px;
+      height: 240px;
+    }
+    .cafe-info{
+      top: 270px;
+      width: 90%;
+      left: 15px;
+      right: 15px;
+      height: 260px;
+    }
+    .sidebar-content{
+      overflow: auto;
+    }
+  }
+  @media only screen and (max-width: 660px) {
+    .sidebar-header{
+      font-size: 3vw;
+      right: 250px;
+    }
+
+    .suggestion-sidebar-header{
+      font-size: 3vw;
+      right: 250px;
+    }
+    
+  }
+  @media only screen and (max-width: 627px) {
+    .zone-item{
+      width: 95%;
+      }
+  }
+  @media only screen and (max-width: 625px) {
+    .zone-info div h2{
+
+      font-size: 5.4vw
+      }
+
+
+  }
+  @media only screen and (max-width: 615px) {
+    .cafe-img, .cafe-info-ul{
+      width: 95%;
+    }
+    .cafe-img{
+      height: 200px;
+      top: 55px;
+      left: 5px;
+    }
+    .cafe-info-ul{
+      top: 245px;
+      left: 5px;
+      margin: 0px;
+      padding: 0px;
+    }
+    .buttonSuggestion{
+      right: 5px;
+      width: 60px;
+      left: auto;
+    }
+    .buttonSuggestion span{
+      display: none;
+    }
+    .takeOutButton{
+      width: 60px;
+      right: auto;
+    }
+    .takeOutButton span{
+      display: none;
+    }
+    .takeout-box-container{
+      top: 135px;
+      left: 5px;
+    }
+    /* .legend{
+      top: 140px;
+    } */
+  
+    /* @media only screen and (max-height: 535px) {
+      .filter-nav{
+        width: 45px;
+      }
+    }
+    @media only screen and (max-height: 400px) {
+        #compass-btn, #compass-btn img,#page-toggle, #page-toggle img{
+        width: 30px;
+        height: 30px;
+      }
+    
+      #compass-btn{
+        top: 5px;
+        left: 5px;
+        
+      }
+      #page-toggle {
+        top: 5px;
+        right: 5px;
+      }
+    
+      .helpButton{
+        top: 5px;
+        right: 40px;
+        width: 30px;
+        height: 30px;
+        font-size: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    
+      .BusynessSliderBox{
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        width: auto;
+        height: 75px;
+      }
+      .session{
+        width: 95%;
+        left: 2.5%;
+      }
+      .filter_row{
+        top: 5px; 
+        right: 75px;
+        width: 30px;
+        height: 30px;
+      }
+    
+      .filter_row button{
+        font-size: 20px;
+      }
+    
+      .session{
+        height: 30px;
+        top: 40px;
+      }
+    
+      .legend{
+        top: 80px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        background-color: #444444;
+      }
+    
+      .legend svg{
+        height: 20px;
+        margin-top: 0px;
+      }
+      .legend svg text{
+        display: none;
+      }
+      .legend span{
+          bottom: 0px;
+          margin-bottom: 5px;
+      }
+    
+      .takeOutButton{
+        top: 80px;
+        height: 30px;
+        width: 50px;
+      }
+      .takeOutButton svg {
+        font-size: 25px;
+        top: 2px;
+        left: 10px;
+      }
+    
+      .buttonSuggestion{
+        top: 5px;
+        height: 30px;
+        width: 50px;
+      }
+    
+      .takeout-box-container{
+        top: 115px;
+        height: 35px;
+      }
+    
+      .button-container button, .exit-options button, .duration-selection-options button, .mode-selection-options button{
+        width: 30px;
+        height: 30px;
+        top: 2.5px
+      }
+      
+      .mode-selection-options button{
+        font-size: 18px;
+        right: 0px;
+        left: auto;
+      }
+      .duration-selection-options {
+        right: 35px;
+        left: auto;
+        width: 30px;
+      }
+    
+      .exit-options{
+        width: 30px;
+        right: 65px
+      }
+    
+      .filter-nav-container{
+        top: 155px;
+        ;
+      }
+    
+      .filter-nav{
+        width: 50px;
+      }
+    
+      .HeatMapBox div{
+        top: 80px;
+        max-height: 240px;
+      }
+    
+    } */
+    
+  }
+  @media only screen and (max-width: 575px) {
+    .BusynessSliderBox{
+      left: 75px;
+      width: auto;
+    }
+    }
+  @media only screen and (max-width: 480px) {
+    #page-toggle{
+      top:5px;
+      right: 5px;
+      width: 30px;
+    }
+    #page-toggle img{
+      width: 30px;
+      height: 30px;
+    }
+    .helpButton{
+      top: 5px;
+      right: 40px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .filter_row{
+      right: 75px;
+      top: 5px;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      left: auto;
+    }
+    .filter_row button{
+      font-size: 25px;
+    }
+    .session{
+      top: 40px;
+      right: 5px;
+      left: 80px;
+      width: auto;
+      height: 30px;
+      
+    }
+    .BusynessSliderBox{
+      top: 0px;
+      height: 120px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+      z-index: 20;
+    }
+    .HeatMapBox{
+      left: 0px;
+      right: 0px;
+      width: auto;
+    }
+    .takeOutButton, .takeout-box-container{
+      top: 135px;
+      right: 0px;
+      left: 0px;
+      width: auto;
+    }
+    .takeOutButton{
+      width: 60px;
+      right: auto;
+      top: 80px;
+    }
+    .buttonSuggestion{
+      right: 0px;
+      width: 55px;
+      left: auto;
+      top: 5px;
+    }
+    .buttonSuggestion span{
+      display: none;
+    }
+    .takeOutButton span{
+      display: none;
+    }
+    .legend{
+      top: 80px;
+      background-color: #444444;
+      
+    }
+}
+  /* @media only screen and (max-height: 725px) {
+    .HeatMapBox div{
+      top: 170px;
+      bottom: 0px;
+      overflow-y: auto;
+      flex-direction: none;
+      -webkit-flex-wrap: none;
+      flex-wrap: nowrap;
+      height: 240px;
+    }
+    .filter-nav-container{
+      top: 245px;
+      align-items: start;
+      bottom: 50px;
+      overflow: hidden;
+    }
+  
+    .filter-nav{
+      position: absolute;
+      top: 0px;
+      left: 5px;
+      bottom: 0px;
+      overflow-y: auto;
+      direction: rtl; 
+      justify-content: left;
+      overflow-x: hidden;
+    }
+  } */
+  
+  @media only screen and (max-width: 435px) {
+    .BusynessSliderBox{
+      top: 0px;
+      height: 125px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+      z-index: 20;
+    }
+  
+    .HeatMapBox{
+      left: 0px;
+      right: 0px;
+      width: auto;
+    }
+    /* .buttonSuggestion{
+      top: 60px;
+      left: 0px;
+      right: 0px;
+      width: auto;
+    } */
+  
+    /* .takeOutButton, .takeout-box-container{
+      top: 190px;
+      right: 0px;
+      left: 0px;
+      width: auto;
+    } */
+  
+    /* .legend{
+      top: 245px;
+      
+    } */
+  
+    
+  
+    .HeatMapBox div{
+      position: absolute;
+    }
+  
+    }
+  @media only screen and (max-width: 360px) {
+      .sidebar-header{
+        top: 60px;
+        right: 10px;
+        width: auto;
+        font-size: 6vw;
+      }
+      .zone-cafe-info{
+        top: 325px
+      }
+
+      .suggestion-sidebar-header{
+        top: 0px;
+        right: 50px;
+        width: auto;
+        font-size: 6vw;
+      }
+
+      .chart-container{
+        top: 90px;
+      }
+
+      .sidebar-zone-rating{
+        width: 175px;
+        left: 5px;
+        right: auto;
+      }
+
+      .sidebar-zone-rating p{
+        left: 5px;
+      }
+  }
+
+  @media only screen and (max-width: 350px) {
+    #zone-cafe-title{
+      margin-bottom: 40px;
+    }
+    #av-cafe-rating{
+      top: 40px;
+      left: 0px;
+      right: auto;
+    }
+
+    .zone-cafe .cafe-name{
+      font-size: 15px;
+    }
+
+    .zone-cafe-rating{
+      width: 75px;
+      font-size: small;
+      height: 20px;
+    }
+  }
+  @media only screen and (max-width: 325px) {
+    svg text{
+      display: none;
+    }
+    #compass-btn {
+      top: 5px;
+      left: 5px;
+      height: 30px;
+      width: 30px;
+    }
+    #compass-btn img{
+      width: 30px;
+      height: 30px;
+    }
+
+    .session{
+      left: 5px;
+    }
+  }
+  @media only screen and (max-width: 300px) {
+
+    #right div{
+      overflow-x: hidden;
+    }
+    .cafe-info::-webkit-scrollbar 
+.sidebar-content::-webkit-scrollbar,
+#right::-webkit-scrollbar{
+  width: 5px;
+}
+.cafe-info::-webkit-scrollbar-track 
+.sidebar-content::-webkit-scrollbar-track, 
+#right div::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+}
+.cafe-info::-webkit-scrollbar-thumb 
+.sidebar-content::-webkit-scrollbar-thumb,
+#right::-webkit-scrollbar-thumb{
+    background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 5px;
+}
+  .zone-info div p{
+    font-size: 6vw;
+  }
+  .sidebar-cafe-header{
+    right: 120px;
+    align-items: center;
+  }
+
+  .sidebar-cafe-rating{
+    width: 57px;
+    font-size: x-small;
+    height: 20px;
+    top: 20px;
+    border-radius: 5px;
+  }
+
+  .background-stars{
+    top: 5px;
+  }
+
+  .zone-info{
+    left: 0px;
+    right: 0px;
+  }
+  .zone-item{
+    margin-left: 0px;
+    width: 90%;
+  }
+}
+  @media only screen and (max-width: 265px) {
+    .rating-stars-div{
+      left: 120px;
+      right: auto;
+      width: 100px;
+    }
+  }
+  @media only screen and (max-width: 260px) {
+    .row{
+      width: 130px;
+    }
+
+    .zone-info{
+      right: 5px;
+    }
+    .zone-item{
+      width: 95%;
+      min-width: 100px;
+    }
+
+    .rating-stars-div{
+      right: auto;
+      left: 100px;
+    }
+  }
+  @media only screen and (max-width: 200px) {
+    .sidebar-cafe-header{
+      font-size: 8.0vw;
+      height: 40px;
+      display: flex;
+      align-items: end;      }
+
+  }
+
+  @media only screen and (max-height: 600px) {
+    .takeOutButton{
+      height: 30px;
+      
+    }
+    .takeOutButton svg{
+      font-size: 20px;
+      top: 5px;
+      left: 8px;
+  }
+
+  .takeOutButton span{
+    top: 5px;
+    font-size: 28px;
+  }
+
+  .buttonSuggestion{
+    height: 30px;
+  }
+
+  .buttonSuggestion svg{
+    right: 10px;
+  }
+  .buttonSuggestion span{
+    font-size: 28px;
+  }
+
+  .legend{
+    height: 30px;
+  }
+  .legend svg{
+    height: 20px;
+    top: 5px;
+    margin-top: 0px;
+  }
+  .legend svg tspan{
+    display: none;
+  }
+
+
+  .legend span{
+    top: 5px;
+  }
+
+
+  .takeout-box-container{
+    top: 115px;
+    height: 40px;
+  }
+
+  .button-container button, .exit-options button, .duration-selection-options button, .mode-selection-options button{
+    width: 30px;
+    height: 30px;
+  }
+  .mode-selection-options button{
+    right: 0px;
+    left: auto;
+    font-size: 18px;
+  }
+  
+  .duration-selection-options{
+    right: 30px;
+  }
+
+  .exit-options{
+    right: 65px;
+  }
+
+  .HeatMapBox div{
+    top: 85px;
+    overflow-y: auto;
+  }
+
+  .filter-nav-container{
+    top: 160px;
+    align-items: start;
+    bottom: 50px;
+  }
+
+  .filter-nav{
+    position: absolute;
+    top: 0px;
+    margin-left: 5px;
+    max-height: 250px;
+    bottom: 0px;
+    overflow-y: auto;
+    direction: rtl;
+    justify-content: left;
+    width: 50px;
+  }
+
+
+}
+  .filter-nav ul li {
+    margin-top: 0px;
+  }
+
+
+
+
+.rating-stars-div{
+  width: 50%;
+  position: absolute;
+  right: 0px;
+  height: 90%;
+  text-align: right;
+  top: 10px;
+
+}
+
+.rating-stars-div p{
+  width: 100%;
+  font-size: 18px;
+  display:flex;
+  justify-content:right;
+
+}
+.rating-stars{
+  text-align: right;
+}
+
+.heatmap-label{
+  display: none;
+}
+
+.MuiFormControlLabel-label{
+  width: 0.00000001px;
+  height: 0.0000001px;
+  color: transparent;
+}
+
+.busyness-label{
+  color: transparent;
+}
+/* 
+@media only screen and (max-height: 400px) {
+  @media only screen and (max-width: 325px) {
+    #compass-btn, #compass-btn img,#page-toggle, #page-toggle img{
+    width: 30px;
+    height: 30px;
+  }
+
+  #compass-btn{
+    top: 5px;
+    left: 5px;
+    
+  }
+  #page-toggle {
+    top: 5px;
+    right: 5px;
+  }
+
+  .helpButton{
+    top: 5px;
+    right: 40px;
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .filter_row{
+    top: 5px; 
+    right: 75px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .filter_row button{
+    font-size: 20px;
+  }
+
+  .session{
+    height: 30px;
+    top: 40px;
+  }
+
+  .legend{
+    top: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    background-color: #444444;
+  }
+
+  .legend svg{
+    height: 20px;
+    margin-top: 0px;
+  }
+  .legend span{
+      bottom: 0px;
+      margin-bottom: 5px;
+  }
+
+  .takeOutButton{
+    top: 80px;
+    height: 30px;
+    width: 50px;
+  }
+  .takeOutButton svg {
+    font-size: 25px;
+    top: 2px;
+    left: 10px;
+  }
+
+  .buttonSuggestion{
+    top: 5px;
+    height: 30px;
+    width: 50px;
+  }
+
+  .takeout-box-container{
+    top: 115px;
+    height: 35px;
+  }
+
+  .button-container button, .exit-options button, .duration-selection-options button, .mode-selection-options button{
+    width: 30px;
+    height: 30px;
+    top: 2.5px
+  }
+  
+  .mode-selection-options button{
+    font-size: 18px;
+    right: 0px;
+    left: auto;
+  }
+  .duration-selection-options {
+    right: 35px;
+    left: auto;
+    width: 30px;
+  }
+
+  .exit-options{
+    width: 30px;
+    right: 65px
+  }
+
+  .filter-nav-container{
+    top: 155px;
+  }
+
+  .filter-nav{
+    width: 50px;
+  }
+
+  .HeatMapBox div{
+    top: 80px;
+    max-height: 240px;
+  }
+}
+} */
+
+
+  /*
+total responsiveness
+x -reload button
+x -fixed slider length, padding on slider text
+x -hover and click animations on takeout
+x- fix takeout button stylign
+X -  remove taxi button
+x - style legend
+x - check map clickable
+x - top-zone drawer responsive
+x - emojis for zone ratings
+
++/- for legend
+x- drawer responsiveness
+x - drawer rating func
+x - cafe drawer resp, maybe fix the image upto min width and have reviews scroll
+  replace cafe drawer with stars. 
+x- title png
+x - fix map buttons scrollbars
+x - fix LHS overflow
+x - fix slider for firefox
+x- align items in top zone window
+x-fixed legend
+x - LHS not tucked in
+x - shrink buttons instead of drawer header for cafes
+x- lighthouse testing and changes
+x- remove css chat comments, search for / icons to find
+
+
+header transparent
+text truncated for cafe review
+link to essentials
+drawer in and out animation and lip
+mobile layout flip?
+tut at small sizes
+reformat css -- 1/2 done
+graph adjusting res at lower pixels
+
+Lighthouse performance fix
+
+
+
+randalls island no cafes needs styling and NaN
+mobile tutorial
+personal writeup
+video plan
+feedback from the lads
+mid width the takeout buttons overlap the legend
+
+
+
+fix top rankings drawer at min width of 240px
+max height media queries for main items
+*/
