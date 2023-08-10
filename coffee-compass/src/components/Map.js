@@ -1261,7 +1261,6 @@ useEffect(() => {
     const suggestZone = (activeMaps) => {
       //if a single checkbox is checked, return the zone with the highest rank for that heatmap
       if (activeMaps.busyness && !activeMaps.cafeDensity && !activeMaps.crimeData && !activeMaps.prices && !activeMaps.transportData) {
-        console.log("fuck busyness", busynessRank);
         let foundZone = [busynessRank[0], busynessRank[1], busynessRank[2]]
         return foundZone;
       }

@@ -26,7 +26,7 @@ const steps = [
 },
 {
   target: ".filter_row",
-  content: "Change the time scale to see busyness over the past day, week, or year.",
+  content: "Change the time scale to see busyness over the current day, week, or year.",
 },
 {
   target: ".legend",
