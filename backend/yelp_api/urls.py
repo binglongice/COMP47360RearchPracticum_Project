@@ -1,16 +1,9 @@
-#from django.urls import path
-#from .views import search_restaurants_view
-
-#urlpatterns = [
-#    path('search/', search_restaurants_view, name='search_restaurants'),
-#]
-
 from django.urls import path
 from .views import cafes_api, bars_api, restaurants_api
 from . views import predictions_api, review_api
 from .pickle_views import model_output_api, weekly_aggregation_api, monthly_aggregation_api
 
-#this needs to be modified in dev
+
 
 urlpatterns = [
     path('api/cafes/<str:location>/', cafes_api, name='cafes_api'),
