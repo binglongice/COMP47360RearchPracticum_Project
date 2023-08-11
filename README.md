@@ -4,12 +4,12 @@ Submission link for group 5:
 https://csi6220-2-vm4.ucd.ie/#
 
 Group members:
-Zhan Li
-Cormac Egan
-Maximilian Girt
-Nicholas Hegarty
-Colmán Larkin
-Yuntao Wei
+- Zhan Li
+- Cormac Egan
+- Maximilian Girt
+- Nicholas Hegarty
+- Colmán Larkin
+- Yuntao Wei
 
 Steps:
 To access our website you can use the link provided above
@@ -17,9 +17,9 @@ To access our website you can use the link provided above
 Alternatively, if you wish to run the website locally you can clone our repository (ensuring that you work off of main). 
  It is recommended that you create an anaconda environment and use the requirements.txt file to install the necessary modules to run the python backend. 
 
-To install the necessary frontend packages you will have to use node packet manager (npm). 
+To install the necessary frontend packages you will have to use node packet manager (npm) in COMP47360RearchPracticum_Project/coffee-compass, running npm install will install the neccessary packages as detailed in package.json and package-lock.json
 
-Currently the code is configured on main so that it connects to the endpoints on the server. This means you will solely be running the frontend locally. In order to do this you must open up terminal and navigate to the folder called “coffee-compass” (COMP47360RearchPracticum_Project/coffee-compass) and run npm start. This will launch the local development server on http://localhost:3000
+Currently the code is configured on main so that it connects to the __endpoints on the server__. This means you will solely be running the __frontend__ locally. In order to do this you must open up terminal and navigate to the folder called “coffee-compass” (COMP47360RearchPracticum_Project/coffee-compass) and run npm start. This will launch the local development server on http://localhost:3000
 
 Should you wish to run the backend locally you must 
 1. Install redis and redis-stack (this will be used for caching)
