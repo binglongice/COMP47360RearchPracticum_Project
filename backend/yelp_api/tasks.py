@@ -6,7 +6,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from celery import shared_task
 import redis.exceptions
-from yelp_api.models import AggregatedPredictions
+from yelp_api.models import AggregatedPredictions, Predictions
 from rest_framework.response import Response
 from .models import Cafe
 from .serializers import Cafe_DB_Serializer
@@ -26,14 +26,24 @@ def calculate_and_cache_predictions(day, month, week_of_year):
     print(f"Month: {month}")
     print(f"Week of Year: {week_of_year}")
 
-    # Define the model numbers you want to include
-    model_numbers = [4, 12, 13, 24, 41, 42, 43, 45, 48, 50, 68, 74, 75, 79, 87, 88, 90, 100, 107, 113,
-                     114, 116, 120, 125, 127, 128, 137, 140, 141, 142, 143, 144, 148, 151, 152, 153,
-                     158, 161, 162, 163, 164, 166, 170, 186, 194, 202, 209, 211, 224, 229, 230, 231,
-                     232, 233, 234, 236, 237, 238, 239, 243, 244, 246, 249, 261, 262, 263]
 
-    # Prepare the inputs (hour is not needed as an input anymore)
     inputs = [day, month, week_of_year]
+
+    predictions_data = Predictions.objects.filter(
+            week_of_year=week_of_year,
+        )
+
+        # Check if any predictions are found, return a 404 response if not found
+    if not predictions_data.exists():
+            return Response({'error': 'Data not found.'}, status=404)
+
+        # Calculate the global min and max values for normalization
+    all_predictions = [prediction.prediction for prediction in predictions_data]
+    prediction_min = min(all_predictions)
+    prediction_max = max(all_predictions)
+
+    # Prepare the output data
+    all_model_predictions = {}
 
     try:
         # Attempt to connect to Redis
@@ -48,39 +58,37 @@ def calculate_and_cache_predictions(day, month, week_of_year):
         if cached_predictions is not None:
             # If the predictions are already cached, load and use them
             all_model_predictions = json.loads(cached_predictions)
-            print("24 Hour Predictions are already in Redis cache.")
+            print("24 hour predictions are already in the cache.")
         else:
-            all_model_predictions = {f'{model_number}': {} for model_number in model_numbers}
-            for model_number in model_numbers:
-                pickle_file = os.path.join('pickle_models', f'model_{model_number}.pkl')
-                with open(pickle_file, 'rb') as f:
-                    model = pickle.load(f)
+            # If the predictions are not cached, unpickle the models and calculate predictions
 
-                # Calculate predictions for each hour of the day
-                for hour in range(24):
-                    inputs_with_hour = [hour] + inputs
-                    prediction = model.predict([inputs_with_hour])
-                    all_model_predictions[f'{model_number}'][f'{hour}'] = prediction[0]  # Get the prediction value for the hour
+            for prediction in predictions_data:
+                location_id = prediction.location_id
+                hour = prediction.hour
+                week_of_year = prediction.week_of_year
+                day = prediction.day
+                prediction_value = prediction.prediction
+                normalized_prediction = (prediction_value - prediction_min) / (prediction_max - prediction_min)
 
-            # Calculate the global min and max values
-            all_predictions = [prediction for predictions_by_model in all_model_predictions.values() for prediction in predictions_by_model.values()]
-            prediction_min = min(all_predictions)
-            prediction_max = max(all_predictions)
+                # Create day_key and location_key without any prefixes
+                hour_key = str(hour)
+                day_key = str(day)
+                location_key = str(location_id)
 
-            # Normalize each prediction array before adding it to all_model_predictions
-            for model_number, predictions_by_hour in all_model_predictions.items():
-                for hour, prediction in predictions_by_hour.items():
-                    normalized_prediction = (prediction - prediction_min) / (prediction_max - prediction_min)
-                    all_model_predictions[model_number][hour] = normalized_prediction.tolist()
+                # Check if the location_key exists in the dictionary, if not, create an empty dictionary for that model
+                if location_key not in all_model_predictions:
+                    all_model_predictions[location_key] = {}
 
-            print("Normalization has occurred for 24 hour predictions.")
+                all_model_predictions[location_key][hour_key] = normalized_prediction
 
             # Store all the predictions as one large JSON object in Redis
             redis_client.set(redis_key, json.dumps(all_model_predictions))
-            print("Cache was not used for 24 hour predictions. Unpickled models instead")
+            print("Daily Cache was not used for predictions. Calculated predictions instead")
             redis_client.expire(redis_key, 24 * 60 * 60)
-            print("24 hour expiry set for 24 hour predictions")
-
+            print("24 hour expiry set")
+          
+          
+          
     except redis.exceptions.ConnectionError:
         # Handle Redis connection error gracefully
         print("Error: Unable to connect to the Redis cache for 24 hour predictions.")
